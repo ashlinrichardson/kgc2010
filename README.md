@@ -11,3 +11,5 @@ this software produced results shown in the 2010 IGARSS conference presentation,
   ./run.sh 
 
 [1] Unsupervised Nonparametric Classification of Polarimetric SAR Data Using The K-nearest Neighbor Graph, A. Richardson, D. G. Goodenough, H. Chen, G. Hobart, B. Moa, W. Myrvold, proc. IEEE IGARSS, Honolulu, Hawaii, July 2010.
+
+Based on gltzpr by Nigel Stewart http://www.nigels.com/glt/gltzpr/zpr.h
