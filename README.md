@@ -7,5 +7,6 @@ the command-line utility "scg" implemented a similar algorithm and was intended 
 this software produced results shown in the 2010 IGARSS conference presentation, which led to an invitation by Prof. Eric Pottier (u. Rennes) to submit the same software to the ESA-administered PolSARPro software package, subject to the implementation of a number of recommendations made in the presentation to make the software useful. This version does not implement those recommendations. Hence this version should not be considered intended as useful for any particular purpose other than the author's personal reflection. 
 
   make 
+  
   ./run.sh 
 
