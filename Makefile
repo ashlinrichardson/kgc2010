@@ -4,16 +4,16 @@ CFLAGS=-w -O4
 UNAME_S := $(shell uname -s)
 
 ifeq ($(UNAME_S),Linux)
-LFLAGS  = $(DEBUG) -lc -lm -lstdc++  -pthread -lGL -lglut -lGLU
+LFLAGS  = -lc -lm -lstdc++  -pthread -lGL -lglut -lGLU
 endif
 
 # OS X
 ifeq ($(UNAME_S), Darwin)
-LFLAGS =  $(DEBUG) -lm -pthread -lstdc++ -framework Cocoa -framework GLUT -framework openGL
+LFLAGS =  -lm -pthread -lstdc++ -framework Cocoa -framework GLUT -framework openGL
 endif
 
 knn.exe: knn.o glut.o clust_knn.o zpr.o pick.o global.o console.o
-	$(CC) $(CFLAGS) $(LFLAGS)  knn.o glut.o clust_knn.o zpr.o pick.o global.o console.o -o knn.exe
+	$(CC) $(CFLAGS) knn.o glut.o clust_knn.o zpr.o pick.o global.o console.o -o knn.exe $(LFLAGS)
 
 knn.o: knn.cpp glut.h clust_knn.h pick.h global.h
 	$(CC) $(CFLAGS) -c knn.cpp
