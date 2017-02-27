@@ -59,7 +59,7 @@ void myglut::GLUTWindow::setRightOf( GLUTWindow * other){
 
 void myglut::GLUTWindow::setBelow( GLUTWindow * other){
 	focus();
-	setPos(other->XPos, other->YPos + other->WindowY);
+	setPos(other->XPos, 40 + other->YPos + other->WindowY);
 }
 
 int myglut::GLUTWindow::myID(){
