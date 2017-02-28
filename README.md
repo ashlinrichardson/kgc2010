@@ -6,9 +6,9 @@ this research direction towards data-driven analysis and implementation was cont
 
 Dr. Y. Coady who also supported this work was instrumental in helping me develop a philosophy to always look on the bright side of things-- a special thank-you goes to her. It is with gratitude I recognize D. Marinakis and D. Fairall for welcoming me as part of their community at Kinsol Research, and as inspiring leaders and community builders.
 
-the command-line utility "scg" implemented a similar algorithm and was intended for radar data, and included special features for visualizing radar data, inspired by the great Dr. S. R. Cloude and the radar image visualisation techniques promoted by him. 
+the command-line utility "scg" also implemented an algorithm similar to [1]. "scg" was intended for rapid interactive radar data exploration and included special features for visualizing radar data inspired by the great Dr. S. R. Cloude and the physically explanatory radar image visualisation techniques he develops.
 
-this software produced results shown in the 2010 IGARSS presentation given to a full room at the Waikiki Hilton, which led to an invitation by Prof. Eric Pottier (u. Rennes) to submit the same software to the ESA-administered PolSARPro software package, subject to the implementation of a number of recommendations made in the presentation to make the software useful. This version does not implement those recommendations. Hence this version should not be considered intended as useful for any particular purpose other than the author's personal reflection. 
+this software produced results shown in the 2010 IGARSS presentation given to a full room at the Waikiki Hilton [1] which led to an invitation by Prof. Eric Pottier (u. Rennes) to submit the same software to the ESA-administered PolSARPro software package, subject to the implementation of a number of recommendations made in the presentation to make the software useful. This version does not implement those recommendations. Hence this version should not be considered intended as useful for any particular purpose other than the author's personal reflection. 
 
 instructions (tested on mac os-X 10.11.6 and ubuntu 16. LTS) 
 
@@ -16,6 +16,8 @@ instructions (tested on mac os-X 10.11.6 and ubuntu 16. LTS)
   
   ./run.sh 
 
+biblio
+
 [1] Unsupervised Nonparametric Classification of Polarimetric SAR Data Using The K-nearest Neighbor Graph, A. Richardson, D. G. Goodenough, H. Chen, G. Hobart, B. Moa, W. Myrvold, proc. IEEE IGARSS, Honolulu, Hawaii, July 2010.
 
-Based on gltzpr by Nigel Stewart http://www.nigels.com/glt/gltzpr/zpr.h
+[2] gltzpr by Nigel Stewart http://www.nigels.com/glt/gltzpr/zpr.h
