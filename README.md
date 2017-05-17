@@ -1,6 +1,6 @@
 # w41k1k1
 
-never seen before, this software written by A. Richardson April 1, 2010 -- August 19th, 2010 while funded as an M.Sc. student by Dr. R. Illner at the department of Mathematics and Statistics (U. Victoria) is a fresh interpretation of a command-line utility "scg" (which stands for S. Cloude graphics) written under the supervision of Dr. D. Goodenough and H. Chen at Natural Resources Canada (NRCAN). 
+this software written by A. Richardson April 1, 2010 -- August 19th, 2010 while funded as an M.Sc. student by Dr. R. Illner at the department of Mathematics and Statistics (U. Victoria) is a fresh interpretation of a command-line utility "scg" (which stands for S. Cloude graphics) written under the supervision of Dr. D. Goodenough and H. Chen at Natural Resources Canada (NRCAN). 
 
 this research direction towards data-driven analysis and implementation was continued with the support of Dr. D. Leckie who supervised me as a physics scientist at NRCAN and also by Dr. B. Gooch my first PhD supervisor at U. Victoria. The author conducted research relating to adaptations of derived software to time-series data applications at U. Victoria with Dr. Goodenough as his PhD student, and with physics scientist H. Chen at NRCAN. The author is thankful to all of the above gentlemen for inspiring a lifelong interest in mathematical modelling, remote sensing, image analysis, and computer vision. 
 

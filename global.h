@@ -1,9 +1,11 @@
 #pragma once
+#ifndef HEADER_GLOBAL_H
+#define HEADER_GLOBAL_H
 
 #ifdef __APPLE__
 #include <OpenGL/gl.h>
-#include <OpenGL/glu.h>
 #include <GLUT/glut.h>
+#include <OpenGL/glu.h>
 #else
 #ifdef _WIN32
   #include <windows.h>
@@ -13,13 +15,14 @@
 #include <GL/glut.h>
 #endif
 
-#include <pthread.h>
+
+#include "SA.h"
+#include <queue>
+#include <vector>
 #include <math.h>
 #include "float.h"
-#include <vector>
-#include <queue> 
-#include "SA.h"
 #include "sas.cpp"
+#include <pthread.h>
 #include "clust_knn.h"
 
 using namespace _SA;
@@ -72,8 +75,10 @@ namespace myglut{
 	extern int n_density_estimates;
 	extern int n_skip;
 	extern int select_distance_function;
-	
+
+  // output file (binary format)	
 	extern FILE * outfile;
 	
 }
 
+#endif

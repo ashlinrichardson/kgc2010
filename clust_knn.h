@@ -1,11 +1,13 @@
 #pragma once // later: restore and min-heap
+#ifndef HEADER_CLUST_KNN_H
+#define HEADER_CLUST_KNN_H
 #include "SA.h"
-#include "sas.cpp"
-#include <pthread.h>
 #include <queue> 
-#include "./glut.h"
+#include "sas.cpp"
+#include "glut.h"
 #include "pick.h"
 #include "global.h"
+#include <pthread.h>
 
 using namespace std;
 using namespace _SA;
@@ -39,7 +41,7 @@ namespace myglut{
 		SA<int> knn_indices;
 		SA<int> badData;
 		vector<int> knn_J_indices;
-		int nkci;   // next knn class index;
+		int nkci; // next knn class index;
 		int n_knn_centres;	
 		int NRow;
 		int NCol;
@@ -83,3 +85,4 @@ namespace myglut{
 
 	};
 }
+#endif

@@ -1,13 +1,16 @@
+/* template array with bounds checking inspired by Shane Ryan's SArray class */
 #pragma once
-/* template array with bounds checking inspired by Shane Ryan's SArray class	*/
-#include <fstream>
-#include <iostream>
-#include <ostream>
-#include <vector>
-#include <algorithm>
-#include <float.h>
+#ifndef HEADER_SA_H
+#define HEADER_SA_H
 #include <cmath>
+#include <vector>
+#include <fstream>
+#include <ostream>
+#include <float.h>
 #include <memory.h>
+#include <iostream>
+#include <algorithm>
+
 using namespace std;
 using std::ostream;
 using std::vector;
@@ -240,4 +243,4 @@ namespace _SA{
 	}
 
 };
-
+#endif

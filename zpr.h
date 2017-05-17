@@ -1,4 +1,6 @@
 #pragma once
+#ifndef HEADER_ZPR_H
+#define HEADER_ZPR_H
 /*
  * Zoom-pan-rotate mouse manipulation module for GLUT
  * Version 0.4, October 2003
@@ -19,7 +21,6 @@
 
 namespace zpr{
 	/* Mouse Manipulation API */
-	
 	
 	void zprInit();
 	void zprSetWindowID(int w);
@@ -66,4 +67,4 @@ namespace zpr{
 	static void zprPick(GLdouble x, GLdouble y,GLdouble delX, GLdouble delY);	
 	
 }
-
+#endif
