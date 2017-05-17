@@ -1,6 +1,6 @@
 # Mac OSX and Linux supported by this Makefile
 CC=g++
-CFLAGS=-w -O4 
+CFLAGS=-w -O4
 
 UNAME_S := $(shell uname -s)
 
@@ -16,14 +16,20 @@ endif
 knn.exe: knn.o glut.o clust_knn.o zpr.o pick.o global.o console.o
 	$(CC) $(CFLAGS) knn.o glut.o clust_knn.o zpr.o pick.o global.o console.o -o knn.exe $(LFLAGS)
 
-knn.o: knn.cpp glut.h clust_knn.h pick.h global.h
-	$(CC) $(CFLAGS) -c knn.cpp
+global.o: global.cpp global.h glut.h
+	$(CC) $(CFLAGS) -c global.cpp
 
 pick.o: pick.cpp pick.h glut.h global.h
 	$(CC) $(CFLAGS) -c pick.cpp
 
-global.o: global.cpp global.h glut.h
-	$(CC) $(CFLAGS) -c global.cpp
+console.o: console.cpp console.h glut.h global.h
+	$(CC) $(CFLAGS) -c console.cpp
+
+knn.o: knn.cpp glut.h clust_knn.h pick.h global.h
+	$(CC) $(CFLAGS) -c knn.cpp
+
+zpr.o: zpr.cpp zpr.h pick.h glut.h global.h console.h
+	$(CC) $(CFLAGS) -c zpr.cpp
 
 glut.o: glut.cpp glut.h zpr.h clust_knn.h pick.h global.h console.h
 	$(CC) $(CFLAGS) -c glut.cpp
@@ -31,8 +37,3 @@ glut.o: glut.cpp glut.h zpr.h clust_knn.h pick.h global.h console.h
 clust_knn.o: clust_knn.cpp clust_knn.h clust_knn.h pick.h glut.h global.h
 	$(CC) $(CFLAGS) -c clust_knn.cpp
 
-zpr.o: zpr.cpp zpr.h pick.h glut.h global.h console.h
-	$(CC) $(CFLAGS) -c zpr.cpp
-
-console.o: console.cpp console.h glut.h global.h
-	$(CC) $(CFLAGS) -c console.cpp
