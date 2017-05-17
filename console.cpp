@@ -144,7 +144,7 @@ namespace console{
 				printf("Metric used:        : %d of ?\n", myglut::select_distance_function);
 				printf("Density estimate    : %d of %d\n", density_estimate+1, n_density_estimates);
 				printf("Estimates available : %d\n", myglut::n_density_estimates);
-				printf("Number of neighbors : %d\n", myclust_knn->getK());
+				printf("Number of neighbors : %d\n", KNN_USE);
 
 			default:
 				break;

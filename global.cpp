@@ -3,6 +3,7 @@ namespace myglut{
 
 	#define CLUST_COMPARE_MIN 10
 
+  int KNN_MAX;
 	int KNN_USE;  // 100
 	int NDESIRED;  // 16000
 	int RAND_ITER_MAX;  // 8

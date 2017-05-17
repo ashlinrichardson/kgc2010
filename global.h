@@ -31,6 +31,7 @@ using namespace std;
 
 namespace myglut{
 
+  extern int KNN_MAX; //maximum setting (assume this is the setting the program is run with)
 	extern int KNN_USE;// 100
 	extern int NDESIRED;// 16000
 	extern int RAND_ITER_MAX;// 8

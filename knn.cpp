@@ -45,7 +45,7 @@ void idle(){
 	}
 }
 
-void scaleband( SA<float> * buf){
+void scaleband(SA<float> * buf){
 	float dat;
 	long int i;
 	float MAX = FLT_MIN;
@@ -76,6 +76,7 @@ void scaleband( SA<float> * buf){
 }
 
 int main(int argc, char *argv[]){
+  printf("start\n");
 	if(argc < 9){
 		printf("%s%sdensity estimation%s & mode finding %sfor %snon-parametric %scolor-segmentation%s\n", KRED, KINV, KNRM, KMAG, KGRN, KCYN, KNRM);
 		printf("by %sashlin richardson,%s august 16, 2009%s\n\n", KINV, KNRM, KNRM);
@@ -93,7 +94,7 @@ int main(int argc, char *argv[]){
 	NRow = atoi(argv[1]);
 	NCol = atoi(argv[2]);
 	NDESIRED = atoi(argv[3]);
-	KNN_USE = atoi(argv[4]);
+	KNN_MAX = KNN_USE = atoi(argv[4]);
 	RAND_ITER_MAX = atoi(argv[5]);
 
 	int n = NRow*NCol;
@@ -101,18 +102,23 @@ int main(int argc, char *argv[]){
 	threadcreated = false;
 	myglut::ostopthread = false;
 
+  printf("open data files\n");
   // open data files
 	register int i;
+	int bandnoffset = 6;
+	N = argc - bandnoffset;
+
 	SA<FILE*> files(N);
 	SA<char*> filenames(N);
-	int bandnoffset = 6;
-	N = argc-bandnoffset;
+
 	for(i = 0; i < N; i++){
 		filenames[i] = argv[i + bandnoffset];
 		files[i] = NULL;
 		files[i] = fopen(filenames[i], "rb");
 		filehandles.push_back(files[i]);
 	}
+
+  printf("check opened data files\n");
 
   // check files opened
 	int file_error = false;
@@ -127,6 +133,7 @@ int main(int argc, char *argv[]){
   }
 
   // buffer data
+  printf("fbufs\n");
 	SA< SA< float > * > fbufs(N);
 	for(i = 0; i < N; i++){
 		fbufs[i] = (SA<float> *) new SA<float>(NRow, NCol);
@@ -163,6 +170,7 @@ int main(int argc, char *argv[]){
 		bi[i] = i;
 	}
 
+  printf("glut init\n");
 	glutInit(&argc,argv);
 	GLUT2d img( NRow, NCol);
   GLUT2d_windows.push_back(&img);
@@ -208,6 +216,7 @@ int main(int argc, char *argv[]){
   img.refresh();
 	img.isClassification = false;
 
+  printf("Start GLUT main loop\n");
 	glutMainLoop();
 	quit();
 	return 0;
