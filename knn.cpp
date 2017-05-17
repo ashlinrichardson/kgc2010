@@ -1,10 +1,10 @@
-#include <float.h>
 #include <cmath>
-#include "clust_knn.h"
+#include <float.h>
 #include "glut.h"
 #include "pick.h"
 #include "global.h"
-#include "ansi_color.h" // add windows-compatible functions here
+#include "clust_knn.h"
+#include "ansi_color.h"
 
 using namespace myglut;
 
@@ -70,12 +70,15 @@ int main(int argc, char *argv[]){
 	if(argc < 9){
 		printf("density estimation & mode finding for non-parametric image clustering\n");
 		printf("by ashlin richardson, august 16, 2009\n");
-		printf("knn.cpp: usage: knn [nrow] [ncol] [n_desired] [knn_use] [rand_iter_max] [band_1] [band_2] [band_3] ... \n");
+		printf("knn.cpp: usage: knn.exe [nrow] [ncol] [n_desired] [knn_use] [rand_iter_max] [band_1] [band_2] [band_3] ... \n");
 		printf("n_desired - desired # of points to use to cluster (sampling based approach) e.g., 10000\n");
 		printf("knn_use - k-nbhd size for density estimation (eg. 100).\n");
 		printf("rand_iter_max - clusters are determined via sampled pixels (of which there's approx. n_desired) so it's necessary to assign remaining pixels.. this parameter is # of random iterations (per final cluster) used to assign a given un-labeled pixel in image to a cluster.\n");
+    printf("Results are stored in output/\n");
 		quit();
 	}
+
+  system("mkdir output");
 
 	NRow = atoi(argv[1]);
 	NCol = atoi(argv[2]);
@@ -132,18 +135,18 @@ int main(int argc, char *argv[]){
 		scaleband(fbufs[i]);
 	}
 
-  // write data in ascii format
-	FILE * afile = fopen("./ascii.txt", "wb");
-  int kk;
-  for(kk=0; kk<NRow*NCol; kk++){
-	  for(i=0; i<N; i++){
-      fprintf(afile, "%7.7e,", fbufs[i]->at(kk));
+  if(false){
+    // write data in ascii format
+	  FILE * afile = fopen("./ascii.txt", "wb");
+    int kk;
+    for(kk=0; kk<NRow*NCol; kk++){
+	    for(i=0; i<N; i++){
+        fprintf(afile, "%7.7e,", fbufs[i]->at(kk));
+      }
+      fprintf(afile, "\n");
     }
-    fprintf(afile, "\n");
+	  fclose(afile);
   }
-
-	fclose(afile);
-
   //set default band vis.: 1, 2, 3
 	for(i=0; i<3; i++) {
 		bi[i]=i;

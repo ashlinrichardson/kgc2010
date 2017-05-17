@@ -1,3 +1,4 @@
+# Mac OSX and Linux supported by this Makefile
 CC=g++
 CFLAGS=-w -O4 
 

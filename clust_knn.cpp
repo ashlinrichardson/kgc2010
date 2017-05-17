@@ -34,7 +34,7 @@ float clust_knn::euclidean_distance(int i, int j){
 float clust_knn::distance( int i, int j){
         if(( (((*isBad)[i])==1) || (((*isBad)[j])==1))){
           printf("Error: NAN\n");   
-          exit(1);	
+          //exit(1);	
         return NAN;
 	}
   return euclidean_distance(i,j);

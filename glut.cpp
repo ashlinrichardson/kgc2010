@@ -274,8 +274,8 @@ void myglut::GLUT2d::recalc_binary_quick(int mypick){
 	int i,j,k,rs;
 	int ind, ind2;
 	int result;
-	FILE * outfile1 = fopen("out_binary.bin", "wb");
-	FILE * outfile2 = fopen("out_class.bin", "wb");
+	FILE * outfile1 = fopen("output/out_binary.bin", "wb");
+	FILE * outfile2 = fopen("output/out_class.bin", "wb");
 	
 	for(i=0; i<NRow; i++){
 		rs = NRow-i-1;
@@ -632,8 +632,10 @@ void myglut::GLUT3d::draw3d(){
 	glBegin(GL_POINTS);
 
 	for(i=0; i<n; i+=20){
-		if(i<n)
+		if(i<n){
+      glColor3f( b1->at(i), b2->at(i), b3->at(i) ); 
       glVertex3f( b1->at(i), b2->at(i), b3->at(i));
+    }
 	}
 	glEnd();
 	
