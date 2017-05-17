@@ -133,13 +133,12 @@ int clust_knn::classf( int j,
 					  SA<int> * highestdensityneighborindex, 
 					  SA<float> * highestdensityneighbordensity){
 
-	printf("j %d dd: %f hnd: %f knni %d hdni %d \n", 
+	/*printf("j %d dd: %f hnd: %f knni %d hdni %d \n", 
 	       j, 
 	       (dE.at(j)), 
 	       (highestdensityneighbordensity->at(j)), 
 	       knn_indices.at(j),
-	       highestdensityneighborindex->at(j));
-	 
+	       highestdensityneighborindex->at(j)); */
   // if already has label, return that
 	if(knn_indices.at(j) >= 0){
 		return knn_indices.at(j);  
