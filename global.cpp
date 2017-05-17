@@ -22,10 +22,9 @@ namespace myglut{
   SA<int> * j_coord;
 
 	double avg_surprise;
-  int _mouseLeft, _mouseRight, _lastmouseRight, threadcreated, ostopthread, PickThis, lastpick, laststate; // save most recent pick state
 	int beforelaststate; // save second most recent pick state.
 	int number_of_classes, surprising_count;
-
+  int _mouseLeft, _mouseRight, _lastmouseRight, threadcreated, ostopthread, PickThis, lastpick, laststate; // save most recent pick state
 	int density_estimate, n_density_estimates, n_skip, select_distance_function;
 
 	FILE * outfile;

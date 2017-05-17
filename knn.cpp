@@ -22,10 +22,12 @@ vector <clust_knn*> knn_clusterings;
 
 void quit(){
 	int i;
-	for(i=0; i<filehandles.size(); i++){
-		if( filehandles[i]) fclose( filehandles[i]);
+	for(i = 0; i < filehandles.size(); i++){
+		if(filehandles[i]){
+      fclose(filehandles[i]);
+    }
 	}
-	for(i=0; i<float_buffers.size(); i++){
+	for(i = 0; i < float_buffers.size(); i++){
 		free(float_buffers[i]);
 	}
 	exit(0);
@@ -34,7 +36,7 @@ void quit(){
 void idle(){
 	(myglut2d_img)->refresh();
 	myglut2d->refresh();
-	if(number_of_classes==0){
+	if(number_of_classes == 0){
 		myglut3d->runclust();
 		if(!myglut2d->glbusy){
 		myglut2d->recalc_classes();
@@ -44,16 +46,21 @@ void idle(){
 }
 
 void scaleband( SA<float> * buf){
-	long int n = buf->size();
-	float MAX = FLT_MIN;
-	float MIN = FLT_MAX;
 	float dat;
 	long int i;
+	float MAX = FLT_MIN;
+	float MIN = FLT_MAX;
+	long int n = buf->size();
+
 	for(i = 0; i < n; i++){
 		dat = buf->at(i);
 		if(!(isinf(dat) || isnan(dat))){
-			if(dat < MIN) MIN = dat;
-			if(dat > MAX) MAX = dat;
+			if(dat < MIN){
+        MIN = dat;
+      }
+			if(dat > MAX){
+        MAX = dat;
+      }
 		}
 		else{
 			(*isBad)[i] = 1;
@@ -80,12 +87,13 @@ int main(int argc, char *argv[]){
 		quit();
 	}
 
+  /* make output folder, if it doesn't already exist */
   system("mkdir -p output");
 
 	NRow = atoi(argv[1]);
 	NCol = atoi(argv[2]);
 	NDESIRED = atoi(argv[3]);
-	KNN_USE  = atoi(argv[4]);
+	KNN_USE = atoi(argv[4]);
 	RAND_ITER_MAX = atoi(argv[5]);
 
 	int n = NRow*NCol;
@@ -94,11 +102,11 @@ int main(int argc, char *argv[]){
 	myglut::ostopthread = false;
 
   // open data files
+	register int i;
+	SA<FILE*> files(N);
+	SA<char*> filenames(N);
 	int bandnoffset = 6;
 	N = argc-bandnoffset;
-	SA<char*> filenames(N);
-	SA<FILE*> files(N);
-	register int i;
 	for(i = 0; i < N; i++){
 		filenames[i] = argv[i + bandnoffset];
 		files[i] = NULL;
@@ -110,11 +118,13 @@ int main(int argc, char *argv[]){
 	int file_error = false;
 	for(i = 0; i < N; i++){
 		if(!files[i]){
-			file_error=true;
+			file_error = true;
 			printf("Error: could not open file: %s\n", filenames.at(i));
 		}
 	}
-	if(file_error) quit();
+	if(file_error){
+    quit();
+  }
 
   // buffer data
 	SA< SA< float > * > fbufs(N);
@@ -136,9 +146,9 @@ int main(int argc, char *argv[]){
 	}
 
   if(false){
+    int kk;
     // write data in ascii format
 	  FILE * afile = fopen("./ascii.txt", "wb");
-    int kk;
     for(kk = 0; kk < NRow*NCol; kk++){
 	    for(i = 0; i < N; i++){
         fprintf(afile, "%7.7e,", fbufs[i]->at(kk));
@@ -161,7 +171,7 @@ int main(int argc, char *argv[]){
 	img.setRGB(fbufs[0], fbufs[1], fbufs[2], 0, 1, 2);
 	img.mark();
 	myglut2d_img = &img;
-  img.glbusy=false;
+  img.glbusy = false;
 
 	GLUT2d clasi( NRow, NCol);  GLUT2d_windows.push_back(&clasi);
 
@@ -169,9 +179,9 @@ int main(int argc, char *argv[]){
 	clasi.setRGB(fbufs[0], fbufs[1], fbufs[2], 0, 1, 2);
 	clasi.mark();
 	clasi.enableClassification();
-	clasi.glbusy=false;
+	clasi.glbusy = false;
 
-	number_of_classes=0;
+	number_of_classes = 0;
 	laststate = beforelaststate = -1;
 
   // init scatter plot
