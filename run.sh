@@ -1,2 +1,2 @@
-./knn.exe  169  300  9999  66   3  data/r data/g data/b
+./knn.exe  169  300  6666  66   3  data/r data/g data/b
 
