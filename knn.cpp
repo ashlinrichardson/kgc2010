@@ -51,14 +51,14 @@ void scaleband( SA<float> * buf){
 		dat = buf->at(i);
 		if( !(isinf(dat) || isnan(dat))){
 			if( dat < MIN) MIN = dat;
-			if( dat > MAX) MAX = dat;	
+			if( dat > MAX) MAX = dat;
 		}
 		else{
 			(*isBad)[i]=1;
 		}
 	}
 	printf(" MIN %e MAX %e\n", MIN, MAX);
-	
+
 	for(i=0; i< buf->size(); i++){
 		dat = buf->at(i);
 		buf->at(i) =(dat-MIN)/(MAX-MIN);
@@ -68,9 +68,9 @@ void scaleband( SA<float> * buf){
 
 int main(int argc, char *argv[]){
 	if(argc < 9){
-		printf("density estimation & mode finding for non-parametric image clustering\n");
-		printf("by ashlin richardson, august 16, 2009\n");
-		printf("knn.cpp: usage: knn.exe [nrow] [ncol] [n_desired] [knn_use] [rand_iter_max] [band_1] [band_2] [band_3] ... \n");
+		printf("%s%sdensity estimation%s & mode finding %sfor %snon-parametric %scolor-segmentation%s\n", KRED, KINV, KNRM, KMAG, KGRN, KCYN, KNRM);
+		printf("by %sashlin richardson,%s august 16, 2009%s\n\n", KINV, KNRM, KNRM);
+		printf("knn.cpp:\n\tusage:\tknn.exe [nrow] [ncol] [n_desired] [knn_use] [rand_iter_max] [band_1] [band_2] [band_3] ... \n");
 		printf("n_desired - desired # of points to use to cluster (sampling based approach) e.g., 10000\n");
 		printf("knn_use - k-nbhd size for density estimation (eg. 100).\n");
 		printf("rand_iter_max - clusters are determined via sampled pixels (of which there's approx. n_desired) so it's necessary to assign remaining pixels.. this parameter is # of random iterations (per final cluster) used to assign a given un-labeled pixel in image to a cluster.\n");
@@ -78,19 +78,19 @@ int main(int argc, char *argv[]){
 		quit();
 	}
 
-  system("mkdir output");
+  system("mkdir -p output");
 
 	NRow = atoi(argv[1]);
 	NCol = atoi(argv[2]);
-	NDESIRED = atoi(argv[3]); 
-	KNN_USE  = atoi(argv[4]);  
+	NDESIRED = atoi(argv[3]);
+	KNN_USE  = atoi(argv[4]);
 	RAND_ITER_MAX = atoi(argv[5]);
-	
+
 	int n = NRow*NCol;
-	
+
 	threadcreated=false;
 	myglut::ostopthread=false;
-	
+
   // open data files
 	int bandnoffset = 6;
 	N = argc-bandnoffset;
@@ -107,17 +107,17 @@ int main(int argc, char *argv[]){
   // check files opened
 	int file_error = false;
 	for(i=0; i<N; i++){
-		if(!files[i]){ 
-			file_error=true; 
+		if(!files[i]){
+			file_error=true;
 			printf("Error: could not open file: %s\n", filenames.at(i));
-		} 
+		}
 	}
 	if(file_error) quit();
-	
+
   // buffer data
 	SA< SA< float > * > fbufs(N);
 	for(i=0; i<N; i++){
-		fbufs[i] = (SA<float> *) new SA<float>(NRow, NCol);	
+		fbufs[i] = (SA<float> *) new SA<float>(NRow, NCol);
 		float_buffers.push_back(fbufs[i]);
 	}
   isBad = new SA<int>(NRow * NCol);
@@ -126,10 +126,10 @@ int main(int argc, char *argv[]){
 
 	for(i=0; i<N; i++){
     // read data band
-		int nr = fread(&(((fbufs[i])->elements)[0]), 
-                   sizeof(float), 
-                   NRow*NCol, 
-                   files[i]);	
+		int nr = fread(&(((fbufs[i])->elements)[0]),
+                   sizeof(float),
+                   NRow*NCol,
+                   files[i]);
 		printf("Read %d bytes\n", nr);
     // scale data band to [0, 1]
 		scaleband(fbufs[i]);
@@ -153,17 +153,17 @@ int main(int argc, char *argv[]){
 	}
 
 	glutInit(&argc,argv);
-	GLUT2d img( NRow, NCol);   
+	GLUT2d img( NRow, NCol);
   GLUT2d_windows.push_back(&img);
 
 	img.setPos(0, 0);
 	img.setRGB(fbufs[0], fbufs[1], fbufs[2], 0, 1, 2);
 	img.mark();
-	myglut2d_img = &img; 
+	myglut2d_img = &img;
   img.glbusy=false;
-		
+
 	GLUT2d clasi( NRow, NCol);  GLUT2d_windows.push_back(&clasi);
-	
+
 	clasi.setRightOf(&img);
 	clasi.setRGB(fbufs[0], fbufs[1], fbufs[2], 0, 1, 2);
 	clasi.mark();
@@ -175,33 +175,33 @@ int main(int argc, char *argv[]){
 	beforelaststate = -1;
 
   // init scatter plot
-	GLUT3d scatter(NCol * 2, NCol * 2, N);   
+	GLUT3d scatter(NCol * 2, NCol * 2, N);
 	scatter.setRGB( fbufs[0], fbufs[1], fbufs[2],0,1,2);
 	GLUT3d_windows.push_back(&scatter);
 	scatter.setBelow(&img);
 	scatter.mark();
-		
+
 	clust_knn myKNNclust(NRow, NCol);
 	myglut::myclust_knn = &myKNNclust;
 
   // init clustering
-	myKNNclust.init(&scatter, 
-					        &clasi, 
-					        &float_buffers, 
-					        floor(((float)n)/((float)NDESIRED)), 
+	myKNNclust.init(&scatter,
+					        &clasi,
+					        &float_buffers,
+					        floor(((float)n)/((float)NDESIRED)),
 					        KNN_USE);
-	
+
 	myKNNclust.set_Rand_Iter_Max(RAND_ITER_MAX);
 	knn_clusterings.push_back(&myKNNclust);
-	
+
 	scatter.set_clust( &myKNNclust);
-	clasi.set_clust(&myKNNclust);	
+	clasi.set_clust(&myKNNclust);
 	clasi.enableClassification();
-					
-	img.mark(); 
-  img.refresh(); 
+
+	img.mark();
+  img.refresh();
 	img.isClassification = false;
-	
+
 	glutMainLoop();
 	quit();
 	return 0;

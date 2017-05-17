@@ -41,7 +41,7 @@ class SAS : public SA< Pair<T> >{
 	                Pair<T> * adr = &(this->at(0));
         	        sort( adr, adr+((this->size())));
 			int i;
-			for(i=1; i<(this->size()); i++){		
+			for(i=1; i<(this->size()); i++){
 				T v1 = (this->at(i-1)).value;
 				T v2 = (this->at(i  )).value;
 				if( v1 > v2){
@@ -75,4 +75,3 @@ int main(int argc, char *argv[]){
 }
 
 */
-

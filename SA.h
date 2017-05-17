@@ -18,7 +18,7 @@ using std::vector;
 namespace _SA{
 
 	template<class T>
-	class SA{ 
+	class SA{
 	public:
 		long int vsizei;
 		long int vsizej;
@@ -62,7 +62,7 @@ namespace _SA{
 			elements=NULL;
 			init( size, 0, 0);
 		}
-	
+
 		SA(long int sizei, long int sizej){
 			elements=NULL;
 			init( sizei, sizej, 0);
@@ -98,7 +98,7 @@ namespace _SA{
 			sizei = other->sizei;
 			sizej = other->sizej;
 			sizek = other->sizek;
-			
+
 		}
 
 
@@ -141,7 +141,7 @@ namespace _SA{
 			  std::cerr << "\nError: SA.cpp: Subscript " << subscript  << " out of range" << std::endl;
 			  exit( 1 );
 		  }
-		  return elements[ subscript ]; 
+		  return elements[ subscript ];
 	  }
 
 	inline SA<T> & operator = (SA<T> &a ){
@@ -156,7 +156,7 @@ namespace _SA{
 		}
 		return a;
 	}
-	
+
 	inline T total(){
 		T a = 0;
 		for(long int i=0; i<mySize; i++){
@@ -167,17 +167,17 @@ namespace _SA{
 
 	inline void sortf(){  // for float only
 		float * adr =(float*) ((void*) (&elements[0]));
-		sort( adr, adr+(mySize)); 
+		sort( adr, adr+(mySize));
 	}
 
 	float percentBinBot(float _percent_){
 		long int ind = (long int)(((float)(mySize-1))*(_percent_/100.));
-		return (float)(elements[ind]);		
+		return (float)(elements[ind]);
 	}
 
 	float percentBinTop(float _percent_){
 		long int ind = (mySize-1) - (long int)(((float)(mySize-1))*(_percent_/100.));
-		return (float)(elements[ind]);		
+		return (float)(elements[ind]);
 	}
 
 	float max(){
@@ -185,7 +185,7 @@ namespace _SA{
 		for(register long int i=0; i<mySize; i++){
 			if(!((isnan(elements[i])||(isinf(elements[i])))))
 				if(elements[i]>m)
-					m=elements[i];	
+					m=elements[i];
 		}return m;
 	}
 
@@ -194,14 +194,14 @@ namespace _SA{
 	}
 
 	float min(){
-		float m = FLT_MAX; 
+		float m = FLT_MAX;
 		for(register long int i=0; i<mySize; i++){
 			if(!((isnan(elements[i])||isinf(elements[i]))))
 				if(elements[i]<m)
-					m=elements[i];	
+					m=elements[i];
 		}return m;
 	}
-	
+
 	public:
 		long int mySize;
 		long int sizei;
