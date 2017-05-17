@@ -8,7 +8,7 @@ Dr. Y. Coady who also supported this work was instrumental in helping me develop
 
 the command-line utility "scg" also implemented an algorithm similar to [1]. "scg" was intended for rapid interactive radar data exploration and included special features for visualizing radar data inspired by the great Dr. S. R. Cloude and the physically explanatory radar image visualisation techniques he develops.
 
-this software produced results shown in the 2010 IGARSS presentation given to a full room at the Waikiki Hilton [1] which led to an invitation by Prof. Eric Pottier (u. Rennes) to submit the same software to the ESA-administered PolSARPro software package, subject to the implementation of a number of recommendations made in the presentation to make the software useful. This version does not implement those recommendations. Hence this version should not be considered intended as useful for any particular purpose other than the author's personal reflection. 
+this software produced results shown in the 2010 IGARSS presentation given to a full room at the Waikiki Hilton [1] which led to an invitation by Prof. Eric Pottier (u. Rennes) to submit the same software to the ESA-administered PolSARPro software package, subject to the implementation of a number of recommendations made in the presentation to make the software useful. Until those improvements are implemented here, this version should not be considered intended as useful for any particular purpose other than the author's personal reflection. 
 
 instructions (tested on mac os-X 10.11.6 and ubuntu 16. LTS) 
 
