@@ -55,16 +55,14 @@ namespace zpr{
 	static double _matrix[16];
 	static double _matrixInverse[16];
 
-	static double vlen(double x,double y,double z);
-	static void   pos(double *px,double *py,double *pz,const int x,const int y,const int *viewport);
-	static void   getMatrix();
-	static void   invertMatrix(const GLdouble *m, GLdouble *out );
-
-	static void zprReshape(int w,int h);
-	static void zprMouse(int button, int state, int x, int y);
+	static void getMatrix();
 	static void zprMotion(int x, int y);
-
-	static void zprPick(GLdouble x, GLdouble y,GLdouble delX, GLdouble delY);
+	static void zprReshape(int w, int h);
+	static double vlen(double x,double y, double z);
+	static void zprMouse(int button, int state, int x, int y);
+	static void invertMatrix(const GLdouble *m, GLdouble *out );
+	static void zprPick(GLdouble x, GLdouble y, GLdouble delX, GLdouble delY);
+	static void pos(double *px, double *py, double *pz, const int x, const int y, const int *viewport);
 
 }
 #endif

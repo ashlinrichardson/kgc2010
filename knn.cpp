@@ -1,3 +1,5 @@
+/* 20170517 verified that program hardly uses CPU when idle */
+
 #include <cmath>
 #include <float.h>
 #include "glut.h"

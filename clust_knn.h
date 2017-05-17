@@ -21,10 +21,7 @@ namespace myglut{
 
 	class clust_knn{
 	public:
-		int N;
-		int K;
-		int KMax;
-		int Rand_Iter_Max;
+		int N, K, KMax, Rand_Iter_Max;
 		int nj;   //number of points used
 
     // floating point data
@@ -42,9 +39,7 @@ namespace myglut{
 		SA<int> badData;
 		vector<int> knn_J_indices;
 		int nkci; // next knn class index;
-		int n_knn_centres;
-		int NRow;
-		int NCol;
+		int n_knn_centres, NRow, NCol;
 
 		clust_knn(int _NRow, int _NCol);
 

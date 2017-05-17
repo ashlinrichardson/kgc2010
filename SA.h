@@ -20,8 +20,7 @@ namespace _SA{
 	template<class T>
 	class SA{
 	public:
-		long int vsizei;
-		long int vsizej;
+		long int vsizei, vsizej;
 
 		void init( long int _sizei, long int _sizej, long int _sizek){
 			if(elements) free(elements);
@@ -32,8 +31,8 @@ namespace _SA{
 			long int size = sizei* ((sizej==0)?1:sizej) *  ((sizek==0)?1:sizek);
 			mySize = size;
 			elements=NULL;
-			if(size > 0)
-			{
+
+			if(size > 0){
 				mySize=size;
 				elements = NULL;
 				elements= new T[size];
@@ -65,12 +64,12 @@ namespace _SA{
 
 		SA(long int sizei, long int sizej){
 			elements=NULL;
-			init( sizei, sizej, 0);
+			init(sizei, sizej, 0);
 		}
 
 		SA(long int sizei, long int sizej, long int sizek){
 			elements=NULL;
-			init( sizei, sizej, sizek);
+			init(sizei, sizej, sizek);
 		}
 
 
@@ -84,13 +83,11 @@ namespace _SA{
 				elements=NULL;
 			}
 			mySize = other->size();
-			if(mySize==0)
-			{
+			if(mySize==0){
 				elements=NULL;
 				return;
 			}
-			else
-			{
+			else{
 				elements= new T[mySize];
 				for(register long int i=0; i<mySize; i++)
 					elements[i]=(*other)[i];
@@ -98,9 +95,7 @@ namespace _SA{
 			sizei = other->sizei;
 			sizej = other->sizej;
 			sizek = other->sizek;
-
 		}
-
 
     // return the number of elements
 		inline long int size(){
@@ -121,11 +116,11 @@ namespace _SA{
 		}
 
 		inline T & at(long int indi, long int indj, long int indk){
-			if( sizei * sizej * sizek <1){
+			if(sizei * sizej * sizek <1){
 				printf("Error: must only use 3-d index with 3d array.\n");
 				exit(1);
 			}
-			return elements[ (indi * sizej *sizek) + (indj*sizek) + indk];
+			return elements[(indi * sizej *sizek) + (indj*sizek) + indk];
 		}
 
 		inline void set(long int subscript, T * e){
@@ -137,22 +132,21 @@ namespace _SA{
 			  std::cerr << "\nError: SA.cpp: size()=0 Subscript " << subscript  << " out of range" << std::endl;
 				exit( 1 );
 		  }
-		  if(subscript > mySize ){
+		  if(subscript > mySize){
 			  std::cerr << "\nError: SA.cpp: Subscript " << subscript  << " out of range" << std::endl;
 			  exit( 1 );
 		  }
-		  return elements[ subscript ];
+		  return elements[subscript];
 	  }
 
-	inline SA<T> & operator = (SA<T> &a ){
+	inline SA<T> & operator = (SA<T> &a){
 		if( a.size() != mySize){
 			printf("SA.h: error: tried to equate arrays of different lengths.\n");
 			exit(1);
 		}
 		register long int i=0;
-		for(i=0; i<mySize; i++)
-		{
-			elements[i]=a[i];
+		for(i=0; i<mySize; i++){
+			elements[i] = a[i];
 		}
 		return a;
 	}
@@ -166,8 +160,8 @@ namespace _SA{
 	}
 
 	inline void sortf(){  // for float only
-		float * adr =(float*) ((void*) (&elements[0]));
-		sort( adr, adr+(mySize));
+		float * adr = (float*)((void*)(&elements[0]));
+		sort(adr, adr + (mySize));
 	}
 
 	float percentBinBot(float _percent_){
@@ -184,8 +178,9 @@ namespace _SA{
 		float m = FLT_MIN;
 		for(register long int i=0; i<mySize; i++){
 			if(!((isnan(elements[i])||(isinf(elements[i])))))
-				if(elements[i]>m)
-					m=elements[i];
+				if(elements[i]>m){
+					m = elements[i];
+        }
 		}return m;
 	}
 
@@ -197,21 +192,19 @@ namespace _SA{
 		float m = FLT_MAX;
 		for(register long int i=0; i<mySize; i++){
 			if(!((isnan(elements[i])||isinf(elements[i]))))
-				if(elements[i]<m)
+				if(elements[i]<m){
 					m=elements[i];
+        }
 		}return m;
 	}
 
 	public:
-		long int mySize;
-		long int sizei;
-		long int sizej;
-		long int sizek;
+		long int mySize, sizei, sizej, sizek;
 		T* elements;
 
 	public:
 		inline void clear(void){
-			memset( elements, '\0', mySize*sizeof(T));
+			memset(elements, '\0', mySize*sizeof(T));
 		}
 	};
 
@@ -219,10 +212,12 @@ namespace _SA{
 	inline ostream &operator<<(ostream &output, SA<T> &out ){
 		register long int i=0;
 		for(i=0; i<(out.length()); i++){
-			if(i!=(out.length()-1))
+			if(i!=(out.length()-1)){
 				output << out[i]<<",";
-			else
+      }
+			else{
 				output<<out[i];
+      }
 		}
 		return output;
 

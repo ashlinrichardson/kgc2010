@@ -22,8 +22,9 @@ namespace console{
 	class GLUT3d;
 
 	extern GLUT2d* myglut2d;
-	extern GLUT2d* myglut2d_img;
 	extern GLUT3d* myglut3d;
+	extern GLUT2d* myglut2d_img;
+
 	extern void show_classes();
 	extern void toggle_display();
 
@@ -31,20 +32,21 @@ namespace console{
 	extern pthread_t opthread;
 	extern void * othread(void *);
 
-  extern char console_string[STR_MAX];
-	extern int console_position;
-	extern int WINDOWX;
+  extern int WINDOWX;
 	extern int WINDOWY;
+	extern int console_position;
+  extern char console_string[STR_MAX];
 
+
+	void quitme();
+	void display();
+	void drawText();
+	int grabint(char * p);
+	void process_string();
 	void setrgb(int r, int g, int b);
 	void getrgb(int & r, int & g, int & b);
-	int grabint(char * p );
-	void display();
-	void process_string();
+  void keyboard(unsigned char key, int x, int y);
 	void renderBitmapString(float x, float y, void *font, char *string);
-	void drawText();
-	void keyboard(unsigned char key, int x, int y);
-	void quitme();
 }
 
 #endif

@@ -31,8 +31,8 @@ using namespace std;
 
 namespace myglut{
 
-	extern int NDESIRED;// 16000
 	extern int KNN_USE;// 100
+	extern int NDESIRED;// 16000
 	extern int RAND_ITER_MAX;// 8
 
 	class GLUT2d;
@@ -40,15 +40,15 @@ namespace myglut{
 	class clust_knn;
 
 	extern GLUT2d* myglut2d;
-	extern GLUT2d* myglut2d_img;
 	extern GLUT3d* myglut3d;
+	extern GLUT2d* myglut2d_img;
 	extern clust_knn* myclust_knn;
 
 	extern GLvoid * source;  // array to render 2d labelling
 
 	// thread vars
-	extern int threadcreated;
 	extern int ostopthread;
+	extern int threadcreated;
 
   // zpr variables
 	extern int _mouseLeft;
@@ -67,14 +67,15 @@ namespace myglut{
 	extern int lastpick;
 	extern int laststate;
 	extern int beforelaststate;
-	extern int number_of_classes;
 	extern double avg_surprise;
 	extern int surprising_count;
+	extern int number_of_classes;
+
 
   // density estimate variables
+	extern int n_skip;
 	extern int density_estimate;
 	extern int n_density_estimates;
-	extern int n_skip;
 	extern int select_distance_function;
 
   // output file (binary format)
