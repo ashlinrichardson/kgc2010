@@ -141,9 +141,9 @@ namespace console{
 				printf("r band %d g band %d b band %d\n",r+1, g+1, b+1);
 				printf("Number of dimensions: %d\n", (int)(fb->size()));
 				printf("Number of clusters  : %d\n", myglut::number_of_classes);
-				printf("Metric used:        : %d of ?\n", myglut::select_distance_function);
-				printf("Density estimate    : %d of %d\n", density_estimate+1, n_density_estimates);
-				printf("Estimates available : %d\n", myglut::n_density_estimates);
+				//printf("Metric used:        : %d of ?\n", myglut::select_distance_function);
+				//printf("Density estimate    : %d of %d\n", density_estimate+1, n_density_estimates);
+				//printf("Estimates available : %d\n", myglut::n_density_estimates);
 				printf("Number of neighbors : %d\n", KNN_USE);
 
 			default:
