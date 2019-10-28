@@ -1,2 +1,1 @@
-./knn.exe  169  300  6666  66   3  data/r data/g data/b
-
+./knn.exe  data/S2A.bin_4x.bin_sub.bin_subs.bin  6666 66 3

@@ -7,12 +7,13 @@
 #include "global.h"
 #include "clust_knn.h"
 #include "ansi_color.h"
+#include "misc.h"
 
 using namespace myglut;
 
-int N; // number of bands
-int NRow; // number of rows
-int NCol; // number of cols
+size_t  N; // number of bands
+size_t NRow; // number of rows
+size_t NCol; // number of cols
 int bi[3]; // active band indices
 
 vector <FILE*> filehandles;
@@ -77,6 +78,16 @@ void scaleband(SA<float> * buf){
 
 int main(int argc, char *argv[]){
   printf("start\n");
+  if(argc < 5){
+    err(str("kgc2010 [input binary file] [n_desired] [knn_use] [rand_iter_max]"));
+  }
+  str fn(argv[1]);
+  if(!exists(fn)) err("input file not found");
+
+  str hfn(hdr_fn(fn));
+
+  hread(hfn, NRow, NCol, N);
+  /*
   if(argc < 9){
     printf("%s%sdensity estimation%s & mode finding %sfor %snon-parametric %scolor-segmentation%s\n", KRED, KINV, KNRM, KMAG, KGRN, KCYN, KNRM);
     printf("by %sashlin richardson,%s august 16, 2009%s\n\n", KINV, KNRM, KNRM);
@@ -87,15 +98,16 @@ int main(int argc, char *argv[]){
     printf("Results are stored in output/\n");
     quit();
   }
+*/
 
   /* make output folder, if it doesn't already exist */
   system("mkdir -p output");
 
-  NRow = atoi(argv[1]);
-  NCol = atoi(argv[2]);
-  NDESIRED = atoi(argv[3]);
-  KNN_MAX = KNN_USE = atoi(argv[4]);
-  RAND_ITER_MAX = atoi(argv[5]);
+  //NRow = atoi(argv[1]);
+  //NCol = atoi(argv[2]);
+  NDESIRED = atoi(argv[2]); //3]);
+  KNN_MAX = KNN_USE = atoi(argv[3]); //4]);
+  RAND_ITER_MAX = atoi(argv[4]);//5]);
 
   int n = NRow*NCol;
 
@@ -105,12 +117,15 @@ int main(int argc, char *argv[]){
   printf("open data files\n");
   // open data files
   register int i;
-  int bandnoffset = 6;
-  N = argc - bandnoffset;
+  //int bandnoffset = 6;
+  //N = argc - bandnoffset;
 
+  /*
   SA<FILE*> files(N);
   SA<char*> filenames(N);
+*/
 
+  /*
   for(i = 0; i < N; i++){
     filenames[i] = argv[i + bandnoffset];
     files[i] = NULL;
@@ -119,6 +134,7 @@ int main(int argc, char *argv[]){
   }
 
   printf("check opened data files\n");
+
 
   // check files opened
   int file_error = false;
@@ -131,8 +147,12 @@ int main(int argc, char *argv[]){
   if(file_error){
     quit();
   }
+*/
 
   // buffer data
+  float * dd = bread(fn, NRow, NCol, N);
+
+  //reshape
   printf("fbufs\n");
   SA< SA< float > * > fbufs(N);
   for(i = 0; i < N; i++){
@@ -143,14 +163,22 @@ int main(int argc, char *argv[]){
   i_coord = new SA<int>(NRow * NCol);
   j_coord = new SA<int>(NRow * NCol);
 
-  for(i = 0; i < N; i++){
-    // read data band
-    int nr = fread(&(((fbufs[i])->elements)[0]), sizeof(float), NRow * NCol, files[i]);
-    printf("Read %d bytes\n", nr);
+  int kk;
+  for(kk = 0; kk < N; kk++){
+    SA<float> * db = fbufs[kk];
+    // buffer data band
+    for(i = 0; i < n; i++){
+      (*db)[i] = dd[(kk * n) + i];  
+    }
+
+    //int nr = fread(&(((fbufs[i])->elements)[0]), sizeof(float), NRow * NCol, files[i]);
+    // printf("Read %d bytes\n", nr);
 
     // scale data band to [0, 1]
-    scaleband(fbufs[i]);
+    scaleband(fbufs[kk]);
   }
+
+  free(dd);
 
   if(false){
     int kk;
