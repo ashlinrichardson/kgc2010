@@ -6,7 +6,7 @@
 #include "global.h"
 
 namespace myglut{
-	void extern pick(GLint name);
+  void extern pick(GLint name);
 }
 
 #endif
