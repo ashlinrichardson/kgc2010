@@ -1,4 +1,4 @@
-# w41k1k1
+# kgc2010
 
 this software written by A. Richardson April 1, 2010 -- August 19th, 2010 while funded as an M.Sc. student by Dr. R. Illner at the department of Mathematics and Statistics (U. Victoria) is a reinterpretation of a code originally included as one function of a command-line utility "scg" (standing for S. Cloude graphics) written under the supervision of Dr. D. Goodenough and H. Chen at Natural Resources Canada (NRCAN). 
 
