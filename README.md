@@ -6,7 +6,7 @@ this research direction towards data-driven analysis and implementation was cont
 
 Dr. Y. Coady who also supported this work was instrumental in helping me develop a philosophy to always look on the bright side of things-- a special thank-you goes to her. It is with gratitude I recognize D. Marinakis and D. Fairall for welcoming me as part of their community at Kinsol Research, and as inspiring leaders and community builders.
 
-the command-line utility "scg" also implemented an algorithm similar to [1]. "scg" was intended for rapid interactive radar data exploration and included special features for visualizing radar data inspired by the great Dr. S. R. Cloude and the physically explanatory radar image visualisation techniques he develops.
+the command-line utility "scg" also implemented an algorithm similar to [1]. "scg" was intended for rapid interactive radar data exploration and included special features for visualizing radar data inspired by the great Dr. S. R. Cloude and the physically explanatory radar image visualisation techniques he develops and promotes.
 
 this software produced results shown in the 2010 IGARSS presentation given to a full room at the Waikiki Hilton [1] which led to an invitation by Prof. Eric Pottier (u. Rennes) to submit the same software to the ESA-administered PolSARPro software package, subject to the implementation of a number of recommendations made in the presentation to make the software useful. Until those improvements are implemented here, this version should not be considered intended as useful for any particular purpose
 
