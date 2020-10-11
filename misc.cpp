@@ -1,5 +1,9 @@
 #include"misc.h"
 
+int non_space(int ch){
+  return !std::isspace(ch);
+}
+
 string cwd(){
   char s[PATH_MAX];
   _cwd(s, PATH_MAX);
