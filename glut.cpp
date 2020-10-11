@@ -6,8 +6,9 @@ myglut::GLUTWindow::GLUTWindow(){
 }
 
 void myglut::GLUTWindow::focus(){
-  printf("focus(%d)\n", myID());
-  glutSetWindow(myID());
+  int my_id = myID();
+  printf("glutSetWindow(%d)\n", my_id);
+  glutSetWindow(my_id);
 }
 
 int myglut::GLUTWindow::initGLUT(int _NRow, int _NCol, const char * title_string){
@@ -302,6 +303,7 @@ void myglut::GLUT2d::recalc_binary_quick(int mypick){
 }
 
 void myglut::GLUT2d::recalc_binary(int mypick){
+  printf("recalc_binary(%d)\n", mypick);
   int i, j, k, rs;
   int ind, ind2;
   int comp = NRow / 4;
@@ -568,7 +570,7 @@ void myglut::GLUT3d::setView(){
 }
 
 void myglut::GLUT3d::display_picked_points(int PickThis){
-  if(!myclust || (PickThis < 0)){
+  if(!myclust || PickThis < 0){
     return;
   }
   focus();
@@ -591,6 +593,8 @@ void myglut::GLUT3d::display_picked_points(int PickThis){
   i = PickThis;
 
   n_elem = myclust->get_n_knn_elements(i);
+  printf("draw |picked elements|=%zu\n", n_elem);
+
   for(j = 0; j < n_elem; j++){
     x = myclust->get_centre_coord(i, j, (unsigned int)curband[0]);
     y = myclust->get_centre_coord(i, j, (unsigned int)curband[1]);
