@@ -60,6 +60,7 @@ namespace console{
   }
 
   void * othread(void * arg){
+	  printf("othread\n");
     if(ostopthread) return NULL;
     myglut::myglut2d->idlethreadfunc();
     ostopthread = false;

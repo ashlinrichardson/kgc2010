@@ -1,23 +1,25 @@
 #include "glut.h"
 using namespace myglut;
-
 myglut::GLUTWindow::GLUTWindow(){
   WindowID = Update = false;
   myclust = NULL;
 }
 
 void myglut::GLUTWindow::focus(){
+  printf("focus(%d)\n", myID());
   glutSetWindow(myID());
 }
 
-int myglut::GLUTWindow::initGLUT(int _NRow, int _NCol){
+int myglut::GLUTWindow::initGLUT(int _NRow, int _NCol, const char * title_string){
+  printf("initGLUT(%d,%d)\n", _NRow, _NCol);
   Update = false;
   WindowY = _NRow;
   WindowX = _NCol;
 
   glutInitWindowSize(WindowX, WindowY);
   glutInitDisplayMode(GLUT_RGB);
-  WindowID = glutCreateWindow("");
+  WindowID = glutCreateWindow(title_string);
+  printf("initGLUT(%d)\n", WindowID);
   return WindowID;
 }
 
@@ -106,7 +108,7 @@ int myglut::GLUT2d::reboot(){
   }
 }
 
-myglut::GLUT2d::GLUT2d(int _NRow, int _NCol){
+myglut::GLUT2d::GLUT2d(int _NRow, int _NCol, const char * title_string){
   thread_exists = false;
   render_clusters = false;
   NRow = _NRow;
@@ -128,13 +130,13 @@ myglut::GLUT2d::GLUT2d(int _NRow, int _NCol){
   }
 
   GLUTWindow();
-  initGLUT(NRow, NCol);
+  initGLUT(NRow, NCol, title_string);
   glutDisplayFunc(displayd);
   glutKeyboardFunc(processKeys);
   glutDisplayFunc(idle);
 }
 
-int myglut::GLUT2d::initGLUT(int _NRow, int _NCol){
+int myglut::GLUT2d::initGLUT(int _NRow, int _NCol, const char * title_string){
   lock();
   myclust = NULL;
   Update = false;
@@ -143,7 +145,8 @@ int myglut::GLUT2d::initGLUT(int _NRow, int _NCol){
   WindowX = _NCol;
   glutInitWindowSize(WindowX, WindowY);
   glutInitDisplayMode(GLUT_RGB);
-  WindowID = glutCreateWindow("");
+  WindowID = glutCreateWindow(title_string);
+  printf("initGLUT(%d)\n", WindowID);
   return WindowID;
 }
 
@@ -535,11 +538,13 @@ myglut::GLUT3d::GLUT3d(int _NRow, int _NCol, int _N){
   myclust = NULL;
   lock = writelock = false;
 
+  printf("******* GLUT3d\n");
   GLUTWindow();
   initGLUT(NRow, NCol);
 }
 
 int myglut::GLUT3d::initGLUT(int _NRow, int _NCol){
+  printf("GLUT3d::initGLUT\n");
   Update = false;
   WindowY = _NRow;
   WindowX = _NCol;
@@ -547,7 +552,9 @@ int myglut::GLUT3d::initGLUT(int _NRow, int _NCol){
   glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
   glEnable(GL_DEPTH_TEST);
   WindowID = glutCreateWindow("3d Cluster Plot");
-  zpr::zprInit();
+  printf("initGLUT(%d)\n", WindowID);
+
+  zpr::zprInit(WindowID);
   zpr::zprSetWindowID(WindowID);
   zpr::zprPickFunc(pick); /* Pick event client callback */
   zpr::zprSelectionFunc(display3d); /* Selection mode draw function */

@@ -53,7 +53,7 @@ namespace myglut{
 
     GLUTWindow();
     void focus();
-    int initGLUT(int _NRow, int _NCol);
+    int initGLUT(int _NRow, int _NCol, const char * title_string);
     void setRGB( SA<float> * r, SA<float> * g, SA<float> * b,
     unsigned int A, unsigned int B, unsigned int C);
 
@@ -92,8 +92,8 @@ namespace myglut{
     SA<int> surprise;
     int render_clusters; //true/false
 
-    GLUT2d(int _NRow, int _NCol);
-    int initGLUT(int _NRow, int _NCol);
+    GLUT2d(int _NRow, int _NCol, const char * title_string);
+    int initGLUT(int _NRow, int _NCol, const char * title_string);
 
     void setView();
     void quickdraw();

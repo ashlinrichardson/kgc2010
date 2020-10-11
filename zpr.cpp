@@ -20,11 +20,12 @@ void zpr::zprSetWindowID(int w){
   windowid = w;
 }
 
-void zpr::zprInit(){
+void zpr::zprInit(int WindowID){
   pick = NULL;
   selection = NULL;
   zprReferencePoint[0] = zprReferencePoint[1] = zprReferencePoint[2] = zprReferencePoint[3] = 0.;
-  glutSetWindow(windowid);
+  printf("glutSetWindow(%d)\n", WindowID);
+  glutSetWindow(WindowID);
   getMatrix();
   glutReshapeFunc(zprReshape);
   glutMouseFunc(zprMouse);

@@ -22,7 +22,7 @@
 namespace zpr{
   /* Mouse Manipulation API */
 
-  void zprInit();
+  void zprInit(int WindowID);
   void zprSetWindowID(int w);
 
   static GLfloat zprReferencePoint[4];

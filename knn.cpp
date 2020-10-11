@@ -198,9 +198,11 @@ int main(int argc, char *argv[]){
     bi[i] = i;
   }
 
-  printf("glut init\n");
+  printf("glutInit\n");
   glutInit(&argc,argv);
-  GLUT2d img( NRow, NCol);
+
+  // image display window
+  GLUT2d img( NRow, NCol, "image");
   GLUT2d_windows.push_back(&img);
 
   img.setPos(0, 0);
@@ -209,7 +211,9 @@ int main(int argc, char *argv[]){
   myglut2d_img = &img;
   img.glbusy = false;
 
-  GLUT2d clasi( NRow, NCol); GLUT2d_windows.push_back(&clasi);
+  // classification display window
+  GLUT2d clasi(NRow, NCol, "class");
+  GLUT2d_windows.push_back(&clasi);
 
   clasi.setRightOf(&img);
   clasi.setRGB(fbufs[0], fbufs[1], fbufs[2], 0, 1, 2);
