@@ -2,15 +2,15 @@
 #ifndef HEADER_ZPR_H
 #define HEADER_ZPR_H
 /*
- * Zoom-pan-rotate mouse manipulation module for GLUT
- * Version 0.4, October 2003
- *
- * Nigel Stewart
- * School of Computer Science and Information Technology
- * RMIT University
- * nigels@cs.rmit.edu.au
- *
- */
+* Zoom-pan-rotate mouse manipulation module for GLUT
+* Version 0.4, October 2003
+*
+* Nigel Stewart
+* School of Computer Science and Information Technology
+* RMIT University
+* nigels@cs.rmit.edu.au
+*
+*/
 
 #ifdef WIN32
 #include <windows.h>
@@ -20,49 +20,49 @@
 #include "console.h"
 
 namespace zpr{
-	/* Mouse Manipulation API */
+  /* Mouse Manipulation API */
 
-	void zprInit();
-	void zprSetWindowID(int w);
+  void zprInit();
+  void zprSetWindowID(int w);
 
-	static GLfloat zprReferencePoint[4];
+  static GLfloat zprReferencePoint[4];
 
-	/* Picking API (Optional) */
+  /* Picking API (Optional) */
 
-	extern void zprSelectionFunc(void (*f)(void));   /* Selection-mode draw function */
-	extern void zprPickFunc(void (*f)(GLint name));  /* Pick event handling function */
+  extern void zprSelectionFunc(void (*f)(void)); /* Selection-mode draw function */
+  extern void zprPickFunc(void (*f)(GLint name)); /* Pick event handling function */
 
-	static void (*selection)(void);
-	static void (*pick)(GLint name);
+  static void (*selection)(void);
+  static void (*pick)(GLint name);
 
-	static int windowid;
+  static int windowid;
 
-	static double _left   = 0.0;
-	static double _right  = 0.0;
-	static double _bottom = 0.0;
-	static double _top    = 0.0;
-	static double _zNear  = -10.0;
-	static double _zFar   = 10.0;
+  static double _left = 0.0;
+  static double _right = 0.0;
+  static double _bottom = 0.0;
+  static double _top = 0.0;
+  static double _zNear = -10.0;
+  static double _zFar = 10.0;
 
-	static int  _mouseX      = 0;
-	static int  _mouseY      = 0;
-	static int _mouseMiddle = false;
+  static int _mouseX = 0;
+  static int _mouseY = 0;
+  static int _mouseMiddle = false;
 
-	static double _dragPosX  = 0.0;
-	static double _dragPosY  = 0.0;
-	static double _dragPosZ  = 0.0;
+  static double _dragPosX = 0.0;
+  static double _dragPosY = 0.0;
+  static double _dragPosZ = 0.0;
 
-	static double _matrix[16];
-	static double _matrixInverse[16];
+  static double _matrix[16];
+  static double _matrixInverse[16];
 
-	static void getMatrix();
-	static void zprMotion(int x, int y);
-	static void zprReshape(int w, int h);
-	static double vlen(double x,double y, double z);
-	static void zprMouse(int button, int state, int x, int y);
-	static void invertMatrix(const GLdouble *m, GLdouble *out );
-	static void zprPick(GLdouble x, GLdouble y, GLdouble delX, GLdouble delY);
-	static void pos(double *px, double *py, double *pz, const int x, const int y, const int *viewport);
+  static void getMatrix();
+  static void zprMotion(int x, int y);
+  static void zprReshape(int w, int h);
+  static double vlen(double x,double y, double z);
+  static void zprMouse(int button, int state, int x, int y);
+  static void invertMatrix(const GLdouble *m, GLdouble *out );
+  static void zprPick(GLdouble x, GLdouble y, GLdouble delX, GLdouble delY);
+  static void pos(double *px, double *py, double *pz, const int x, const int y, const int *viewport);
 
 }
 #endif
