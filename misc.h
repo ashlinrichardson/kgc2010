@@ -93,21 +93,30 @@ inline void * alloc(size_t nb){
   return d;
 }
 
+int non_space(int ch);
+/*{
+  return !std::isspace(ch);
+}
+*/
+
 
 //a trim from start (in place)
 static inline void ltrim(std::string &s){
-  s.erase(s.begin(), std::find_if(s.begin(), s.end(), [](int ch){
+  s.erase(s.begin(), std::find_if(s.begin(), s.end(), non_space));
+/*
+ [](int ch){
     return !std::isspace(ch);
   }
   ));
+*/
 }
 
 // trim from end (in place)
 static inline void rtrim(std::string &s){
-  s.erase(std::find_if(s.rbegin(), s.rend(), [](int ch){
+  s.erase(std::find_if(s.rbegin(), s.rend(), non_space).base(), s.end()); /*[](int ch){
     return !std::isspace(ch);
   }
-  ).base(), s.end());
+  ).base(), s.end()); */
 }
 
 // trim from both ends (in place)
