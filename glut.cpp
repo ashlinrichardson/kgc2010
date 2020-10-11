@@ -654,7 +654,7 @@ void myglut::GLUT3d::draw3d(){
         }
         glPushMatrix();
         glTranslatef((GLfloat)x, (GLfloat)y, (GLfloat)z);
-        glutSolidSphere(0.02, 10, 10);
+        glutSolidSphere(0.005, 7, 7);
         glPopMatrix();
         glPopName();
       }
