@@ -58,19 +58,17 @@ class SAS : public SA< Pair<T> >{
   }
 };
 
-/*
-int main(int argc, char *argv[]){
-  int N = atoi(argv[1]);
 
-  SAS<float> X(N);
+int test(int N){
   int i;
-  for(i=0; i<N; i++){
-    X[i].value = ((float)rand()/ (float)RAND_MAX) ;
-  }
+  SAS<float> X(N);
+
+  for(i = 0; i < N; i++) X[i].value = (float)rand() / (float)RAND_MAX;
+  
   cout << X <<endl;
   X.Sort();
   cout << X << endl;
+
   return 0;
 }
 
-*/
