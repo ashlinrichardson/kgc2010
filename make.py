@@ -1,31 +1,31 @@
 import os
-import sys
 
 def err(m):
-  print('Error: ' + str(m))
-  sys.exit(1)
+  import sys
+  print('Error: ' + str(m)); sys.exit(1)
 
 CC = 'g++'
 CFLAGS = '-w -O4 misc.cpp'
 UNAME = os.popen('uname').read().strip()
 
+LFLAGS = '-lm -pthread -lstdc++ '
+
+
 if UNAME == 'Linux':
-  LFLAGS = '-lc -lm -lstdc++  -pthread -lGL -lglut -lGL'
+  LFLAGS += '-lc -lGL -lglut -lGL'
 elif UNAME == "Darwin":
-  LFLAGS = '-lm -pthread -lstdc++ -framework Cocoa -framework GLUT -framework openGL'
+  LFLAGS += '-framework Cocoa -framework GLUT -framework openGL'
 else:
   err('Platform not supported: ' + str(UNAME))
 
+f = open('make.sh', 'wb')
 cf = ['knn', 'glut', 'clust_knn', 'zpr', 'pick', 'global', 'console']
-for f in cf:
-  s = ' '.join([CC, CFLAGS, '-c', f + '.cpp'])
-  print(s)
+for x in cf:
+  s = ' '.join([CC, CFLAGS, '-c', x + '.cpp'])
+  f.write((s + ' &\n').encode()) # multithreaded compile
 
-s = ' '.join([CC, CFLAGS, (' '.join([f + '.o' for f in cf])), '-o kgc.exe', LFLAGS])
-print(s)
+f.write('wait\n'.encode()) # join threads before link step
 
-# g++ -w -O4 misc.cpp knn.o glut.o clust_knn.o zpr.o pick.o global.o console.o -o knn.exe -lm -pthread -lstdc++ -framework Cocoa -framework GLUT -framework openGL
-
-
-
-
+s = ' '.join([CC, CFLAGS, (' '.join([f + '.o' for f in cf])), '-o kgc.exe', LFLAGS]) + '\n'
+f.write(s.encode())
+f.close()
