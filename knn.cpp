@@ -142,9 +142,10 @@ int main(int argc, char *argv[]){
 
   img.setPos(0, 0);
   img.setRGB(fbufs[0], fbufs[1], fbufs[2], 0, 1, 2);
-  img.mark();
   myglut2d_img = &img;
   img.glbusy = false;
+  img.isClassification = false;
+  img.mark();
 
   // classification display window
   GLUT2d clasi(NRow, NCol, "class");
@@ -154,7 +155,7 @@ int main(int argc, char *argv[]){
   clasi.setRGB(fbufs[0], fbufs[1], fbufs[2], 0, 1, 2);
   clasi.mark();
   myglut2d = &clasi;
-  clasi.enableClassification();
+  clasi.isClassification = true;
   clasi.glbusy = false;
 
   number_of_classes = 0;
@@ -171,18 +172,13 @@ int main(int argc, char *argv[]){
   myglut::myclust_knn = &myKNNclust;
 
   // init clustering
-  myKNNclust.init(&scatter, &clasi, &float_buffers, floor(((float)n)/((float)NDESIRED)), KNN_USE);
+  myKNNclust.init(&scatter, &clasi, &float_buffers, floor(((float)n) / ((float)NDESIRED)), KNN_USE);
 
   myKNNclust.set_Rand_Iter_Max(RAND_ITER_MAX);
   knn_clusterings.push_back(&myKNNclust);
 
-  scatter.set_clust( &myKNNclust);
+  scatter.set_clust(&myKNNclust);
   clasi.set_clust(&myKNNclust);
-  clasi.enableClassification();
-
-  img.mark();
-  img.refresh();
-  img.isClassification = false;
 
   printf("Start GLUT main loop\n");
   glutMainLoop();

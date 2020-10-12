@@ -47,9 +47,6 @@ namespace myglut{
     }
 
     int isClassification;
-    void enableClassification(){
-      isClassification = true;
-    }
 
     GLUTWindow();
     void focus();
