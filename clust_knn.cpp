@@ -22,18 +22,11 @@ float clust_knn::euclidean_distance(int i, int j){
     d += tmp * tmp;
   }
   return d;
-
-  /*
-  int i1 = (*i_coord)[i]; int j1 = (*j_coord)[i];
-  int i2 = (*i_coord)[j]; int j2 = (*j_coord)[j];
-  */
-
 }
 
 float clust_knn::distance(int i, int j){
-  if(((((*isBad)[i]) == 1) || (((*isBad)[j]) == 1))){
-    printf("Error: NAN\n");
-    //exit(1);
+  if( (*isBad)[i] == 1 || (*isBad)[j] == 1){
+    printf("Error: NAN\n"); //exit(1);
     return NAN;
   }
   return euclidean_distance(i, j);

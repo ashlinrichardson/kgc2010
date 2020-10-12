@@ -58,7 +58,7 @@ class SAS : public SA< Pair<T> >{
   }
 };
 
-
+/*
 int test(int N){
   int i;
   SAS<float> X(N);
@@ -71,4 +71,4 @@ int test(int N){
 
   return 0;
 }
-
+*/
