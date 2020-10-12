@@ -31,3 +31,4 @@ f.write(s.encode())
 f.close()
 
 a = os.system("chmod 777 make.sh")
+a = os.system("./make.sh")
