@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-import os
+
+import os # 20201011 added parallel build. Can run "python3 make.py" instead of: "make"
 
 def err(m):
   import sys
