@@ -29,3 +29,5 @@ f.write('wait\n'.encode()) # join threads before link step
 s = ' '.join([CC, CFLAGS, (' '.join([f + '.o' for f in cf])), '-o kgc.exe', LFLAGS]) + '\n'
 f.write(s.encode())
 f.close()
+
+a = os.system("chmod 777 make.sh")
