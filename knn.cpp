@@ -112,39 +112,7 @@ int main(int argc, char *argv[]){
   int n = NRow*NCol;
 
   printf("open data files\n");
-  // open data files
   register int i;
-  //int bandnoffset = 6;
-  //N = argc - bandnoffset;
-
-  /*
-  SA<FILE*> files(N);
-  SA<char*> filenames(N);
-*/
-
-  /*
-  for(i = 0; i < N; i++){
-    filenames[i] = argv[i + bandnoffset];
-    files[i] = NULL;
-    files[i] = fopen(filenames[i], "rb");
-    filehandles.push_back(files[i]);
-  }
-
-  printf("check opened data files\n");
-
-
-  // check files opened
-  int file_error = false;
-  for(i = 0; i < N; i++){
-    if(!files[i]){
-      file_error = true;
-      printf("Error: could not open file: %s\n", filenames.at(i));
-    }
-  }
-  if(file_error){
-    quit();
-  }
-*/
 
   // buffer data
   float * dd = bread(fn, NRow, NCol, N);
@@ -163,15 +131,12 @@ int main(int argc, char *argv[]){
   int kk;
   for(kk = 0; kk < N; kk++){
     SA<float> * db = fbufs[kk];
+
     // buffer data band
     for(i = 0; i < n; i++){
       (*db)[i] = dd[(kk * n) + i];  
     }
-
-    //int nr = fread(&(((fbufs[i])->elements)[0]), sizeof(float), NRow * NCol, files[i]);
-    // printf("Read %d bytes\n", nr);
-
-    // scale data band to [0, 1]
+    // scale band into [0, 1]
     scaleband(fbufs[kk]);
   }
 
@@ -247,6 +212,8 @@ int main(int argc, char *argv[]){
 
   printf("Start GLUT main loop\n");
   glutMainLoop();
+
+  // after exit glut loop
   quit();
   return 0;
 }
