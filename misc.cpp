@@ -6,7 +6,7 @@ int non_space(int ch){
 
 string cwd(){
   char s[PATH_MAX];
-  _cwd(s, PATH_MAX);
+  char * result =_cwd(s, PATH_MAX);
   return string(s);
 }
 
@@ -229,6 +229,7 @@ str hdr_fn(str fn, bool create=false){
   else{
     err(str("could not find header at: ") + hfn + str(" or at: ") + hfn2);
   }
+  return hfn;
 }
 
 str hdr_fn(str fn){

@@ -79,10 +79,10 @@ int main(int argc, char *argv[]){
   str hfn(hdr_fn(fn));
 
   hread(hfn, NRow, NCol, N);
-  printf("NRow %d NCol %d NBand %d\n", NRow, NCol, N);
+  printf("NRow %d NCol %d NBand %d\n", (int)NRow, (int)NCol, (int)N);
 
   /* make output folder, if it doesn't already exist */
-  system("mkdir -p output");
+  int a = system("mkdir -p output");
 
   NDESIRED = atoi(argv[2]);
   KNN_MAX = KNN_USE = atoi(argv[3]);

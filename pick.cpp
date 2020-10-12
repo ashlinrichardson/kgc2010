@@ -3,27 +3,42 @@
 using namespace myglut;
 
 void extern myglut::pick(GLint name){
+  if(name < 0) return;
+  printf("Pick(%d)\n", name);
   PickThis = name;
+  lastpick = PickThis;
 
-  if(name >=0 ) {
-    lastpick = PickThis;
+  /*
+  int tmp = laststate;
+  laststate = beforelaststate;
+  beforelaststate = tmp;
+  */
 
-    printf("Pick: %d\n",name);
-    fflush(stdout);
-    if(!threadcreated) {
-      myglut2d->draw2d();
-    }
+  printf("Pick: %d\n", name);
+  fflush(stdout);
 
-    myglut3d->draw3d();
-    if(myglut::myglut2d){
-    }
-    else{
-      printf("Warning: myglut::myglut2d not initialized.\n");
-      printf("myglut2d ptr: %p \n", (myglut::myglut2d));
-    }
+  myglut2d->draw2d();
+  myglut3d->draw3d();
 
-    PickThis = lastpick;
-    beforelaststate = laststate;
-    laststate = PickThis;
-  }
+  /*
+  source = (GLvoid *)(&((myglut2d->datBinary.elements)[0]));
+  myglut2d->recalc_binary_quick(PickThis);
+  myglut2d->quickdraw();
+  */
+
+  //int tmp = laststate;
+  //laststate = beforelaststate;
+  //beforelaststate = tmp;
+
+  /*if(PickThis != laststate)*/
+
+  myglut2d->recalc_classes();
+  // myglut2d->recalc_binary_quick(PickThis);
+  source = (GLvoid *)(&((myglut2d->datBinary.elements)[0]));
+  myglut2d->quickdraw();
+
+
+  PickThis = lastpick;
+  beforelaststate = laststate;
+  laststate = PickThis;
 }

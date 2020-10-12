@@ -107,6 +107,7 @@ int myglut::GLUT2d::reboot(){
     indCentre[i] = -1;
     surprise[i] = 0;
   }
+  return 0;
 }
 
 myglut::GLUT2d::GLUT2d(int _NRow, int _NCol, const char * title_string){
@@ -194,7 +195,7 @@ void myglut::GLUT2d::draw_classes(){
 
 void myglut::GLUT2d::idlethreadfunc(){
   // do we need to turn this back on?
-		return;
+  return;
   if(thread_exists) return;
   thread_exists = true;
   int optim = 1;
@@ -272,6 +273,7 @@ void myglut::GLUT2d::recalc_binary_quick(int mypick){
   int i, j, k, rs, ind, ind2, result;
   FILE * outfile1 = fopen("output/out_binary.bin", "wb");
   FILE * outfile2 = fopen("output/out_class.bin", "wb");
+  float d;
 
   for(i = 0; i < NRow; i++){
     rs = NRow - i - 1;
@@ -293,9 +295,15 @@ void myglut::GLUT2d::recalc_binary_quick(int mypick){
         datBinary.at(ind2++) = result;
         datBinary.at(ind2++) = result;
         datBinary.at(ind2 ) = result;
-      }
-      fwrite(&result, sizeof(int), 1, outfile1);
-      fwrite(&k, sizeof(int), 1, outfile2);
+      }     
+      //rite(&result, sizeof(int), 1, outfile1);
+      //rite(&k, sizeof(int), 1, outfile2);
+
+        d= (float)result;
+      fwrite(&d, sizeof(float), 1, outfile1);
+      d = (float)k;
+      fwrite(&d, sizeof(float), 1, outfile2);
+
     }
   }
   fclose(outfile1);
@@ -359,12 +367,10 @@ void myglut::GLUT2d::recalc_binary(int mypick){
 }
 
 void myglut::GLUT2d::reclass_point(int i, int j){
-  if(!myclust){
-    return;
-  }
+  if(!myclust) return;
 
   vector < SA<float> * > * fb = myclust->float_buffers;
-  if (!fb) return;
+  if(!fb) return;
 
   int rs = NRow - i - 1;
   int cMIN = 0;
@@ -427,6 +433,10 @@ void myglut::GLUT2d::reclass_point(int i, int j){
 }
 
 int myglut::GLUT2d::recalc_classes(){
+	// how about try colour with mean instead of top?
+	//
+	// how about log-sized circles to indicate membership size?
+	//
   printf("myglut::GLUT2d::recalc_classes()\n");
   if(!myclust) return false;
   srand(time(NULL));
@@ -435,9 +445,7 @@ int myglut::GLUT2d::recalc_classes(){
   float x, y, z, d, dMIN,tmp;
 
   vector< SA<float> * > * fb = myclust->float_buffers;
-  if(!fb){
-    return false;
-  }
+  if(!fb) return false;
 
   nc = myclust->get_n_knn_centres();
   rim = myclust->get_Rand_Iter_Max();
@@ -448,9 +456,11 @@ int myglut::GLUT2d::recalc_classes(){
   for(i = 0; i < NRow; i++){
     rs = NRow - i - 1;
 
+    /* 
     if((i % comp) == 0){
       printf("Applying: %d/100\n", (int)(floor(100. * ((float)(i + 1) / (float)(NRow)))));
     }
+    */
 
     for(j = 0; j < NCol; j++){
       x = b1->at(rs, j);
@@ -509,7 +519,7 @@ int myglut::GLUT2d::recalc_classes(){
 }
 
 void myglut::GLUT2d::rebuffer(){
-  printf("myglut::GLUT2d::rebuffer()\n");
+  printf("myglut::GLUT2d::rebuffer(%d)\n", myID());
   int i, j, k, ri;
   k=0;
 
@@ -524,7 +534,7 @@ void myglut::GLUT2d::rebuffer(){
   }
 }
 
-void myglut::GLUT3d::set_clust( clust_knn * k){
+void myglut::GLUT3d::set_clust(clust_knn * k){
   myclust = k;
 }
 
@@ -570,7 +580,7 @@ void myglut::GLUT3d::setView(){
 }
 
 void myglut::GLUT3d::display_picked_points(int PickThis){
-  if(!myclust || PickThis < 0){
+  if(! myclust || PickThis < 0){
     return;
   }
   focus();
@@ -585,7 +595,7 @@ void myglut::GLUT3d::display_picked_points(int PickThis){
 
   int n_centres = myclust->get_n_knn_centres();
   int i, j, n_elem;
-  float x,y,z;
+  float x, y, z;
 
   glColor3f(0., 0., 1.);
   glPointSize(3.);
@@ -593,7 +603,7 @@ void myglut::GLUT3d::display_picked_points(int PickThis){
   i = PickThis;
 
   n_elem = myclust->get_n_knn_elements(i);
-  printf("draw |picked elements|=%zu\n", n_elem);
+  printf("draw |picked elements|= %zu\n", (long unsigned int)n_elem);
 
   for(j = 0; j < n_elem; j++){
     x = myclust->get_centre_coord(i, j, (unsigned int)curband[0]);
@@ -610,8 +620,8 @@ void myglut::GLUT3d::draw3d(){
   multiple windows would be nice */
 
   focus();
-  float x, y, z;
   int i;
+  float x, y, z;
   int n = b1->size();
 
   glClearColor(0.0, 0.0, 0.0, 0.0);
@@ -635,7 +645,7 @@ void myglut::GLUT3d::draw3d(){
       int j, k;
       k = 0;
       SA<float> xyz(N);
-      int nn = class_centres.size()/N;
+      int nn = class_centres.size() / N;
       if(nn != number_of_classes){
         printf("Error: count of number of classes did not match.\n");
         exit(1);
@@ -650,12 +660,10 @@ void myglut::GLUT3d::draw3d(){
         x = xyz[(unsigned int)curband[0]];
         y = xyz[(unsigned int)curband[1]];
         z = xyz[(unsigned int)curband[2]];
-        if(PickThis == i){
-          glColor3f(1., 1., 1.);
-        }
-        else{
-          glColor3f(0., 0., 1.);
-        }
+
+        if(PickThis == i) glColor3f(1., 1., 1.);
+        else glColor3f(0., 0., 1.);
+
         glPushMatrix();
         glTranslatef((GLfloat)x, (GLfloat)y, (GLfloat)z);
         glutSolidSphere(0.005, 7, 7);
@@ -672,14 +680,14 @@ void myglut::GLUT3d::draw3d(){
   console::drawText();
   glFlush();
   glutSwapBuffers();
-  PickThis=-1;
+  PickThis = -1;
 }
 
 void myglut::GLUT3d::refresh(){
   draw3d();
 }
 void myglut::GLUT3d::mark(){
-  Update=true;
+  Update = true;
 }
 
 static void myglut::processKeys(unsigned char key, int x, int y) {
@@ -691,24 +699,33 @@ void extern myglut::show_classes(){
 }
 
 void extern myglut::toggle_display(){
-  if((beforelaststate != laststate) && (beforelaststate<number_of_classes)&&(beforelaststate>=0)){
-    int tmp;
-    tmp = laststate;
+
+  int state_change = true; // beforelaststate != laststate;
+  int last_state_good = beforelaststate >= 0 && beforelaststate < number_of_classes;
+
+  source = (GLvoid *)(&((myglut2d->datBinary.elements)[0]));
+
+  if(state_change && last_state_good){
+    printf("toggle_display CASE 1\n");
+    // swap states
+    int tmp = laststate;
     laststate = beforelaststate;
     beforelaststate = tmp;
-    source = (GLvoid *)(&((myglut2d->datBinary.elements)[0]));
-    if(PickThis != laststate){
-      myglut2d->recalc_binary_quick(laststate);
-    }
+
+    //source = (GLvoid *)(&((myglut2d->datBinary.elements)[0]));
+
+    if(PickThis != laststate) myglut2d->recalc_binary_quick(laststate);
+
     myglut2d->quickdraw();
   }
   else if((beforelaststate != laststate) && ((beforelaststate == -2) || (laststate==-2))){
+    printf("toggle_display CASE 2\n");
     int tmp;
     tmp = laststate;
     laststate = beforelaststate;
     beforelaststate = tmp;
     if( beforelaststate == -2){
-      source = (GLvoid *)(&((myglut2d->datBinary.elements)[0]));
+      // source = (GLvoid *)(&((myglut2d->datBinary.elements)[0]));
       if(PickThis != laststate){
         myglut2d->recalc_binary_quick(laststate);
       }
@@ -721,5 +738,8 @@ void extern myglut::toggle_display(){
       }
       myglut2d->quickdraw();
     }
+  }
+  else{
+    printf("****** LOST CASE..\n");
   }
 }

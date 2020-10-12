@@ -7,7 +7,7 @@
 #include <stdlib.h>
 
 namespace console{
-  #define STR_MAX 10000
+  #define STR_MAX 16384
 
   // #define MYFONT GLUT_BITMAP_HELVETICA_18
   // #define MYFONT GLUT_BITMAP_8_BY_13

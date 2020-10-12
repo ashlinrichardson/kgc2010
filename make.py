@@ -7,7 +7,7 @@ def err(m):
   print('Error: ' + str(m)); sys.exit(1)
 
 CC = 'g++'
-CFLAGS = '-w -O2 misc.cpp'
+CFLAGS = '-w -O4 misc.cpp'
 UNAME = os.popen('uname').read().strip()
 
 LFLAGS = '-lm -pthread -lstdc++ '

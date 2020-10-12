@@ -99,6 +99,7 @@ namespace console{
       if(i < 1 || i > ndim) break; // printf("Select band in range 1-N\n");
       getrgb(r, g, b);
       setrgb(i - 1, g, b);
+      // clasi->recalc_classes();
       break;
 
       // select green
