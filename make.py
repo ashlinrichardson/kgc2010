@@ -12,7 +12,7 @@ UNAME = os.popen('uname').read().strip()
 LFLAGS = '-lm -pthread -lstdc++ '
 
 if UNAME == 'Linux':
-  LFLAGS += '-lc -lGL -lglut -lGL'
+  LFLAGS += '-lc -lGL -lglut -lGLU'
 elif UNAME == "Darwin":
   LFLAGS += '-framework Cocoa -framework GLUT -framework openGL'
 else:
