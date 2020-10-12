@@ -11,7 +11,6 @@ UNAME = os.popen('uname').read().strip()
 
 LFLAGS = '-lm -pthread -lstdc++ '
 
-
 if UNAME == 'Linux':
   LFLAGS += '-lc -lGL -lglut -lGL'
 elif UNAME == "Darwin":
@@ -31,5 +30,5 @@ s = ' '.join([CC, CFLAGS, (' '.join([f + '.o' for f in cf])), '-o kgc.exe', LFLA
 f.write(s.encode())
 f.close()
 
-a = os.system("chmod 777 make.sh")
-a = os.system("./make.sh")
+a = os.system('chmod 777 make.sh')
+a = os.system('./make.sh')
