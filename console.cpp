@@ -2,12 +2,9 @@
 using namespace myglut;
 
 namespace console{
-  pthread_t opthread;
-
   char console_string[STR_MAX];
   int console_position;
-  int WINDOWX;
-  int WINDOWY;
+  int WINDOWX, WINDOWY;
 
   void quitme(){
     exit(0);
@@ -20,16 +17,16 @@ namespace console{
   void renderBitmapString(float x, float y, void *font, char *string){
     char *c;
     glRasterPos2f(x,y);
-    for (c=string; *c != '\0'; c++){
-      glutBitmapCharacter(font, *c);
-    }
+    for(c = string; *c != '\0'; c++) glutBitmapCharacter(font, *c);
   }
 
   void drawText(){
     glPushMatrix();
     glLoadIdentity();
     glColor3f(0,1,0);
-    renderBitmapString(-1. * ((float)WINDOWX) / ((float)WINDOWY), (-1. + (((float)15)/((float)WINDOWY))), MYFONT, console_string);
+    float tx = -1. * ((float)WINDOWX) / ((float)WINDOWY);
+    float ty = -1. + (((float)15)/((float)WINDOWY));
+    renderBitmapString(tx, ty, MYFONT, console_string);
     glPopMatrix();
   }
 
@@ -59,13 +56,6 @@ namespace console{
     b = myglut::myglut3d->curband[2];
   }
 
-  void * othread(void * arg){
-	  printf("othread\n");
-    if(ostopthread) return NULL;
-    myglut::myglut2d->idlethreadfunc();
-    ostopthread = false;
-    return NULL;
-  }
   void recluster(){
     myglut::myclust_knn->knn_clustering();
     myglut::myglut2d->reboot();

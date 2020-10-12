@@ -111,9 +111,6 @@ int main(int argc, char *argv[]){
 
   int n = NRow*NCol;
 
-  threadcreated = false;
-  myglut::ostopthread = false;
-
   printf("open data files\n");
   // open data files
   register int i;

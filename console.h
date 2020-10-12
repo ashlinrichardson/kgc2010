@@ -28,10 +28,6 @@ namespace console{
   extern void show_classes();
   extern void toggle_display();
 
-  // might need to delete these:
-  extern pthread_t opthread;
-  extern void * othread(void *);
-
   extern int WINDOWX;
   extern int WINDOWY;
   extern int console_position;
