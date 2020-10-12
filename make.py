@@ -21,14 +21,18 @@ else:
 f = open('make.sh', 'wb')
 cf = ['knn', 'glut', 'clust_knn', 'zpr', 'pick', 'global', 'console']
 for x in cf:
-  s = ' '.join([CC, CFLAGS, '-c', x + '.cpp'])
-  f.write((s + ' &\n').encode()) # multithreaded compile
+  s = ' '.join([CC, CFLAGS, '-c', x + '.cpp']) + ' &'
+  f.write((s + '\n').encode()) # multithreaded compile
+  print(s.strip())
+  
+s = 'wait'
+print(s)
+f.write((s + '\n').encode()) # join threads before link step
 
-f.write('wait\n'.encode()) # join threads before link step
-
-s = ' '.join([CC, CFLAGS, (' '.join([f + '.o' for f in cf])), '-o kgc.exe', LFLAGS]) + '\n'
-f.write(s.encode())
+s = ' '.join([CC, CFLAGS, (' '.join([f + '.o' for f in cf])), '-o kgc.exe', LFLAGS])
+f.write((s + '\n').encode())
 f.close()
+print(s.strip())
 
 a = os.system('chmod 777 make.sh')
 a = os.system('./make.sh')
