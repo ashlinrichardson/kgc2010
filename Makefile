@@ -14,7 +14,7 @@ LFLAGS =  -lm -pthread -lstdc++ -framework Cocoa -framework GLUT -framework open
 endif
 
 knn.exe: knn.o glut.o clust_knn.o zpr.o pick.o global.o console.o
-	$(CC) $(CFLAGS) knn.o glut.o clust_knn.o zpr.o pick.o global.o console.o -o knn.exe $(LFLAGS)
+	$(CC) $(CFLAGS) knn.o glut.o clust_knn.o zpr.o pick.o global.o console.o -o kgc.exe $(LFLAGS)
 
 global.o: global.cpp global.h glut.h
 	$(CC) $(CFLAGS) -c global.cpp

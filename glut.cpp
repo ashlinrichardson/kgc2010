@@ -163,7 +163,7 @@ void myglut::GLUT2d::setView(){
 }
 
 void myglut::GLUT2d::refresh(){
-  if(isClassification && threadcreated) return;
+  // if(isClassification && threadcreated) return;
   focus();
   if(Update == true){
     rebuffer();
