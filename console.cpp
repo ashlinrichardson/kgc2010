@@ -41,10 +41,11 @@ namespace console{
     myglut::myglut2d_img->setRGB(fb->at(r), fb->at(g), fb->at(b), r, g, b);
 
     myglut::myglut3d->mark();
-    myglut::myglut2d_img->mark();
     myglut::myglut2d->mark();
+    myglut::myglut2d_img->mark();
 
     myglut::myglut3d->refresh();
+    myglut::myglut2d->refresh();
     myglut::myglut2d_img->refresh();
   }
 
@@ -83,6 +84,8 @@ namespace console{
     i = grabint(&s[1]);
     int ndim = (myglut::float_buffers).size();
     switch(s[0]){
+
+      // change density estimate
       case 'd':
       if(i >= 1 && i <= myglut::n_density_estimates){
         printf("Selecting density estimate: %d\n", i);
@@ -91,24 +94,28 @@ namespace console{
       }
       break;
 
+      // select red
       case 'r':
       if(i < 1 || i > ndim) break; // printf("Select band in range 1-N\n");
       getrgb(r, g, b);
       setrgb(i - 1, g, b);
       break;
 
+      // select green
       case 'g': // printf("Select band in range 1-N\n");
       if(i < 1 || i > ndim) break;
       getrgb(r, g, b);
       setrgb(r, i - 1, b);
       break;
 
+      // select blue 
       case 'b': // printf("Select band in range 1-N\n");
       if(i < 1 || i > ndim) break;
       getrgb(r, g, b);
       setrgb(r, g, i - 1);
       break;
 
+      // select K
       case 'k':
       printf("i: %d getK %d\n", i, myglut::myclust_knn->getK());
       tk = (i >= 1)? i : myglut::myclust_knn->getK();
@@ -117,11 +124,13 @@ namespace console{
       recluster();
       break;
 
+      // change metric
       case 'm':
       printf("Attempting to switch to metric %d\n", i);
       select_distance_function = i - 1;
       break;
 
+      // display parameters
       case 'p':
       getrgb(r, g, b);
       printf("r band %d g band %d b band %d\n", r + 1, g + 1, b + 1);
@@ -144,19 +153,17 @@ namespace console{
   }
 
   void keyboard(unsigned char key, int x, int y){
+
+    // show classes
     if(key == 'c'){
       wipe();
-      if(myglut::myglut2d->thread_exists){
-        return;
-      }
       myglut::show_classes();
       return;
     }
+
+    // toggle class display: from class means encoding, to binary classification: or vice-versa
     if(key == 't'){
       wipe();
-      if(myglut::myglut2d->thread_exists){
-        return;
-      }
       myglut::toggle_display();
       return;
     }

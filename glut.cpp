@@ -7,7 +7,7 @@ myglut::GLUTWindow::GLUTWindow(){
 
 void myglut::GLUTWindow::focus(){
   int my_id = myID();
-  printf("glutSetWindow(%d)\n", my_id);
+  // printf("glutSetWindow(%d)\n", my_id);
   glutSetWindow(my_id);
 }
 
@@ -25,12 +25,12 @@ int myglut::GLUTWindow::initGLUT(int _NRow, int _NCol, const char * title_string
 }
 
 void myglut::GLUTWindow::setRGB(SA<float> * r, SA<float> * g, SA<float> * b, unsigned int A, unsigned int B, unsigned int C){
-  b1=r;
-  b2=g;
-  b3=b;
-  curband[0]=A;
-  curband[1]=B;
-  curband[2]=C;
+  b1 = r;
+  b2 = g;
+  b3 = b;
+  curband[0] = A;
+  curband[1] = B;
+  curband[2] = C;
 }
 
 void myglut::GLUTWindow::setDisplayFunc(void (*f)()){
@@ -38,7 +38,7 @@ void myglut::GLUTWindow::setDisplayFunc(void (*f)()){
   glutDisplayFunc(f);
 }
 
-void myglut::GLUTWindow::setKeys(void (*f)(unsigned char, int, int), void (*g)(int, int, int)){ // void (*f)(void), void (*f)(void)){
+void myglut::GLUTWindow::setKeys(void (*f)(unsigned char, int, int), void (*g)(int, int, int)){
   focus();
   glutKeyboardFunc(f);
   glutSpecialFunc(g);
@@ -82,7 +82,7 @@ int myglut::GLUTWindow::myY(){
 }
 
 static void myglut::display3d(){
-  (myglut3d)->draw3d();
+  myglut3d->draw3d();
 }
 
 static void myglut::display2d(){
@@ -193,11 +193,12 @@ void myglut::GLUT2d::draw_classes(){
 }
 
 void myglut::GLUT2d::idlethreadfunc(){
-  return;
+  // do we need to turn this back on?
+		return;
   if(thread_exists) return;
   thread_exists = true;
   int optim = 1;
-  while(!ostopthread){
+  //while(!ostopthread){
     printf("myglut::GLUT2d::idlethreadfunc() iter %d\n", optim++);
     int i;
     int nc = myclust->get_n_knn_centres();
@@ -215,22 +216,20 @@ void myglut::GLUT2d::idlethreadfunc(){
       myglut2d->quickdraw();
 
     }
-  }
+  // }
   thread_exists = false;
 }
 
 void myglut::GLUT2d::draw2d(){
   focus();
-  if (!isClassification){
-    focus();
-    setView();
-    glPixelStoref(GL_UNPACK_ALIGNMENT, 1);
-    glDrawPixels(NCol, NRow, GL_RGB, GL_FLOAT, (GLvoid *)(&((dat->elements)[0])));
-    glFlush();
-    glutSwapBuffers();
+  if(!isClassification){
+    printf("draw2d(%d) notClassification\n", myID());
+    source = (GLvoid *)(&((dat->elements)[0])); // classification
+    quickdraw();
     return;
   }
   else{
+    printf("draw2d(%d) isClassification\n", myID());
     source = (GLvoid *)(&((dat->elements)[0]));
     if(!render_clusters){
       source = (GLvoid *)(&((dat->elements)[0]));
@@ -260,6 +259,7 @@ void myglut::GLUT2d::draw2d(){
 }
 
 void myglut::GLUT2d::quickdraw(){
+  printf("quickdraw(%d)\n", myID());
   focus();
   setView();
   glPixelStoref(GL_UNPACK_ALIGNMENT, 1);
@@ -443,7 +443,7 @@ int myglut::GLUT2d::recalc_classes(){
   rim = myclust->get_Rand_Iter_Max();
   N = fb->size();
   n = NRow * NCol * N;
-  comp = NRow / 20;
+  comp = NRow / 5;
 
   for(i = 0; i < NRow; i++){
     rs = NRow - i - 1;
