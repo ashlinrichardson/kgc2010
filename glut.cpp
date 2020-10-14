@@ -444,12 +444,9 @@ int myglut::GLUT2d::recalc_classes(){
 
   for0(i, NRow){
     rs = NRow - i - 1;
-
      
-    if((i % comp) == 0){
-      printf("Applying: %d/100\n", (int)(floor(100. * ((float)(i + 1) / (float)(NRow)))));
-    }
-
+    if((i % comp) == 0) printf("Applying: %d/100\n", (int)(floor(100. * ((float)(i + 1) / (float)(NRow)))));
+   
     for0(j, NCol){
       x = b1->at(rs, j);
       y = b2->at(rs, j);
