@@ -8,10 +8,10 @@ clust_knn::clust_knn(int _NRow, int _NCol){
 }
 
 void clust_knn::reinit(int _nskip, int _KMax){
-  printf("%sclust_knn::reinit %snskip %s%d %sKMax %s%d%s\n", KMAG, KGRN, KRED, _nskip, KGRN, KRED, _KMax, KNRM);
+  printf("%sclust_knn::reinit %snskip %s%d %sKNN_USE %s%d%s\n", KMAG, KGRN, KRED, _nskip, KGRN, KRED, _KMax, KNRM);
   GLUT3d * _my3d = myglut3d;
   GLUT2d * _my2d = myglut2d;
-  clust_knn::init(_my3d, _my2d, float_buffers, _nskip, _KMax);
+  clust_knn::init(_my3d, _my2d, float_buffers, _nskip, _KMax, true);
 }
 
 float clust_knn::euclidean_distance(int i, int j){
@@ -32,10 +32,21 @@ float clust_knn::distance(int i, int j){
   return euclidean_distance(i, j);
 }
 
-//calculate nj from N and nskip
 void clust_knn::init(GLUT3d * _my3d, GLUT2d * _my2d, vector < SA<float> * > * _float_buffers, int nskip, int _KMax){
-  K = KMax;
-  KMax = _KMax;
+  init(_my3d, _my2d, _float_buffers, nskip, _KMax, false);
+}
+
+//calculate nj from N and nskip
+void clust_knn::init(GLUT3d * _my3d, GLUT2d * _my2d, vector < SA<float> * > * _float_buffers, int nskip, int _KMax, bool re_init){
+
+  KNN_USE = _KMax;
+
+  printf("KNN_MAX %d KNN_USE %d KMax %d _KMax %d\n", KNN_MAX, KNN_USE, KMax, _KMax);
+  if(!re_init){
+    K = KMax;
+    KMax = _KMax;
+  }
+
   myglut3d = _my3d;
   myglut2d = _my2d;
   myglut::n_skip = nskip;
@@ -46,34 +57,37 @@ void clust_knn::init(GLUT3d * _my3d, GLUT2d * _my2d, vector < SA<float> * > * _f
   N = float_buffers->size();
   nj = n / nskip;
 
-  dE.init(nj);
-  dat.init(nj, N);
-  badData.init(nj);
-  nnD.init(nj, KMax);
-  origIndex.init(nj);
-  nnIndex.init(nj, KMax);
-
-  printf("%sReducing data...%s\n", KGRN, KNRM);
-
-  // decimate: use 1/nskip of data
   int h, i, j, k, m;
-  k = h = 0;
-  for0(i, NRow){
-    for0(j, NCol){
-      if(k >= (nj - 1)){
-        break;
-      }
-      if((h % nskip) == 0){
-        origIndex.at(k) = h;
-        for0(m, N){
-          dat.at(k, m) = (float_buffers->at(m))->at(i, j);
-          badData.at(i, j) = isBad->at(i, j);
-          (*i_coord)[m] = i;
-          (*j_coord)[m] = j;
+  if(!re_init){
+    // only allocate memory the first time
+    dE.init(nj);
+    dat.init(nj, N);
+    badData.init(nj);
+    nnD.init(nj, KMax);
+    origIndex.init(nj);
+    nnIndex.init(nj, KMax);
+
+    printf("%sReducing data...%s\n", KGRN, KNRM);
+
+    // decimate: use 1/nskip of data
+    k = h = 0;
+    for0(i, NRow){
+      for0(j, NCol){
+        if(k >= (nj - 1)){
+          break;
         }
-        k++;
+        if((h % nskip) == 0){
+          origIndex.at(k) = h;
+          for0(m, N){
+            dat.at(k, m) = (float_buffers->at(m))->at(i, j);
+            badData.at(i, j) = isBad->at(i, j);
+            (*i_coord)[m] = i;
+            (*j_coord)[m] = j;
+          }
+          k++;
+        }
+        h++;
       }
-      h++;
     }
   }
 
@@ -97,13 +111,19 @@ void clust_knn::init(GLUT3d * _my3d, GLUT2d * _my2d, vector < SA<float> * > * _f
     }
 
     D.Sort();
-    for0(i, KMax){
+  // j, nj
+
+     for0(i, KMax){
       ind = D.index(i);
       nnIndex.at(j, i) = ind;
       nnD.at(j, i) = D.f(i);
     }
   }
+  // j, nj
 }
+// function
+
+
 
 float clust_knn::densityEstimate(int j, int K){
   int i;
@@ -126,7 +146,7 @@ int clust_knn::classf( int j, SA<int> * highestdensityneighborindex, SA<float> *
     return(nkci++);
   }
   else{
-    int nextJ = highestdensityneighborindex->at(j);  // move towards peak
+    int nextJ = highestdensityneighborindex->at(j); // move towards peak
     int recursiveclass = classf(nextJ, highestdensityneighborindex, highestdensityneighbordensity);
     return recursiveclass;
   }
@@ -135,8 +155,9 @@ int clust_knn::classf( int j, SA<int> * highestdensityneighborindex, SA<float> *
 void clust_knn::knn_clustering(){
   printf("start knn clustering...\n");
 
-  int K = KMax;
+  int K = KNN_USE;
   if(K > KMax){
+    printf("K %d KMax %d\n", K, KMax);
     printf("Error: you have selected K>K_Max.\n");
     exit(1);
   }
@@ -173,7 +194,7 @@ void clust_knn::knn_clustering(){
 
   for0(j, nj) knn_indices[j] = -1;
   for0(j, nj) knn_indices[j] = classf(j, &(hdni), &(hdnd));
- 
+
   n_knn_centres = nkci;
   number_of_classes = n_knn_centres;
   printf("Number of classes: %d\n", nkci);
@@ -194,7 +215,7 @@ void clust_knn::knn_clustering(){
     classmembers.push_back(a);
   }
   for0(j, nj) classmembers[knn_indices[j]].push_back(j);
- 
+
   myglut3d->lock = false;
   myglut2d->unlock();
   myglut2d->mark();

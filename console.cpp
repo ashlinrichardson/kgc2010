@@ -118,10 +118,12 @@ namespace console{
 
       // select K
       case 'k':
-      printf("i: %d getK %d\n", i, myglut::myclust_knn->getK());
-      tk = (i >= 1)? i : myglut::myclust_knn->getK();
-      printf("Running knn classification with %d nearest neighbors\n", tk);
-      myglut::myclust_knn->reinit(n_skip, tk);
+      if(i < 1 || i >= KNN_MAX){
+        printf("please select K in [1, %d]\n", KNN_MAX);
+	break;
+      }
+      printf("Running knn classification with %d nearest neighbors\n", i);
+      myglut::myclust_knn->reinit(n_skip, i);
       recluster();
       break;
 

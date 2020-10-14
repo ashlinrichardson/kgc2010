@@ -44,6 +44,13 @@ namespace myglut{
     int nskip, //calculate nj from N and nskip.
     int _KMax);
 
+    void init(GLUT3d * _my3d,
+    GLUT2d * _my2d,
+    vector < SA<float> * > * _float_buffers,
+    int nskip, //calculate nj from N and nskip.
+    int _KMax, bool re_init);
+
+
     int getK(){
       return K;
     }
