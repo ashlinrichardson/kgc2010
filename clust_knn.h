@@ -29,6 +29,8 @@ namespace myglut{
     SA<float> nnD; //the listing of distances between each point and it's K-nearest neighbors.
     vector< vector<unsigned int> > classmembers;
 
+    SAS<float> ** D_j; 
+
     SA<float> dE;
     SA<int> knn_indices;
     SA<int> badData;

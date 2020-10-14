@@ -45,6 +45,7 @@ void clust_knn::init(GLUT3d * _my3d, GLUT2d * _my2d, vector < SA<float> * > * _f
   if(!re_init){
     K = KMax;
     KMax = _KMax;
+    D_j = NULL;
   }
 
   myglut3d = _my3d;
@@ -55,10 +56,14 @@ void clust_knn::init(GLUT3d * _my3d, GLUT2d * _my2d, vector < SA<float> * > * _f
   // allocate
   int n = (float_buffers->at(0))->size();
   N = float_buffers->size();
-  nj = n / nskip;
+  nj = n / nskip; // fixed for this invocation of the program
 
   int h, i, j, k, m;
   if(!re_init){
+    
+    D_j = (SAS<float> **)(void *)malloc(sizeof(SAS<float> *) * nj);	  
+    for0(i, nj) D_j[i] = new SAS<float>(nj); // dmat row (could be more ragged)
+
     // only allocate memory the first time
     dE.init(nj);
     dat.init(nj, N);
@@ -94,12 +99,14 @@ void clust_knn::init(GLUT3d * _my3d, GLUT2d * _my2d, vector < SA<float> * > * _f
   printf("%sCalculating distances...%s\n", KGRN, KNRM);
 
   // distances with respect to a given point
-  SAS <float> D(nj);
+  // SAS <float> D(nj);
+  SAS<float> * D; 
   float d, tmp, x, y, z, X, Y, Z;
   int ix, iy, iz, ind;
   int dispfact = nj / 20;
   for0(j, nj){
-    D.reset();
+    D = D_j[j];
+    D->reset();
 
     if((j % dispfact) == 0){
       printf("%s\n(%s%d%s/%s%d%s)%s<==>%s(%s%d%s/%s100%s)%s", KGRN, KRED, j + 1, KMAG, KRED, nj, KGRN, KMAG, KGRN, KRED, (int)(100. * ((float)(j + 1)) / ((float)nj)), KMAG, KRED, KGRN, KNRM);
@@ -107,16 +114,16 @@ void clust_knn::init(GLUT3d * _my3d, GLUT2d * _my2d, vector < SA<float> * > * _f
 
     for0(i, nj){
       d = distance(i, j);
-      D.f(i)=d;
+      D->f(i) = d;
     }
 
-    D.Sort();
+    D->Sort();
   // j, nj
 
      for0(i, KMax){
-      ind = D.index(i);
+      ind = D->index(i);
       nnIndex.at(j, i) = ind;
-      nnD.at(j, i) = D.f(i);
+      nnD.at(j, i) = D->f(i);
     }
   }
   // j, nj
