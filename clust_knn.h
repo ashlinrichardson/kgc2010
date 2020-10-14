@@ -19,7 +19,7 @@ namespace myglut{
   class clust_knn;
 
   void distance_calculation();
-
+  void distance_calculation(size_t i);
 
   class clust_knn{
     public:

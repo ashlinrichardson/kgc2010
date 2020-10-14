@@ -60,8 +60,8 @@ void clust_knn::init(GLUT3d * _my3d, GLUT2d * _my2d, vector < SA<float> * > * _f
 
   int h, i, j, k, m;
   if(!re_init){
-    
-    D_j = (SAS<float> **)(void *)malloc(sizeof(SAS<float> *) * nj);	  
+
+    D_j = (SAS<float> **)(void *)malloc(sizeof(SAS<float> *) * nj);
     for0(i, nj) D_j[i] = new SAS<float>(nj); // dmat row (could be more ragged)
 
     // only allocate memory the first time
@@ -96,43 +96,17 @@ void clust_knn::init(GLUT3d * _my3d, GLUT2d * _my2d, vector < SA<float> * > * _f
     }
   }
 
- if(!re_init){
-	 distance_calculation();
-	 /*
-  printf("%sCalculating distances...%s\n", KGRN, KNRM);
-
-  // distances with respect to a given point
-  // SAS <float> D(nj);
-  SAS<float> * D; 
-  float d, tmp, x, y, z, X, Y, Z;
-  int ix, iy, iz, ind;
-  int dispfact = nj / 20;
-  for0(j, nj){
-    D = D_j[j];
-    D->reset();
-
-    if((j % dispfact) == 0){
-      printf("%s\n(%s%d%s/%s%d%s)%s<==>%s(%s%d%s/%s100%s)%s", KGRN, KRED, j + 1, KMAG, KRED, nj, KGRN, KMAG, KGRN, KRED, (int)(100. * ((float)(j + 1)) / ((float)nj)), KMAG, KRED, KGRN, KNRM);
-    }
-
-    for0(i, nj){
-      d = distance(i, j);
-      D->f(i) = d;
-    }
-
-    D->Sort();
+  if(!re_init){
+    distance_calculation();
   }
-  */
 
- }
-
- printf("calculating density..\n");
+  printf("calculating density..\n");
 
   // j, nj
-for0(j, nj){
+  for0(j, nj){
     int ind;
     SAS<float> * D = D_j[j];
-     for0(i, KMax){
+    for0(i, KMax){
       ind = D->index(i);
       nnIndex.at(j, i) = ind;
       nnD.at(j, i) = D->f(i);
@@ -142,23 +116,25 @@ for0(j, nj){
 }
 // function
 
-
 void myglut::distance_calculation(){
-  printf("%sCalculating distances...%s\n", KGRN, KNRM);
+  parfor(0, myclust_knn->nj, &distance_calculation);
+}
 
+
+void myglut::distance_calculation(size_t j){
   int nj = myclust_knn->nj;
   // distances with respect to a given point
   // SAS <float> D(nj);
   SAS<float> * D;
   float d, tmp, x, y, z, X, Y, Z;
-  int ix, iy, iz, ind, i, j, k, m;
+  int ix, iy, iz, ind, i, k, m;
   int dispfact = nj / 20;
-  for0(j, nj){
+  // for0(j, nj){
     D = myclust_knn->D_j[j];
     D->reset();
 
     if((j % dispfact) == 0){
-      printf("%s\n(%s%d%s/%s%d%s)%s<==>%s(%s%d%s/%s100%s)%s", KGRN, KRED, j + 1, KMAG, KRED, nj, KGRN, KMAG, KGRN, KRED, (int)(100. * ((float)(j + 1)) / ((float)nj)), KMAG, KRED, KGRN, KNRM);
+      printf("%s\n(%s%d%s/%s%d%s)%s<==>%s(%s%d%s/%s100%s)%s", KGRN, KRED, (int)(j + 1), KMAG, KRED, nj, KGRN, KMAG, KGRN, KRED, (int)(100. * ((float)(j + 1)) / ((float)nj)), KMAG, KRED, KGRN, KNRM);
     }
 
     for0(i, nj){
@@ -167,7 +143,7 @@ void myglut::distance_calculation(){
     }
 
     D->Sort();
-  }
+  // }
 }
 
 float clust_knn::densityEstimate(int j, int K){

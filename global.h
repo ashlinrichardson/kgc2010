@@ -45,6 +45,8 @@ using namespace std;
 #define mtx_lock pthread_mutex_lock
 #define mtx_unlock pthread_mutex_unlock
 
+namespace myglut{
+
 extern pthread_mutex_t print_mtx;
 void cprint(str s);
 extern pthread_attr_t pthread_attr; // specify threads joinable
@@ -59,7 +61,6 @@ void * worker_fun(void * arg); // worker function
 extern void (*pthread_eval)(size_t); // function pointer to execute in parallel, over range start_j:end_j inclusive
 void parfor(size_t start_j, size_t end_j, void(*eval)(size_t));
 
-namespace myglut{
 
   extern int KNN_MAX; //maximum setting (assume this is the setting the program is run with)
   extern int KNN_USE;// 100
