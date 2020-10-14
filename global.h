@@ -15,6 +15,15 @@
 #include <GL/glut.h>
 #endif
 
+#include <stdio.h> /* defines FILENAME_MAX */
+#ifdef WINDOWS
+#include <direct.h>
+#define _cwd _getcwd
+#else
+#include <unistd.h>
+#define _cwd getcwd
+#endif
+
 #include "SA.h"
 #include <queue>
 #include <vector>
@@ -28,8 +37,27 @@
 using namespace _SA;
 using namespace std;
 
+#define str string
 /* shorthand for for loops from 0 to N */
 #define for0(i,n) for(i = 0; i < n; i++)
+
+// parallelism stuff
+#define mtx_lock pthread_mutex_lock
+#define mtx_unlock pthread_mutex_unlock
+
+extern pthread_mutex_t print_mtx;
+void cprint(str s);
+extern pthread_attr_t pthread_attr; // specify threads joinable
+extern pthread_mutex_t pthread_next_j_mtx;
+extern size_t pthread_next_j;
+
+extern size_t pthread_start_j;
+extern size_t pthread_end_j;
+
+void init_mtx();
+void * worker_fun(void * arg); // worker function
+extern void (*pthread_eval)(size_t); // function pointer to execute in parallel, over range start_j:end_j inclusive
+void parfor(size_t start_j, size_t end_j, void(*eval)(size_t));
 
 namespace myglut{
 
