@@ -78,13 +78,12 @@ void clust_knn::init(GLUT3d * _my3d, GLUT2d * _my2d, vector < SA<float> * > * _f
     k = h = 0;
     for0(i, NRow){
       for0(j, NCol){
-        if(k >= (nj - 1)){
-          break;
-        }
+        if(k >= (nj - 1)) break;
+
         if((h % nskip) == 0){
           origIndex.at(k) = h;
           for0(m, N){
-            dat.at(k, m) = (float_buffers->at(m))->at(i, j);
+            dat.at(k, m) = float_buffers->at(m)->at(i, j);
             badData.at(i, j) = isBad->at(i, j);
             (*i_coord)[m] = i;
             (*j_coord)[m] = j;
@@ -96,13 +95,9 @@ void clust_knn::init(GLUT3d * _my3d, GLUT2d * _my2d, vector < SA<float> * > * _f
     }
   }
 
-  if(!re_init){
-    distance_calculation();
-  }
-
+  if(!re_init) distance_calculation();
   printf("calculating density..\n");
 
-  // j, nj
   for0(j, nj){
     int ind;
     SAS<float> * D = D_j[j];
@@ -112,9 +107,7 @@ void clust_knn::init(GLUT3d * _my3d, GLUT2d * _my2d, vector < SA<float> * > * _f
       nnD.at(j, i) = D->f(i);
     }
   }
-  // j, nj
 }
-// function
 
 void myglut::distance_calculation(){
   parfor(0, myclust_knn->nj, &distance_calculation);
@@ -123,17 +116,16 @@ void myglut::distance_calculation(){
 
 void myglut::distance_calculation(size_t j){
   int nj = myclust_knn->nj;
-  // distances with respect to a given point
-  // SAS <float> D(nj);
-  SAS<float> * D;
+  SAS<float> * D; // distances w.r.t. a given point
   float d, tmp, x, y, z, X, Y, Z;
   int ix, iy, iz, ind, i, k, m;
   int dispfact = nj / 20;
-  // for0(j, nj){
+  // for0(j, nj)
+
     D = myclust_knn->D_j[j];
     D->reset();
 
-    if((j % dispfact) == 0){
+    if(j % dispfact == 0){
       printf("%s\n(%s%d%s/%s%d%s)%s<==>%s(%s%d%s/%s100%s)%s", KGRN, KRED, (int)(j + 1), KMAG, KRED, nj, KGRN, KMAG, KGRN, KRED, (int)(100. * ((float)(j + 1)) / ((float)nj)), KMAG, KRED, KGRN, KNRM);
     }
 
@@ -141,15 +133,13 @@ void myglut::distance_calculation(size_t j){
       d = myclust_knn->distance(i, j);
       D->f(i) = d;
     }
-
     D->Sort();
-  // }
 }
 
 float clust_knn::densityEstimate(int j, int K){
   int i;
-  float sumd = 0.;
-  float d = 0.;
+  float sumd, d;
+  d = sumd = 0.;
   for0(i, K){
     d = nnD.at(j, i);
     sumd += d;
@@ -184,9 +174,7 @@ void clust_knn::knn_clustering(){
   }
 
   int j,i;
-  for0(j, nj){
-    dE[j] = densityEstimate(j, KMax);
-  }
+  for0(j, nj) dE[j] = densityEstimate(j, KMax);
 
   knn_indices.init(nj); //these are the labels for the clustering.
 
