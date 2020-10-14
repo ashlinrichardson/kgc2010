@@ -118,8 +118,12 @@ void clust_knn::init(GLUT3d * _my3d, GLUT2d * _my2d, vector < SA<float> * > * _f
     }
 
     D->Sort();
-  // j, nj
+  }
 
+  // j, nj
+for0(j, nj){
+
+    D = D_j[j];
      for0(i, KMax){
       ind = D->index(i);
       nnIndex.at(j, i) = ind;
