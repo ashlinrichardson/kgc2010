@@ -118,7 +118,7 @@ namespace console{
 
       // select K
       case 'k':
-      if(i < 1 || i >= KNN_MAX){
+      if(i < 1 || i > KNN_MAX){
         printf("please select K in [1, %d]\n", KNN_MAX);
 	break;
       }
