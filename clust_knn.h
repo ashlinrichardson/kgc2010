@@ -18,9 +18,12 @@ namespace myglut{
   class GLUT2d;
   class clust_knn;
 
+  void distance_calculation();
+
+
   class clust_knn{
     public:
-    int N, K, KMax, Rand_Iter_Max, nj; //nj = number of points used
+    int N, K, KMax, Rand_Iter_Max, nj; // nj = number of points used
     vector < SA<float> * > * float_buffers; // float data
 
     SA<int> origIndex;
@@ -52,7 +55,6 @@ namespace myglut{
     int nskip, //calculate nj from N and nskip.
     int _KMax, bool re_init);
 
-
     int getK(){
       return K;
     }
@@ -81,7 +83,6 @@ namespace myglut{
     int get_Rand_Iter_Max(){
       return Rand_Iter_Max;
     }
-
   };
 }
 #endif

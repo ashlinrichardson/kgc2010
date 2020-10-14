@@ -97,6 +97,8 @@ void clust_knn::init(GLUT3d * _my3d, GLUT2d * _my2d, vector < SA<float> * > * _f
   }
 
  if(!re_init){
+	 distance_calculation();
+	 /*
   printf("%sCalculating distances...%s\n", KGRN, KNRM);
 
   // distances with respect to a given point
@@ -120,6 +122,8 @@ void clust_knn::init(GLUT3d * _my3d, GLUT2d * _my2d, vector < SA<float> * > * _f
 
     D->Sort();
   }
+  */
+
  }
 
  printf("calculating density..\n");
@@ -139,6 +143,32 @@ for0(j, nj){
 // function
 
 
+void myglut::distance_calculation(){
+  printf("%sCalculating distances...%s\n", KGRN, KNRM);
+
+  int nj = myclust_knn->nj;
+  // distances with respect to a given point
+  // SAS <float> D(nj);
+  SAS<float> * D;
+  float d, tmp, x, y, z, X, Y, Z;
+  int ix, iy, iz, ind, i, j, k, m;
+  int dispfact = nj / 20;
+  for0(j, nj){
+    D = myclust_knn->D_j[j];
+    D->reset();
+
+    if((j % dispfact) == 0){
+      printf("%s\n(%s%d%s/%s%d%s)%s<==>%s(%s%d%s/%s100%s)%s", KGRN, KRED, j + 1, KMAG, KRED, nj, KGRN, KMAG, KGRN, KRED, (int)(100. * ((float)(j + 1)) / ((float)nj)), KMAG, KRED, KGRN, KNRM);
+    }
+
+    for0(i, nj){
+      d = myclust_knn->distance(i, j);
+      D->f(i) = d;
+    }
+
+    D->Sort();
+  }
+}
 
 float clust_knn::densityEstimate(int j, int K){
   int i;
