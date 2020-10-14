@@ -16,7 +16,7 @@ void clust_knn::reinit(int _nskip, int _KMax){
 
 float clust_knn::euclidean_distance(int i, int j){
   int m;
-  float d, tmp; d=0;
+  float d, tmp; d = 0;
   for0(m, N){
     tmp = dat.at(j, m) - dat.at(i, m);
     d += tmp * tmp;
@@ -25,7 +25,7 @@ float clust_knn::euclidean_distance(int i, int j){
 }
 
 float clust_knn::distance(int i, int j){
-  if( (*isBad)[i] == 1 || (*isBad)[j] == 1){
+  if((*isBad)[i] == 1 || (*isBad)[j] == 1){
     printf("Error: NAN\n"); //exit(1);
     return NAN;
   }
