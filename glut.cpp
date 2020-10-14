@@ -102,7 +102,7 @@ int myglut::GLUT2d::reboot(){
   surprise.init(NRow, NCol);
   int n = NRow * NCol;
   int i;
-  for(i = 0; i < n; i++){
+  for0(i, n){
     indClosest[i] = -1;
     indCentre[i] = -1;
     surprise[i] = 0;
@@ -125,7 +125,7 @@ myglut::GLUT2d::GLUT2d(int _NRow, int _NCol, const char * title_string){
 
   int n = NRow * NCol;
   int i;
-  for(i = 0; i < n; i++){
+  for0(i, n){
     indClosest[i] = -1;
     indCentre[i] = -1;
     surprise[i] = 0;
@@ -169,9 +169,7 @@ void myglut::GLUT2d::refresh(){
   if(Update == true){
     rebuffer();
     int did_recalc = false;
-    if(!isClassification){
-      did_recalc=recalc_classes();
-    }
+    if(!isClassification) did_recalc = recalc_classes();
     Update = false;
   }
   draw2d();
@@ -203,7 +201,7 @@ void myglut::GLUT2d::idlethreadfunc(){
     printf("myglut::GLUT2d::idlethreadfunc() iter %d\n", optim++);
     int i;
     int nc = myclust->get_n_knn_centres();
-    for(i = 0; i < nc; i++){
+    for0(i, nc){
       PickThis = i; laststate = i;
       source = (GLvoid *)(&((myglut2d->datBinary.elements)[0]));
       myglut2d->recalc_binary_quick(i);
@@ -215,9 +213,8 @@ void myglut::GLUT2d::idlethreadfunc(){
       myglut2d->recalc_binary_quick(i);
       myglut2d->recalc_binary(i);
       myglut2d->quickdraw();
-
+// }
     }
-  // }
   thread_exists = false;
 }
 
@@ -234,7 +231,6 @@ void myglut::GLUT2d::draw2d(){
     source = (GLvoid *)(&((dat->elements)[0]));
     if(!render_clusters){
       source = (GLvoid *)(&((dat->elements)[0]));
-
     }
     else{
       if(PickThis < 0){
@@ -275,10 +271,10 @@ void myglut::GLUT2d::recalc_binary_quick(int mypick){
   FILE * outfile2 = fopen("output/out_class.bin", "wb");
   float d;
 
-  for(i = 0; i < NRow; i++){
+  for0(i, NRow){
     rs = NRow - i - 1;
 
-    for(j = 0; j < NCol; j++){
+    for0(j, NCol){
 
       ind = ((rs * NCol) + j);
       ind2 = 3 * ((rs * NCol) + j);
@@ -296,10 +292,8 @@ void myglut::GLUT2d::recalc_binary_quick(int mypick){
         datBinary.at(ind2++) = result;
         datBinary.at(ind2 ) = result;
       }     
-      //rite(&result, sizeof(int), 1, outfile1);
-      //rite(&k, sizeof(int), 1, outfile2);
 
-        d= (float)result;
+      d = (float)result; // write outputs in type 4
       fwrite(&d, sizeof(float), 1, outfile1);
       d = (float)k;
       fwrite(&d, sizeof(float), 1, outfile2);
@@ -315,15 +309,12 @@ void myglut::GLUT2d::recalc_binary(int mypick){
   int i, j, k, rs;
   int ind, ind2;
   int comp = NRow / 4;
-
   int state = datResult.at(0);
+  int count_same_state = 0; // # of preceding pixels same in spatial ordering
 
-  // # of preceding pixels same in spatial ordering
-  int count_same_state = 0;
-
-  for(i = 0; i < NRow; i++){
+  for0(i, NRow){
     rs = NRow - i - 1;
-    for(j = 0; j < NCol; j++){
+    for0(j, NCol){
 
       ind = ((rs * NCol) + j);
       ind2 = 3 * ((rs * NCol) + j);
@@ -356,8 +347,8 @@ void myglut::GLUT2d::recalc_binary(int mypick){
   float as = (float)( avg_surprise / ((double)NRow * (double)NCol));
   surprising_count = 0;
 
-  for(i = 0; i < NRow; i++){
-    for(j = 0; j < NCol; j++){
+  for0(i, NRow){
+    for0(j, NCol){
       if((float)surprise.at(i,j) >= as){
         surprising_count++;
         reclass_point(i, j);
@@ -389,7 +380,7 @@ void myglut::GLUT2d::reclass_point(int i, int j){
   if(rjmin >= 0){
     cMIN = indCentre.at(i, j);
     d = 0;
-    for(K = 0; K < N; K++){
+    for0(K, N){
       tmp = (fb->at(K)->at(i,j)) - (myclust->get_centre_coord(cMIN, rjmin, K));
       d += tmp * tmp;
     }
@@ -400,20 +391,20 @@ void myglut::GLUT2d::reclass_point(int i, int j){
     cMIN = 0;
   }
 
-  for(J = 0; J < nc; J++){
+  for0(J, nc){
     //for each centre.
     n_elem = myclust->get_n_knn_elements(J);
 
-    for(I = 0; I < rim; I++){
+    for0(I, rim){
       //for each iteration.
-      rj= rand() % n_elem; //select random element from cluster.
+      rj = rand() % n_elem; //select random element from cluster.
 
       d = 0.;
-      for(K = 0; K < N; K++){
+      for0(K, N){
         tmp = (fb->at(K)->at(i, j)) - (myclust->get_centre_coord(J, rj, K));
         d += tmp * tmp;
       }
-      if (d < dMIN){
+      if(d < dMIN){
         //found closer element.
         dMIN = d;
         cMIN = J;
@@ -434,9 +425,7 @@ void myglut::GLUT2d::reclass_point(int i, int j){
 
 int myglut::GLUT2d::recalc_classes(){
 	// how about try colour with mean instead of top?
-	//
 	// how about log-sized circles to indicate membership size?
-	//
   printf("myglut::GLUT2d::recalc_classes()\n");
   if(!myclust) return false;
   srand(time(NULL));
@@ -453,7 +442,7 @@ int myglut::GLUT2d::recalc_classes(){
   n = NRow * NCol * N;
   comp = NRow / 5;
 
-  for(i = 0; i < NRow; i++){
+  for0(i, NRow){
     rs = NRow - i - 1;
 
     /* 
@@ -462,17 +451,17 @@ int myglut::GLUT2d::recalc_classes(){
     }
     */
 
-    for(j = 0; j < NCol; j++){
+    for0(j, NCol){
       x = b1->at(rs, j);
       y = b2->at(rs, j);
       z = b3->at(rs, j);
       rjmin = indClosest.at(i, j);
 
-      if( rjmin >= 0){
+      if(rjmin >= 0){
         cMIN = indCentre.at(i, j);
         d = 0;
 
-        for(K = 0; K < N; K++){
+        for0(K, N){
           tmp = (fb->at(K)->at(i, j)) - (myclust->get_centre_coord(cMIN, rjmin, K));
           d += tmp * tmp;
         }
@@ -483,20 +472,20 @@ int myglut::GLUT2d::recalc_classes(){
         cMIN = 0;
       }
 
-      for(J = 0; J < nc; J++){
+      for0(J, nc){
         //for each centre.
         n_elem = myclust->get_n_knn_elements(J);
 
-        for(I = 0; I < rim; I++){
+        for0(I, rim){
           //for each iteration
           rj= rand() % n_elem; //select random element from clust
 
           d = 0;
-          for(K = 0; K < N; K++){
+          for0(K, N){
             tmp = (fb->at(K)->at(i, j)) - (myclust->get_centre_coord(J, rj, K));
             d += tmp * tmp;
           }
-          if (d < dMIN){
+          if(d < dMIN){
             //found closer element.
             dMIN = d;
             cMIN = J;
@@ -521,11 +510,11 @@ int myglut::GLUT2d::recalc_classes(){
 void myglut::GLUT2d::rebuffer(){
   printf("myglut::GLUT2d::rebuffer(%d)\n", myID());
   int i, j, k, ri;
-  k=0;
+  k = 0;
 
-  for(i = 0; i < NRow; i++){
+  for0(i, NRow){
     ri = NRow - i - 1;
-    for(j = 0; j < NCol; j++){
+    for0(j, NCol){
       //remember, computer screen coordinates different..
       dat->at(k++) = b1->at(ri, j);
       dat->at(k++) = b2->at(ri, j);
@@ -605,7 +594,7 @@ void myglut::GLUT3d::display_picked_points(int PickThis){
   n_elem = myclust->get_n_knn_elements(i);
   printf("draw |picked elements|= %zu\n", (long unsigned int)n_elem);
 
-  for(j = 0; j < n_elem; j++){
+  for0(j, n_elem){
     x = myclust->get_centre_coord(i, j, (unsigned int)curband[0]);
     y = myclust->get_centre_coord(i, j, (unsigned int)curband[1]);
     z = myclust->get_centre_coord(i, j, (unsigned int)curband[2]);
@@ -651,9 +640,9 @@ void myglut::GLUT3d::draw3d(){
         exit(1);
       }
 
-      for(i = 0; i < nn; i++){
+      for0(i, nn){
         glPushName(i);
-        for(j = 0; j < N; j++){
+        for0(j, N){
           xyz[j] = class_centres[k++];
         }
 

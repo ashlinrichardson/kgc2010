@@ -20,11 +20,8 @@ namespace myglut{
 
   class clust_knn{
     public:
-    int N, K, KMax, Rand_Iter_Max;
-    int nj; //number of points used
-
-    // floating point data
-    vector < SA<float> * > * float_buffers;
+    int N, K, KMax, Rand_Iter_Max, nj; //nj = number of points used
+    vector < SA<float> * > * float_buffers; // float data
 
     SA<int> origIndex;
     SA<float> dat; //the sampled data set (a subset of the full data set).

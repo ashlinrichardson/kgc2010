@@ -28,6 +28,9 @@
 using namespace _SA;
 using namespace std;
 
+/* shorthand for for loops from 0 to N */
+#define for0(i,n) for(i = 0; i < n; i++)
+
 namespace myglut{
 
   extern int KNN_MAX; //maximum setting (assume this is the setting the program is run with)
@@ -79,7 +82,6 @@ namespace myglut{
 
   // output file (binary format)
   extern FILE * outfile;
-
 }
 
 #endif

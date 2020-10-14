@@ -1,18 +1,16 @@
 /* 20170517 verified that program hardly uses CPU when idle */
 #include <cmath>
 #include <float.h>
+#include "misc.h"
 #include "glut.h"
 #include "pick.h"
 #include "global.h"
 #include "clust_knn.h"
 #include "ansi_color.h"
-#include "misc.h"
 
 using namespace myglut;
 
-size_t  N; // number of bands
-size_t NRow; // number of rows
-size_t NCol; // number of cols
+size_t N, NRow, NCol; // number of bands, rows, col's
 int bi[3]; // active band indices
 
 vector <FILE*> filehandles;
@@ -22,18 +20,14 @@ vector <clust_knn*> knn_clusterings;
 
 void quit(){
   int i;
-  for(i = 0; i < filehandles.size(); i++)
-	  if(filehandles[i])
-		  fclose(filehandles[i]);
-    
-  for(i = 0; i < float_buffers.size(); i++)
-	  free(float_buffers[i]);
+  for0(i, filehandles.size()) if(filehandles[i]) fclose(filehandles[i]);
+  for0(i, float_buffers.size()) free(float_buffers[i]);
   exit(0);
 }
 
 void idle(){
   printf("idle\n");
-  (myglut2d_img)->refresh();
+  myglut2d_img->refresh();
   myglut2d->refresh();
   if(number_of_classes == 0){
     myglut3d->runclust();
@@ -51,7 +45,7 @@ void scaleband(SA<float> * buf){
   MIN = FLT_MAX;
   n = buf->size();
 
-  for(i = 0; i < n; i++){
+  for0(i, n){
     dat = buf->at(i);
     if(!(isinf(dat) || isnan(dat))){
       if(dat < MIN) MIN = dat;
@@ -61,7 +55,7 @@ void scaleband(SA<float> * buf){
   }
   printf(" MIN %e MAX %e\n", MIN, MAX);
 
-  for(i = 0; i < buf->size(); i++){
+  for0(i, buf->size()){
     dat = buf->at(i);
     buf->at(i) = (dat - MIN) / (MAX - MIN);
     dat = buf->at(i);
@@ -69,15 +63,12 @@ void scaleband(SA<float> * buf){
 }
 
 int main(int argc, char *argv[]){
-  printf("start\n");
-  if(argc < 5){
-    err(str("kgc2010 [input binary file] [n_desired] [knn_use] [rand_iter_max]"));
-  }
+  if(argc < 5) err(str("kgc2010 [input binary file] [n_desired] [knn_use] [rand_iter_max]"));
+  
   str fn(argv[1]);
   if(!exists(fn)) err("input file not found");
 
   str hfn(hdr_fn(fn));
-
   hread(hfn, NRow, NCol, N);
   printf("NRow %d NCol %d NBand %d\n", (int)NRow, (int)NCol, (int)N);
 
@@ -89,8 +80,6 @@ int main(int argc, char *argv[]){
   RAND_ITER_MAX = atoi(argv[4]);
 
   int n = NRow * NCol;
-
-  printf("open data files\n");
   register int i;
 
   // buffer data
@@ -98,7 +87,7 @@ int main(int argc, char *argv[]){
 
   //reshape
   SA< SA< float > * > fbufs(N);
-  for(i = 0; i < N; i++){
+  for0(i, N){
     fbufs[i] = (SA<float> *) new SA<float>(NRow, NCol);
     float_buffers.push_back(fbufs[i]);
   }
@@ -107,34 +96,27 @@ int main(int argc, char *argv[]){
   j_coord = new SA<int>(NRow * NCol);
 
   int kk;
-  for(kk = 0; kk < N; kk++){
+  for0(kk, N){
     SA<float> * db = fbufs[kk];
-
-    // buffer data band
-    for(i = 0; i < n; i++) (*db)[i] = dd[(kk * n) + i];  
-    
-    // scale band into [0, 1]
-    scaleband(fbufs[kk]);
+    for0(i, n) (*db)[i] = dd[(kk * n) + i]; // buffer data band
+    scaleband(fbufs[kk]); // scale band to [0, 1]
   }
-
   free(dd);
 
   if(false){
     int kk;
     // write data in ascii format
     FILE * afile = fopen("./ascii.txt", "wb");
-    for(kk = 0; kk < NRow * NCol; kk++){
-      for(i = 0; i < N; i++)
-        fprintf(afile, "%7.7e,", fbufs[i]->at(kk));
-      
+    for0(kk, NRow * NCol){
+      for0(i, N) fprintf(afile, "%7.7e,", fbufs[i]->at(kk));
       fprintf(afile, "\n");
     }
     fclose(afile);
   }
 
   //set default band vis.: 1, 2, 3
-  for(i = 0; i < 3; i++) bi[i] = i;
-  
+  for0(i, 3) bi[i] = i;
+
   glutInit(&argc,argv);
 
   // image display window
@@ -144,8 +126,7 @@ int main(int argc, char *argv[]){
   img.setPos(0, 0);
   img.setRGB(fbufs[0], fbufs[1], fbufs[2], 0, 1, 2);
   myglut2d_img = &img;
-  img.glbusy = false;
-  img.isClassification = false;
+  img.glbusy = img.isClassification = false;
   img.mark();
 
   // classification display window
@@ -154,10 +135,10 @@ int main(int argc, char *argv[]){
 
   clasi.setRightOf(&img);
   clasi.setRGB(fbufs[0], fbufs[1], fbufs[2], 0, 1, 2);
-  clasi.mark();
   myglut2d = &clasi;
   clasi.isClassification = true;
   clasi.glbusy = false;
+  clasi.mark();
 
   number_of_classes = 0;
   laststate = beforelaststate = -1;
@@ -180,11 +161,8 @@ int main(int argc, char *argv[]){
 
   scatter.set_clust(&myKNNclust);
   clasi.set_clust(&myKNNclust);
-
-  printf("Start GLUT main loop\n");
+  
   glutMainLoop();
-
-  // after exit glut loop
   quit();
   return 0;
 }

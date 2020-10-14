@@ -78,7 +78,7 @@ namespace console{
     
     int count = i + 1;
     SA<char> s(count);
-    for(i = 0; i < count; i++) s[i] = console_string[i];
+    for0(i, count) s[i] = console_string[i];
     
     int r, g, b, tk;
     i = grabint(&s[1]);

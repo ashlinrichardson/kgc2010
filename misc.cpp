@@ -283,8 +283,10 @@ int hsv_to_rgb(float *r, float *g, float *b, float h, float s, float v){
     *r = *g = *b = v;
     return 0;
   }
-  float H,S,V;
-  H=h; V=v; S=s;
+  float H, S, V;
+  H = h;
+  V = v;
+  S = s;
   h /= 60.; // sector 0 to 5
   i = (int)floor( h );
   f = h - i; // factorial part of h
