@@ -96,6 +96,7 @@ void clust_knn::init(GLUT3d * _my3d, GLUT2d * _my2d, vector < SA<float> * > * _f
     }
   }
 
+ if(!re_init){
   printf("%sCalculating distances...%s\n", KGRN, KNRM);
 
   // distances with respect to a given point
@@ -119,11 +120,14 @@ void clust_knn::init(GLUT3d * _my3d, GLUT2d * _my2d, vector < SA<float> * > * _f
 
     D->Sort();
   }
+ }
+
+ printf("calculating density..\n");
 
   // j, nj
 for0(j, nj){
-
-    D = D_j[j];
+    int ind;
+    SAS<float> * D = D_j[j];
      for0(i, KMax){
       ind = D->index(i);
       nnIndex.at(j, i) = ind;
