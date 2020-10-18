@@ -1,8 +1,8 @@
 # kgc2010
 
-An approach developed with D. Goodenough H. Chen and others[1] this implementation was written by A. Richardson between April 1 -- August 19th, 2010 while funded as an M.Sc. student by R. Illner. Graphics functions from [2]
+An approach developed w David Goodenough, Hao Chen and team [1] this implementation is based on one written by A. Richardson for IGARSS 2010 between April 1 -- August 19th, 2010 while funded as an M.Sc. student by R. Illner. Graphics functions from [2]
 
-instructions (tested on mac os-X 10.11.6 and ubuntu 16. LTS) 
+instructions (tested on Ubuntu 20 and Mac OS-X 10.12.6)
 
   make 
   
