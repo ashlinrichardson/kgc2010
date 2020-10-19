@@ -53,7 +53,7 @@ void scaleband(SA<float> * buf){
       if(dat < MIN) MIN = dat;
       if(dat > MAX) MAX = dat;
     }
-    else (*isBad)[i] = 1;
+    // else (*isBad)[i] = 1;
   }
   printf(" MIN %e MAX %e\n", MIN, MAX);
 
@@ -66,24 +66,14 @@ void scaleband(SA<float> * buf){
 
 int main(int argc, char *argv[]){
   srand(37);
-
-  // char *args[5] = {
-  // "kgc.exe\0", "data/737x249x5.bin\0", "33333\0", "333\0", "2\0"}
-  // ;
-
-  // THIS ONE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-  char *args[5] = {
-  "kgc.exe\0", "data/rgb.bin\0", "33333\0", "230\0", "2\0"}
-  ;
-
-  // char *args[5] = {
-  // "kgc.exe\0", "data/S2A.bin_4x.bin_sub.bin_subs.bin\0", "11111\0", "111\0", "2\0"}
-  // ;
+  
+  // default parameters
+  const char *args[5] = {"kgc.exe\0", "data/rgb.bin\0", "33333\0", "230\0", "2\0"};
 
   if(argc < 5){
     str msg("kgc2010 [input binary file] [n_desired] [knn_use] [rand_iter_max]");
     cout << "Error: " << msg << endl;
-    argv = args;
+    argv = (char **)(void **)args;
   }
 
   str fn(argv[1]);
@@ -101,25 +91,19 @@ int main(int argc, char *argv[]){
   printf("KNN_MAX %d KNN_USE %d\n", KNN_MAX, KNN_USE);
   RAND_ITER_MAX = atoi(argv[4]);
 
-  int n = NRow * NCol;
   register int i;
+  int n = NRow * NCol;
+  float * dd = bread(fn, NRow, NCol, N); // buffer data
 
-  // buffer data
-  float * dd = bread(fn, NRow, NCol, N);
-
-  //reshape
-  SA< SA< float > * > fbufs(N);
+  SA< SA< float > * > fbufs(N); // reshaped data
   for0(i, N){
     fbufs[i] = (SA<float> *) new SA<float>(NRow, NCol);
     float_buffers.push_back(fbufs[i]);
   }
-  isBad = new SA<int>(NRow * NCol);
   i_coord = new SA<int>(NRow * NCol);
   j_coord = new SA<int>(NRow * NCol);
 
   int kk;
-  for0(kk, N) (*isBad)[kk] = 0;
-
   for0(kk, N){
     SA<float> * db = fbufs[kk];
     for0(i, n) (*db)[i] = dd[(kk * n) + i]; // buffer data band

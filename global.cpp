@@ -17,8 +17,6 @@
   clust_knn* myclust_knn;
 
   vector < SA<float> * > float_buffers;
-
-  SA<int> * isBad;
   SA<int> * i_coord;
   SA<int> * j_coord;
 

@@ -38,7 +38,6 @@ using namespace _SA;
 
     SA<float> dE;
     SA<int> knn_indices;
-    SA<int> badData;
     vector<int> knn_J_indices;
     int nkci; // next knn class index;
     int n_knn_centres, NRow, NCol;

@@ -87,8 +87,6 @@ void parfor(size_t start_j, size_t end_j, void(*eval)(size_t));
 
   // buffer objects
   extern vector < SA<float> * > float_buffers;
-
-  extern SA<int> * isBad;
   extern SA<int> * i_coord;
   extern SA<int> * j_coord;
 
