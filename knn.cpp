@@ -1,3 +1,5 @@
+// DO HCLUST BY DECREASING K AND CHOOSING INCLUSION DIAGRAM...
+// what's the null class label? -1 ????
 /* 20170517 verified that program hardly uses CPU when idle */
 #include <cmath>
 #include <float.h>
@@ -63,8 +65,27 @@ void scaleband(SA<float> * buf){
 }
 
 int main(int argc, char *argv[]){
-  if(argc < 5) err(str("kgc2010 [input binary file] [n_desired] [knn_use] [rand_iter_max]"));
+  srand(37);
+
+  // char *args[5] = {
+  // "kgc.exe\0", "data/737x249x5.bin\0", "33333\0", "333\0", "2\0"}
+  // ;
   
+  // THIS ONE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  char *args[5] = {
+  "kgc.exe\0", "data/rgb.bin\0", "33333\0", "230\0", "2\0"}
+  ;
+
+  // char *args[5] = {
+  // "kgc.exe\0", "data/S2A.bin_4x.bin_sub.bin_subs.bin\0", "11111\0", "111\0", "2\0"}
+  // ;
+
+  if(argc < 5){
+    str msg("kgc2010 [input binary file] [n_desired] [knn_use] [rand_iter_max]");
+    cout << "Error: " << msg << endl;
+    argv = args;
+  }
+
   str fn(argv[1]);
   if(!exists(fn)) err("input file not found");
 
@@ -77,6 +98,7 @@ int main(int argc, char *argv[]){
 
   NDESIRED = atoi(argv[2]);
   KNN_MAX = KNN_USE = atoi(argv[3]);
+  printf("KNN_MAX %d KNN_USE %d\n", KNN_MAX, KNN_USE);
   RAND_ITER_MAX = atoi(argv[4]);
 
   int n = NRow * NCol;
@@ -96,10 +118,35 @@ int main(int argc, char *argv[]){
   j_coord = new SA<int>(NRow * NCol);
 
   int kk;
+  for0(kk, N) (*isBad)[kk] = 0;
+
   for0(kk, N){
     SA<float> * db = fbufs[kk];
     for0(i, n) (*db)[i] = dd[(kk * n) + i]; // buffer data band
     scaleband(fbufs[kk]); // scale band to [0, 1]
+  }
+
+  // substitute NAN in one band, or zero in all bands, with small random number..
+  for0(kk, n){
+    bool all_zero = true;
+    for0(i, N){
+      float d = (* (fbufs[i]) )[kk];
+      if(isnan(d) || isinf(d)){
+        float r = (rand() / RAND_MAX) / 111111.;
+        (* (fbufs[i]) )[kk] = r;
+
+      }
+      else{
+        if( d != 0.) all_zero = false;
+      }
+
+    }
+    if(all_zero){
+      for0(i, N){
+        float r = (rand() / RAND_MAX) / 111111.;
+        (* (fbufs[i]) )[kk] = r;
+      }
+    }
   }
   free(dd);
 
@@ -151,17 +198,21 @@ int main(int argc, char *argv[]){
   scatter.mark();
 
   clust_knn myKNNclust(NRow, NCol);
-  myglut::myclust_knn = &myKNNclust;
+  // myglut::
+  myclust_knn = &myKNNclust;
 
   // init clustering
-  myKNNclust.init(&scatter, &clasi, &float_buffers, floor(((float)n) / ((float)NDESIRED)), KNN_USE);
+  // KMax = KNN_USE;
+  float ratio = floor(((float)n) / ((float)NDESIRED));
+  printf("floor(n / NDESIRED) = %f\n", ratio);
+  myKNNclust.init(&scatter, &clasi, &float_buffers, ratio, false);
 
   myKNNclust.set_Rand_Iter_Max(RAND_ITER_MAX);
   knn_clusterings.push_back(&myKNNclust);
 
   scatter.set_clust(&myKNNclust);
   clasi.set_clust(&myKNNclust);
-  
+
   glutMainLoop();
   quit();
   return 0;

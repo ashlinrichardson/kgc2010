@@ -9,10 +9,12 @@
 #include "global.h"
 #include <pthread.h>
 
+extern int KNN_USE;
+
 using namespace std;
 using namespace _SA;
 
-namespace myglut{
+// namespace myglut{
   class GLUTWindow;
   class GLUT3d;
   class GLUT2d;
@@ -23,7 +25,7 @@ namespace myglut{
 
   class clust_knn{
     public:
-    int N, K, KMax, Rand_Iter_Max, nj; // nj = number of points used
+    int N, Rand_Iter_Max, nj; // nj = number of points used
     vector < SA<float> * > * float_buffers; // float data
 
     SA<int> origIndex;
@@ -46,21 +48,21 @@ namespace myglut{
     void init(GLUT3d * _my3d,
     GLUT2d * _my2d,
     vector < SA<float> * > * _float_buffers,
-    int nskip, //calculate nj from N and nskip.
-    int _KMax);
+    int nskip);  //calculate nj from N and nskip.
+    // );
 
     void init(GLUT3d * _my3d,
     GLUT2d * _my2d,
     vector < SA<float> * > * _float_buffers,
     int nskip, //calculate nj from N and nskip.
-    int _KMax, bool re_init);
+    bool re_init);
 
     int getK(){
-      return K;
+      return KNN_USE;
     }
 
-    void reinit(int nskip, int _KMax);
-    float densityEstimate(int j, int K);
+    void reinit(int nskip);
+    float densityEstimate(int j);
 
     int classf(int j,
     SA<int> * highestdensityneighborindex,
@@ -84,5 +86,5 @@ namespace myglut{
       return Rand_Iter_Max;
     }
   };
-}
+// }
 #endif

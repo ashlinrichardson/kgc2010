@@ -6,7 +6,7 @@
 #include "global.h"
 #include <stdlib.h>
 
-namespace console{
+// namespace console{
   #define STR_MAX 16384
 
   // #define MYFONT GLUT_BITMAP_HELVETICA_18
@@ -42,6 +42,6 @@ namespace console{
   void getrgb(int & r, int & g, int & b);
   void keyboard(unsigned char key, int x, int y);
   void renderBitmapString(float x, float y, void *font, char *string);
-}
+// }
 
 #endif

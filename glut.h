@@ -8,7 +8,7 @@
 void quit();
 void idle();
 
-namespace myglut{
+// namespace myglut{
 
   #define WindowX NCol
   #define WindowY NRow
@@ -133,4 +133,4 @@ namespace myglut{
     void refresh();
     void mark();
   };
-}
+// }

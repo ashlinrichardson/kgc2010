@@ -46,8 +46,8 @@ static void zpr::zprReshape(int w,int h){
   glOrtho(_left,_right,_bottom,_top,_zNear,_zFar);
   glMatrixMode(GL_MODELVIEW);
 
-  console::WINDOWX = glutGet( GLUT_WINDOW_WIDTH);
-  console::WINDOWY = glutGet( GLUT_WINDOW_HEIGHT );
+  WINDOWX = glutGet( GLUT_WINDOW_WIDTH);
+  WINDOWY = glutGet( GLUT_WINDOW_HEIGHT );
 }
 
 static void zpr::zprMouse(int button, int state, int x, int y){
@@ -68,18 +68,18 @@ static void zpr::zprMouse(int button, int state, int x, int y){
   _mouseY = y;
   if(state==GLUT_UP)
   switch(button){
-    case GLUT_LEFT_BUTTON: myglut::_mouseLeft = false; break;
+    case GLUT_LEFT_BUTTON: _mouseLeft = false; break;
     case GLUT_MIDDLE_BUTTON: _mouseMiddle = false; break;
-    case GLUT_RIGHT_BUTTON: myglut::_mouseRight = false; break;
+    case GLUT_RIGHT_BUTTON: _mouseRight = false; break;
   }
   else
   switch(button){
     case GLUT_LEFT_BUTTON:
-    myglut::_mouseLeft = true;
+    _mouseLeft = true;
     // printf(" x: %d y: %d\n", x, y);
     break;
     case GLUT_MIDDLE_BUTTON: _mouseMiddle = true; break;
-    case GLUT_RIGHT_BUTTON: myglut::_mouseRight = true; break;
+    case GLUT_RIGHT_BUTTON: _mouseRight = true; break;
   }
   glGetIntegerv(GL_VIEWPORT,viewport);
   pos(&_dragPosX,&_dragPosY,&_dragPosZ,x,y,viewport);

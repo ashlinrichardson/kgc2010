@@ -1,17 +1,20 @@
 #include "glut.h"
 using namespace myglut;
-myglut::GLUTWindow::GLUTWindow(){
+//
+GLUTWindow::GLUTWindow(){
   WindowID = Update = false;
   myclust = NULL;
 }
 
-void myglut::GLUTWindow::focus(){
+// void 
+void GLUTWindow::focus(){
   int my_id = myID();
   // printf("glutSetWindow(%d)\n", my_id);
   glutSetWindow(my_id);
 }
 
-int myglut::GLUTWindow::initGLUT(int _NRow, int _NCol, const char * title_string){
+// int 
+int GLUTWindow::initGLUT(int _NRow, int _NCol, const char * title_string){
   printf("initGLUT(%d,%d)\n", _NRow, _NCol);
   Update = false;
   WindowY = _NRow;
@@ -24,7 +27,8 @@ int myglut::GLUTWindow::initGLUT(int _NRow, int _NCol, const char * title_string
   return WindowID;
 }
 
-void myglut::GLUTWindow::setRGB(SA<float> * r, SA<float> * g, SA<float> * b, unsigned int A, unsigned int B, unsigned int C){
+//void 
+void GLUTWindow::setRGB(SA<float> * r, SA<float> * g, SA<float> * b, unsigned int A, unsigned int B, unsigned int C){
   b1 = r;
   b2 = g;
   b3 = b;
@@ -33,67 +37,73 @@ void myglut::GLUTWindow::setRGB(SA<float> * r, SA<float> * g, SA<float> * b, uns
   curband[2] = C;
 }
 
-void myglut::GLUTWindow::setDisplayFunc(void (*f)()){
+// void 
+void GLUTWindow::setDisplayFunc(void (*f)()){
   focus();
   glutDisplayFunc(f);
 }
 
-void myglut::GLUTWindow::setKeys(void (*f)(unsigned char, int, int), void (*g)(int, int, int)){
+// void 
+void GLUTWindow::setKeys(void (*f)(unsigned char, int, int), void (*g)(int, int, int)){
   focus();
   glutKeyboardFunc(f);
   glutSpecialFunc(g);
 }
 
-void myglut::GLUTWindow::setPos(int x, int y){
+// void 
+void GLUTWindow::setPos(int x, int y){
   focus();
   glutPositionWindow(x, y);
   XPos = x;
   YPos = y;
 }
 
-void myglut::GLUTWindow::setRightOf(GLUTWindow * other){
+//void 
+void GLUTWindow::setRightOf(GLUTWindow * other){
   focus();
   setPos(other->XPos + other->WindowX, other->YPos);
 }
 
-void myglut::GLUTWindow::setBelow(GLUTWindow * other){
+//void 
+void GLUTWindow::setBelow(GLUTWindow * other){
   focus();
   setPos(other->XPos, 40 + other->YPos + other->WindowY);
 }
 
-int myglut::GLUTWindow::myID(){
+// int 
+int GLUTWindow::myID(){
   return WindowID;
 }
 
-int myglut::GLUTWindow::nCol(){
+int GLUTWindow::nCol(){
   return WindowX;
 }
 
-int myglut::GLUTWindow::nRow(){
+int GLUTWindow::nRow(){
   return WindowY;
 }
 
-int myglut::GLUTWindow::myX(){
+int GLUTWindow::myX(){
   return WindowX;
 }
 
-int myglut::GLUTWindow::myY(){
+int GLUTWindow::myY(){
   return WindowY;
 }
 
-static void myglut::display3d(){
+static void display3d(){
   myglut3d->draw3d();
 }
 
-static void myglut::display2d(){
+static void display2d(){
   return;
 }
 
-static void myglut::displayd(){
+static void displayd(){
   (myglut2d_img)->refresh();
 }
 
-int myglut::GLUT2d::reboot(){
+int GLUT2d::reboot(){
   datClust.init(NRow * NCol * 3);
   datBinary.init(NRow * NCol * 3);
   datResult.init(NRow * NCol);
@@ -110,7 +120,7 @@ int myglut::GLUT2d::reboot(){
   return 0;
 }
 
-myglut::GLUT2d::GLUT2d(int _NRow, int _NCol, const char * title_string){
+GLUT2d::GLUT2d(int _NRow, int _NCol, const char * title_string){
   thread_exists = false;
   render_clusters = false;
   NRow = _NRow;
@@ -138,7 +148,7 @@ myglut::GLUT2d::GLUT2d(int _NRow, int _NCol, const char * title_string){
   glutDisplayFunc(idle);
 }
 
-int myglut::GLUT2d::initGLUT(int _NRow, int _NCol, const char * title_string){
+int GLUT2d::initGLUT(int _NRow, int _NCol, const char * title_string){
   lock();
   myclust = NULL;
   Update = false;
@@ -152,7 +162,7 @@ int myglut::GLUT2d::initGLUT(int _NRow, int _NCol, const char * title_string){
   return WindowID;
 }
 
-void myglut::GLUT2d::setView(){
+void GLUT2d::setView(){
   focus();
   glViewport(0, 0, NCol, NRow);
   glMatrixMode(GL_PROJECTION);
@@ -163,7 +173,7 @@ void myglut::GLUT2d::setView(){
   glRasterPos2f(0., 0.);
 }
 
-void myglut::GLUT2d::refresh(){
+void GLUT2d::refresh(){
   // if(isClassification && threadcreated) return;
   focus();
   if(Update == true){
@@ -176,11 +186,11 @@ void myglut::GLUT2d::refresh(){
   glbusy = false;
 }
 
-void myglut::GLUT2d::mark(){
+void GLUT2d::mark(){
   Update = true;
 }
 
-void myglut::GLUT2d::draw_classes(){
+void GLUT2d::draw_classes(){
   beforelaststate = laststate;
   laststate = -2;
   focus();
@@ -191,14 +201,14 @@ void myglut::GLUT2d::draw_classes(){
   glutSwapBuffers();
 }
 
-void myglut::GLUT2d::idlethreadfunc(){
+void GLUT2d::idlethreadfunc(){
   // do we need to turn this back on?
   return;
   if(thread_exists) return;
   thread_exists = true;
   int optim = 1;
   //while(!ostopthread){
-    printf("myglut::GLUT2d::idlethreadfunc() iter %d\n", optim++);
+    printf("GLUT2d::idlethreadfunc() iter %d\n", optim++);
     int i;
     int nc = myclust->get_n_knn_centres();
     for0(i, nc){
@@ -218,7 +228,7 @@ void myglut::GLUT2d::idlethreadfunc(){
   thread_exists = false;
 }
 
-void myglut::GLUT2d::draw2d(){
+void GLUT2d::draw2d(){
   focus();
   if(!isClassification){
     printf("draw2d(%d) notClassification\n", myID());
@@ -255,7 +265,7 @@ void myglut::GLUT2d::draw2d(){
   }
 }
 
-void myglut::GLUT2d::quickdraw(){
+void GLUT2d::quickdraw(){
   printf("quickdraw(%d)\n", myID());
   focus();
   setView();
@@ -265,7 +275,7 @@ void myglut::GLUT2d::quickdraw(){
   glutSwapBuffers();
 }
 
-void myglut::GLUT2d::recalc_binary_quick(int mypick){
+void GLUT2d::recalc_binary_quick(int mypick){
   int i, j, k, rs, ind, ind2, result;
   FILE * outfile1 = fopen("output/out_binary.bin", "wb");
   FILE * outfile2 = fopen("output/out_class.bin", "wb");
@@ -304,7 +314,7 @@ void myglut::GLUT2d::recalc_binary_quick(int mypick){
   fclose(outfile2);
 }
 
-void myglut::GLUT2d::recalc_binary(int mypick){
+void GLUT2d::recalc_binary(int mypick){
   printf("recalc_binary(%d)\n", mypick);
   int i, j, k, rs;
   int ind, ind2;
@@ -357,7 +367,7 @@ void myglut::GLUT2d::recalc_binary(int mypick){
   }
 }
 
-void myglut::GLUT2d::reclass_point(int i, int j){
+void GLUT2d::reclass_point(int i, int j){
   if(!myclust) return;
 
   vector < SA<float> * > * fb = myclust->float_buffers;
@@ -423,10 +433,10 @@ void myglut::GLUT2d::reclass_point(int i, int j){
   indCentre.at(i, j) = cMIN;
 }
 
-int myglut::GLUT2d::recalc_classes(){
+int GLUT2d::recalc_classes(){
 	// how about try colour with mean instead of top?
 	// how about log-sized circles to indicate membership size?
-  printf("myglut::GLUT2d::recalc_classes()\n");
+  printf("GLUT2d::recalc_classes()\n");
   if(!myclust) return false;
   srand(time(NULL));
 
@@ -503,8 +513,8 @@ int myglut::GLUT2d::recalc_classes(){
   return true;
 }
 
-void myglut::GLUT2d::rebuffer(){
-  printf("myglut::GLUT2d::rebuffer(%d)\n", myID());
+void GLUT2d::rebuffer(){
+  printf("GLUT2d::rebuffer(%d)\n", myID());
   int i, j, k, ri;
   k = 0;
 
@@ -519,15 +529,15 @@ void myglut::GLUT2d::rebuffer(){
   }
 }
 
-void myglut::GLUT3d::set_clust(clust_knn * k){
+void GLUT3d::set_clust(clust_knn * k){
   myclust = k;
 }
 
-void myglut::GLUT3d::runclust(){
+void GLUT3d::runclust(){
   myclust->knn_clustering();
 }
 
-myglut::GLUT3d::GLUT3d(int _NRow, int _NCol, int _N){
+GLUT3d::GLUT3d(int _NRow, int _NCol, int _N){
   N = _N;
   NCol=_NCol;
   NRow = _NRow;
@@ -540,7 +550,7 @@ myglut::GLUT3d::GLUT3d(int _NRow, int _NCol, int _N){
   initGLUT(NRow, NCol);
 }
 
-int myglut::GLUT3d::initGLUT(int _NRow, int _NCol){
+int GLUT3d::initGLUT(int _NRow, int _NCol){
   printf("GLUT3d::initGLUT\n");
   Update = false;
   WindowY = _NRow;
@@ -560,11 +570,11 @@ int myglut::GLUT3d::initGLUT(int _NRow, int _NCol){
   return WindowID;
 }
 
-void myglut::GLUT3d::setView(){
+void GLUT3d::setView(){
   focus();
 }
 
-void myglut::GLUT3d::display_picked_points(int PickThis){
+void GLUT3d::display_picked_points(int PickThis){
   if(! myclust || PickThis < 0){
     return;
   }
@@ -600,7 +610,7 @@ void myglut::GLUT3d::display_picked_points(int PickThis){
   glEnd();
 }
 
-void myglut::GLUT3d::draw3d(){
+void GLUT3d::draw3d(){
   /* update dimensions in common from 3d projection of 4d in
   multiple windows would be nice */
 
@@ -662,28 +672,28 @@ void myglut::GLUT3d::draw3d(){
     display_picked_points(PickThis);
   }
 
-  console::drawText();
+  drawText();
   glFlush();
   glutSwapBuffers();
   PickThis = -1;
 }
 
-void myglut::GLUT3d::refresh(){
+void GLUT3d::refresh(){
   draw3d();
 }
-void myglut::GLUT3d::mark(){
+void GLUT3d::mark(){
   Update = true;
 }
 
-static void myglut::processKeys(unsigned char key, int x, int y) {
-  console::keyboard(key, x, y);
+static void processKeys(unsigned char key, int x, int y) {
+  keyboard(key, x, y);
 }
 
-void extern myglut::show_classes(){
+void extern show_classes(){
   myglut2d->draw_classes();
 }
 
-void extern myglut::toggle_display(){
+void extern toggle_display(){
 
   int state_change = true; // beforelaststate != laststate;
   int last_state_good = beforelaststate >= 0 && beforelaststate < number_of_classes;

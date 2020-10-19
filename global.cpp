@@ -1,5 +1,5 @@
 #include "global.h"
-namespace myglut{
+// namespace myglut{
 
   #define CLUST_COMPARE_MIN 10
 
@@ -38,14 +38,18 @@ namespace myglut{
   size_t pthread_start_j, pthread_end_j; // start and end indices for job
   void (*pthread_eval)(size_t); // function pointer to execute in parallel, over range start_j:end_j inclusive
 
+  /*
   void err(char * msg){
-    printf("Error: %s\n", msg);
+	  printf("Error: %s\n", msg);
     exit(1);
   }
 
-  void err(string msg){
+  void err(string msg) {
     err(msg.c_str());
   }
+  */
+
+
 
   void init_mtx(){
     // mutex setup
@@ -53,11 +57,14 @@ namespace myglut{
     pthread_mutex_init(&pthread_next_j_mtx, NULL);
   }
 
+/*
   void cprint(string s){
     pthread_mutex_lock(&print_mtx);
     cout << s << endl;
     pthread_mutex_unlock(&print_mtx);
   }
+
+  */
 
   void * worker_fun(void * arg){
     size_t k, my_next_j;
@@ -104,4 +111,4 @@ namespace myglut{
     // delete my_pthread;
     cprint(str("return parfor()"));
   }
-}
+// }

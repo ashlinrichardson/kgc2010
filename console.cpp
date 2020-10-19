@@ -1,7 +1,7 @@
 #include "console.h"
 using namespace myglut;
 
-namespace console{
+// namespace console{
   char console_string[STR_MAX];
   int console_position, WINDOWX, WINDOWY;
 
@@ -10,7 +10,7 @@ namespace console{
   }
 
   void display(){
-    myglut::myglut3d->refresh();
+    myglut3d->refresh();
   }
 
   void renderBitmapString(float x, float y, void *font, char *string){
@@ -34,45 +34,45 @@ namespace console{
   }
 
   void setrgb(int r, int g, int b){
-    vector < SA<float> * > * fb = &myglut::float_buffers;
+    vector < SA<float> * > * fb = &float_buffers;
 
-    myglut::myglut3d->setRGB(fb->at(r), fb->at(g), fb->at(b), r, g, b);
-    myglut::myglut2d->setRGB(fb->at(r), fb->at(g), fb->at(b), r, g, b);
-    myglut::myglut2d_img->setRGB(fb->at(r), fb->at(g), fb->at(b), r, g, b);
+    myglut3d->setRGB(fb->at(r), fb->at(g), fb->at(b), r, g, b);
+    myglut2d->setRGB(fb->at(r), fb->at(g), fb->at(b), r, g, b);
+    myglut2d_img->setRGB(fb->at(r), fb->at(g), fb->at(b), r, g, b);
 
-    myglut::myglut3d->mark();
-    myglut::myglut2d->mark();
-    myglut::myglut2d_img->mark();
+    myglut3d->mark();
+    myglut2d->mark();
+    myglut2d_img->mark();
 
-    myglut::myglut3d->refresh();
-    myglut::myglut2d->refresh();
-    myglut::myglut2d_img->refresh();
+    myglut3d->refresh();
+    myglut2d->refresh();
+    myglut2d_img->refresh();
   }
 
   void getrgb(int & r, int & g, int & b){
-    r = myglut::myglut3d->curband[0];
-    g = myglut::myglut3d->curband[1];
-    b = myglut::myglut3d->curband[2];
+    r = myglut3d->curband[0];
+    g = myglut3d->curband[1];
+    b = myglut3d->curband[2];
   }
 
   void recluster(){
-    myglut::myclust_knn->knn_clustering();
+    myclust_knn->knn_clustering();
     
-    myglut::myglut2d->reboot();
-    myglut::myglut2d->unlock();
-    myglut::myglut2d->recalc_classes();
-    myglut::myglut2d->draw_classes();
-    myglut::myglut2d->mark();
-    myglut::myglut3d->mark();
+    myglut2d->reboot();
+    myglut2d->unlock();
+    myglut2d->recalc_classes();
+    myglut2d->draw_classes();
+    myglut2d->mark();
+    myglut3d->mark();
 
-    myglut::myglut3d->lock = false;
-    myglut::myglut2d->refresh();
-    myglut::myglut3d->refresh();
+    myglut3d->lock = false;
+    myglut2d->refresh();
+    myglut3d->refresh();
   }
 
   void process_string(){
     int i = 0;
-    vector < SA<float> * > * fb = &myglut::float_buffers;
+    vector < SA<float> * > * fb = &float_buffers;
 
     while(console_string[i]!='\0') i++;
     
@@ -82,12 +82,12 @@ namespace console{
     
     int r, g, b, tk;
     i = grabint(&s[1]);
-    int ndim = (myglut::float_buffers).size();
+    int ndim = (float_buffers).size();
     switch(s[0]){
 
       // change density estimate
       case 'd':
-      if(i >= 1 && i <= myglut::n_density_estimates){
+      if(i >= 1 && i <= n_density_estimates){
         printf("Selecting density estimate: %d\n", i);
         density_estimate = i - 1;
         recluster();
@@ -122,8 +122,9 @@ namespace console{
         printf("please select K in [1, %d]\n", KNN_MAX);
 	break;
       }
+      KNN_USE = i;
       printf("Running knn classification with %d nearest neighbors\n", i);
-      myglut::myclust_knn->reinit(n_skip, i);
+      myclust_knn->reinit(n_skip); // , i);
       recluster();
       break;
 
@@ -138,10 +139,11 @@ namespace console{
       getrgb(r, g, b);
       printf("r band %d g band %d b band %d\n", r + 1, g + 1, b + 1);
       printf("Number of dimensions: %d\n", (int)(fb->size()));
-      printf("Number of clusters : %d\n", myglut::number_of_classes);
-      //printf("Metric used: : %d of ?\n", myglut::select_distance_function);
+      printf("Number of clusters : %d\n", number_of_classes);
+      //printf("Metric used: : %d of ?\n", select_distance_function);
       //printf("Density estimate : %d of %d\n", density_estimate+1, n_density_estimates);
-      //printf("Estimates available : %d\n", myglut::n_density_estimates);
+      //printf("Estimates available : %d\n", n_density_estimates);
+      printf("Max. # of neighbors: %d\n", KNN_MAX);
       printf("Number of neighbors : %d\n", KNN_USE);
 
       default:
@@ -160,14 +162,14 @@ namespace console{
     // show classes
     if(key == 'c'){
       wipe();
-      myglut::show_classes();
+      show_classes();
       return;
     }
 
     // toggle class display: from class means encoding, to binary classification: or vice-versa
     if(key == 't'){
       wipe();
-      myglut::toggle_display();
+      toggle_display();
       return;
     }
 
@@ -203,4 +205,4 @@ namespace console{
       break;
     }
   }
-}
+// }

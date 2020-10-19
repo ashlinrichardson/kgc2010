@@ -7,50 +7,61 @@ clust_knn::clust_knn(int _NRow, int _NCol){
   select_distance_function = 0;
 }
 
-void clust_knn::reinit(int _nskip, int _KMax){
-  printf("%sclust_knn::reinit %snskip %s%d %sKNN_USE %s%d%s\n", KMAG, KGRN, KRED, _nskip, KGRN, KRED, _KMax, KNRM);
+void clust_knn::reinit(int _nskip){
+  printf("%sclust_knn::reinit %snskip %s%d %sKNN_USE %s%d%s\n", KMAG, KGRN, KRED, _nskip, KGRN, KRED, KNN_USE, KNRM);
   GLUT3d * _my3d = myglut3d;
   GLUT2d * _my2d = myglut2d;
-  clust_knn::init(_my3d, _my2d, float_buffers, _nskip, _KMax, true);
+  clust_knn::init(_my3d, _my2d, float_buffers, _nskip, true);
 }
 
 float clust_knn::euclidean_distance(int i, int j){
   int m;
-  float d, tmp; d = 0;
+  float d, tmp;
+  d = 0.;
   for0(m, N){
     tmp = dat.at(j, m) - dat.at(i, m);
     d += tmp * tmp;
   }
+
+  if(isnan(d) || isinf(d) || isnan(-d) || isinf(-d)){
+    printf("badd i %d j %d\n", i, j);
+    for0(m, N){
+      printf("\tdjm %f dim %f\n", dat.at(j, m), dat.at(i, m));
+    }
+    exit(1);
+  }
+
   return d;
 }
 
 float clust_knn::distance(int i, int j){
-  if((*isBad)[i] == 1 || (*isBad)[j] == 1){
-    printf("Error: NAN\n"); //exit(1);
-    return NAN;
-  }
+  // if((*isBad)[i] == 1 || (*isBad)[j] == 1){
+    // / return NAN;
+  // }
   return euclidean_distance(i, j);
 }
 
-void clust_knn::init(GLUT3d * _my3d, GLUT2d * _my2d, vector < SA<float> * > * _float_buffers, int nskip, int _KMax){
-  init(_my3d, _my2d, _float_buffers, nskip, _KMax, false);
+void clust_knn::init(GLUT3d * _my3d, GLUT2d * _my2d, vector < SA<float> * > * _float_buffers, int nskip){
+  printf("reinit false\n");
+  init(_my3d, _my2d, _float_buffers, nskip, false);
 }
 
 //calculate nj from N and nskip
-void clust_knn::init(GLUT3d * _my3d, GLUT2d * _my2d, vector < SA<float> * > * _float_buffers, int nskip, int _KMax, bool re_init){
+void clust_knn::init(GLUT3d * _my3d, GLUT2d * _my2d, vector < SA<float> * > * _float_buffers, int nskip, bool re_init){
+  printf("\tre_init %d\n", (int)re_init);
 
-  KNN_USE = _KMax;
+//  KNN_USE = _KMax;
 
-  printf("KNN_MAX %d KNN_USE %d KMax %d _KMax %d\n", KNN_MAX, KNN_USE, KMax, _KMax);
   if(!re_init){
-    K = KMax;
-    KMax = _KMax;
     D_j = NULL;
+  }
+  else{
+  
   }
 
   myglut3d = _my3d;
   myglut2d = _my2d;
-  myglut::n_skip = nskip;
+  n_skip = nskip;
   float_buffers = _float_buffers;
 
   // allocate
@@ -68,9 +79,9 @@ void clust_knn::init(GLUT3d * _my3d, GLUT2d * _my2d, vector < SA<float> * > * _f
     dE.init(nj);
     dat.init(nj, N);
     badData.init(nj);
-    nnD.init(nj, KMax);
+    nnD.init(nj, KNN_MAX);
     origIndex.init(nj);
-    nnIndex.init(nj, KMax);
+    nnIndex.init(nj, KNN_MAX);
 
     printf("%sReducing data...%s\n", KGRN, KNRM);
 
@@ -95,26 +106,26 @@ void clust_knn::init(GLUT3d * _my3d, GLUT2d * _my2d, vector < SA<float> * > * _f
     }
   }
 
+  printf("calculating sorted truncated distance matrix..\n");
   if(!re_init) distance_calculation();
-  printf("calculating density..\n");
 
   for0(j, nj){
     int ind;
     SAS<float> * D = D_j[j];
-    for0(i, KMax){
+    for0(i, KNN_MAX){
       ind = D->index(i);
       nnIndex.at(j, i) = ind;
       nnD.at(j, i) = D->f(i);
     }
   }
+  printf("end init..\n");
 }
 
-void myglut::distance_calculation(){
+void distance_calculation(){
   parfor(0, myclust_knn->nj, &distance_calculation);
 }
 
-
-void myglut::distance_calculation(size_t j){
+void distance_calculation(size_t j){
   int nj = myclust_knn->nj;
   SAS<float> * D; // distances w.r.t. a given point
   float d, tmp, x, y, z, X, Y, Z;
@@ -122,21 +133,27 @@ void myglut::distance_calculation(size_t j){
   int dispfact = nj / 20;
   // for0(j, nj)
 
-    D = myclust_knn->D_j[j];
-    D->reset();
+  D = myclust_knn->D_j[j];
+  D->reset();
 
-    if(j % dispfact == 0){
-      printf("%s\n(%s%d%s/%s%d%s)%s<==>%s(%s%d%s/%s100%s)%s", KGRN, KRED, (int)(j + 1), KMAG, KRED, nj, KGRN, KMAG, KGRN, KRED, (int)(100. * ((float)(j + 1)) / ((float)nj)), KMAG, KRED, KGRN, KNRM);
+  if(j % dispfact == 0){
+    printf("%s\n(%s%d%s/%s%d%s)%s<==>%s(%s%d%s/%s100%s)%s", KGRN, KRED, (int)(j + 1), KMAG, KRED, nj, KGRN, KMAG, KGRN, KRED, (int)(100. * ((float)(j + 1)) / ((float)nj)), KMAG, KRED, KGRN, KNRM);
+  }
+
+  for0(i, nj){
+    d = myclust_knn->distance(i, j);
+    D->f(i) = d;
+    if(isnan(d) || isnan(-d) || isinf(d) || isinf(-d)){
+      printf("bad data\n");
+      exit(1);
     }
 
-    for0(i, nj){
-      d = myclust_knn->distance(i, j);
-      D->f(i) = d;
-    }
-    D->Sort();
+  }
+  D->Sort();
 }
 
-float clust_knn::densityEstimate(int j, int K){
+float clust_knn::densityEstimate(int j){
+	int K = KNN_USE;
   int i;
   float sumd, d;
   d = sumd = 0.;
@@ -144,20 +161,40 @@ float clust_knn::densityEstimate(int j, int K){
     d = nnD.at(j, i);
     sumd += d;
   }
-  return - sumd;
+  d = - sumd;
+  if(isnan(d) || isinf(d)){
+    sumd = 0.;
+    printf("densityEstimate j %d K %d\n", j, K);
+    for0(i, K){
+      d = nnD.at(j, i);
+      sumd += d;
+      printf("\td %f\n", d);
+    }
+    exit(1);
+  }
+
+  return d;
 }
 
 int clust_knn::classf( int j, SA<int> * highestdensityneighborindex, SA<float> * highestdensityneighbordensity){
 
-  if(knn_indices.at(j) >= 0) return knn_indices.at(j); // return pre-existing label
+  int debug = false;
+
+  if(debug) printf("classf j %d\n", j);
+  if(knn_indices.at(j) >= 0){
+    if(debug) printf("\talready classed\n");
+    return knn_indices.at(j); // return pre-existing label
+  }
 
   if(highestdensityneighbordensity->at(j) <= dE.at(j)){
     knn_J_indices.push_back(j);
     knn_indices.at(j) = nkci;
+    if(debug) printf("\tat top: j %d nkci %d\n", j, nkci);
     return(nkci++);
   }
   else{
     int nextJ = highestdensityneighborindex->at(j); // move towards peak
+    if(debug) printf("\t move to peak: hdnd %f nextJ %d\n", (float) highestdensityneighbordensity->at(nextJ), nextJ);
     int recursiveclass = classf(nextJ, highestdensityneighborindex, highestdensityneighbordensity);
     return recursiveclass;
   }
@@ -166,36 +203,41 @@ int clust_knn::classf( int j, SA<int> * highestdensityneighborindex, SA<float> *
 void clust_knn::knn_clustering(){
   printf("start knn clustering...\n");
 
-  int K = KNN_USE;
-  if(K > KMax){
-    printf("K %d KMax %d\n", K, KMax);
+  if(KNN_USE > KNN_MAX){
+    printf("K %d KMax %d\n", KNN_USE, KNN_MAX);
     printf("Error: you have selected K>K_Max.\n");
     exit(1);
   }
 
   int j,i;
-  for0(j, nj) dE[j] = densityEstimate(j, KMax);
+  for0(j, nj) dE[j] = densityEstimate(j);
+  if(false){
+    for0(j, nj){
+      printf("%f ", dE[j]);
+    }
+    printf("\n");
+  }
 
   knn_indices.init(nj); //these are the labels for the clustering.
 
   SA<int> hdni(nj); //highest density neighbor index.
   SA<float> hdnd(nj); //highest density neighbor density.
-  SAS <float> D(KMax); //list the densities of the neighbors of the current point.
+  SAS <float> D(KNN_USE); //list the densities of the neighbors of the current point.
 
   int ni; //neighbor index.
   int chdni; //current highest density neighbor index.
 
   for0(j, nj){
     D.reset();
-    for0(i, KMax){
+    for0(i, KNN_USE){
       ni = nnIndex.at(j,i);
       D.f(i) = dE[ni];
     }
     D.Sort(); // increasing order
-    chdni = D.index(K - 1);
+    chdni = D.index(KNN_USE - 1);
     chdni = nnIndex.at(j, chdni);
     hdni[j] = chdni;
-    hdnd[j] = D.f(K - 1);
+    hdnd[j] = D.f(KNN_USE - 1);
   }
 
   knn_J_indices.clear();
