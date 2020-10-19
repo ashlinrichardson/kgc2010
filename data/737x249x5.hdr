@@ -1,0 +1,10 @@
+ENVI
+samples = 249
+lines   = 737
+bands   = 5
+header offset = 0
+file type = ENVI Standard
+data type = 4
+interleave = bsq
+byte order = 0
+band names ={20160101 red,20160101 green,20160101 blue,20160101 red,20160101 green}
