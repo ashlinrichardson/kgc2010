@@ -9,14 +9,17 @@ clust_knn::clust_knn(int _NRow, int _NCol){
 
 void clust_knn::reinit(int _nskip){
   printf("%sclust_knn::reinit %snskip %s%d %sKNN_USE %s%d%s\n", KMAG, KGRN, KRED, _nskip, KGRN, KRED, KNN_USE, KNRM);
-  GLUT3d * _my3d = myglut3d;
-  GLUT2d * _my2d = myglut2d;
-  clust_knn::init(_my3d, _my2d, float_buffers, _nskip, true);
+   GLUT3d * _my3d = myglut3d;
+ GLUT2d * _my2d = myglut2d;
+ clust_knn::init(_my3d, _my2d, float_buffers, _nskip, true);
+  
+  // clust_knn::init(myglut3d, myglut2d, float_buffers, _nskip, true);
 }
 
 float clust_knn::euclidean_distance(int i, int j){
   int m;
-  float d, tmp;
+	float d, tmp;
+
   d = 0.;
   for0(m, N){
     tmp = dat.at(j, m) - dat.at(i, m);
@@ -24,25 +27,19 @@ float clust_knn::euclidean_distance(int i, int j){
   }
 
   if(isnan(d) || isinf(d) || isnan(-d) || isinf(-d)){
-    printf("badd i %d j %d\n", i, j);
-    for0(m, N){
-      printf("\tdjm %f dim %f\n", dat.at(j, m), dat.at(i, m));
-    }
+    printf("euclidean_distance bad: i %d j %d\n", i, j);
+    for0(m, N) printf("\tdjm %f dim %f\n", dat.at(j, m), dat.at(i, m));
     exit(1);
   }
-
   return d;
 }
 
 float clust_knn::distance(int i, int j){
-  // if((*isBad)[i] == 1 || (*isBad)[j] == 1){
-    // / return NAN;
-  // }
-  return euclidean_distance(i, j);
+  	// there were other distance functions in here.. put them back?
+	return euclidean_distance(i, j);
 }
 
 void clust_knn::init(GLUT3d * _my3d, GLUT2d * _my2d, vector < SA<float> * > * _float_buffers, int nskip){
-  printf("reinit false\n");
   init(_my3d, _my2d, _float_buffers, nskip, false);
 }
 
@@ -50,15 +47,8 @@ void clust_knn::init(GLUT3d * _my3d, GLUT2d * _my2d, vector < SA<float> * > * _f
 void clust_knn::init(GLUT3d * _my3d, GLUT2d * _my2d, vector < SA<float> * > * _float_buffers, int nskip, bool re_init){
   printf("\tre_init %d\n", (int)re_init);
 
-//  KNN_USE = _KMax;
-
-  if(!re_init){
-    D_j = NULL;
-  }
-  else{
+  if(!re_init) D_j = NULL;
   
-  }
-
   myglut3d = _my3d;
   myglut2d = _my2d;
   n_skip = nskip;
@@ -122,17 +112,17 @@ void clust_knn::init(GLUT3d * _my3d, GLUT2d * _my2d, vector < SA<float> * > * _f
 }
 
 void distance_calculation(){
+	// run distance calculation in parallel
   parfor(0, myclust_knn->nj, &distance_calculation);
 }
 
 void distance_calculation(size_t j){
-  int nj = myclust_knn->nj;
   SAS<float> * D; // distances w.r.t. a given point
   float d, tmp, x, y, z, X, Y, Z;
-  int ix, iy, iz, ind, i, k, m;
+  int ix, iy, iz, ind, i, k, m, nj;
+  nj = myclust_knn->nj;
+  
   int dispfact = nj / 20;
-  // for0(j, nj)
-
   D = myclust_knn->D_j[j];
   D->reset();
 
@@ -147,24 +137,25 @@ void distance_calculation(size_t j){
       printf("bad data\n");
       exit(1);
     }
-
   }
   D->Sort();
 }
 
 float clust_knn::densityEstimate(int j){
-	int K = KNN_USE;
-  int i;
+  int K = KNN_USE;
   float sumd, d;
+  int i;
+
   d = sumd = 0.;
   for0(i, K){
     d = nnD.at(j, i);
     sumd += d;
   }
   d = - sumd;
-  if(isnan(d) || isinf(d)){
+
+  if(isnan(d) || isinf(d) || isnan(-d) || isinf(-d)){
     sumd = 0.;
-    printf("densityEstimate j %d K %d\n", j, K);
+    printf("bad densityEstimate j %d K %d\n", j, K);
     for0(i, K){
       d = nnD.at(j, i);
       sumd += d;
@@ -179,7 +170,6 @@ float clust_knn::densityEstimate(int j){
 int clust_knn::classf( int j, SA<int> * highestdensityneighborindex, SA<float> * highestdensityneighbordensity){
 
   int debug = false;
-
   if(debug) printf("classf j %d\n", j);
   if(knn_indices.at(j) >= 0){
     if(debug) printf("\talready classed\n");
@@ -211,10 +201,10 @@ void clust_knn::knn_clustering(){
 
   int j,i;
   for0(j, nj) dE[j] = densityEstimate(j);
+
   if(false){
-    for0(j, nj){
-      printf("%f ", dE[j]);
-    }
+	  // debug printout for density estimates
+    for0(j, nj) printf("%f ", dE[j]);
     printf("\n");
   }
 
@@ -227,6 +217,7 @@ void clust_knn::knn_clustering(){
   int ni; //neighbor index.
   int chdni; //current highest density neighbor index.
 
+  // sorted list of density estimates of neighbours
   for0(j, nj){
     D.reset();
     for0(i, KNN_USE){
@@ -243,15 +234,16 @@ void clust_knn::knn_clustering(){
   knn_J_indices.clear();
   nkci = 0;
 
+  // run the classification
   for0(j, nj) knn_indices[j] = -1;
   for0(j, nj) knn_indices[j] = classf(j, &(hdni), &(hdnd));
 
+  // how many centres?
   n_knn_centres = nkci;
   number_of_classes = n_knn_centres;
   printf("Number of classes: %d\n", nkci);
 
   myglut3d->lock = true;
-
   int N = float_buffers->size();
   myglut3d->class_centres.clear();
 
@@ -260,13 +252,14 @@ void clust_knn::knn_clustering(){
     for0(j, N) myglut3d->class_centres.push_back(dat.at(myind, j));
   }
 
+  // calculate class membership
   classmembers.clear();
   for0(i, n_knn_centres){
     vector<unsigned int> a;
     classmembers.push_back(a);
   }
-  for0(j, nj) classmembers[knn_indices[j]].push_back(j);
 
+  for0(j, nj) classmembers[knn_indices[j]].push_back(j);
   myglut3d->lock = false;
   myglut2d->unlock();
   myglut2d->mark();
@@ -274,21 +267,17 @@ void clust_knn::knn_clustering(){
 }
 
 int clust_knn::get_n_knn_centres(){
-  // the number of classes.
-  return n_knn_centres;
+  return n_knn_centres; // number of classes
 }
 
 int clust_knn::get_n_knn_elements(int centre_index){
-  // number of dat elements for given class.
-  return (classmembers[centre_index]).size();
+  return (classmembers[centre_index]).size(); // number of dat elements for a given class
 }
 
 float clust_knn::get_centre_coord(int centre_index, int elem_ind, int coord){
-  //get the i'th coordinate of a given N-dimensional dat element.
-  return dat.at((classmembers[centre_index])[elem_ind], coord);
+  return dat.at((classmembers[centre_index])[elem_ind], coord); // i'th coordinate of an N-dimensional dat element
 }
 
-//get the i'th coordinate of the representative element of the cluster...
 float clust_knn::get_centre_coord( int centre_index, int coord){
-  return dat.at( knn_J_indices.at(centre_index), coord);
+  return dat.at(knn_J_indices.at(centre_index), coord); // i'th coordinate of "representative" element of cluster ("hill top")
 }
