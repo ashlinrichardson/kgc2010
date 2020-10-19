@@ -68,7 +68,6 @@ void clust_knn::init(GLUT3d * _my3d, GLUT2d * _my2d, vector < SA<float> * > * _f
     // only allocate memory the first time
     dE.init(nj);
     dat.init(nj, N);
-    badData.init(nj);
     nnD.init(nj, KNN_MAX);
     origIndex.init(nj);
     nnIndex.init(nj, KNN_MAX);
@@ -85,7 +84,6 @@ void clust_knn::init(GLUT3d * _my3d, GLUT2d * _my2d, vector < SA<float> * > * _f
           origIndex.at(k) = h;
           for0(m, N){
             dat.at(k, m) = float_buffers->at(m)->at(i, j);
-            badData.at(i, j) = isBad->at(i, j);
             (*i_coord)[m] = i;
             (*j_coord)[m] = j;
           }
