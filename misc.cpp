@@ -200,10 +200,10 @@ void hread(str hfn, size_t & nrow, size_t & ncol, size_t & nband){
 }
 
 void hwrite(str hfn, size_t nrow, size_t ncol, size_t nband){
-  cout << "+w " << hfn << endl;  
+  cout << "+w " << hfn << endl;
   ofstream hf(hfn);
   if(!hf.is_open()) err("failed to open header file for writing");
-   hf << "ENVI" << endl;
+  hf << "ENVI" << endl;
   hf << "samples = " << ncol << endl;
   hf << "lines = " << nrow << endl;
   hf << "bands = " << nband << endl;
@@ -235,7 +235,6 @@ str hdr_fn(str fn, bool create=false){
 str hdr_fn(str fn){
   return hdr_fn(fn, false);
 }
-
 
 float * falloc(size_t nf){
   return (float *) alloc(nf * (size_t)sizeof(float));

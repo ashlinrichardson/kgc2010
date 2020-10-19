@@ -40,7 +40,7 @@
 
   /*
   void err(char * msg){
-	  printf("Error: %s\n", msg);
+    printf("Error: %s\n", msg);
     exit(1);
   }
 
@@ -50,14 +50,13 @@
   */
 
 
-
   void init_mtx(){
     // mutex setup
     pthread_mutex_init(&print_mtx, NULL);
     pthread_mutex_init(&pthread_next_j_mtx, NULL);
   }
 
-/*
+  /*
   void cprint(string s){
     pthread_mutex_lock(&print_mtx);
     cout << s << endl;

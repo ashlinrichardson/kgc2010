@@ -6,14 +6,14 @@ GLUTWindow::GLUTWindow(){
   myclust = NULL;
 }
 
-// void 
+// void
 void GLUTWindow::focus(){
   int my_id = myID();
   // printf("glutSetWindow(%d)\n", my_id);
   glutSetWindow(my_id);
 }
 
-// int 
+// int
 int GLUTWindow::initGLUT(int _NRow, int _NCol, const char * title_string){
   printf("initGLUT(%d,%d)\n", _NRow, _NCol);
   Update = false;
@@ -27,7 +27,7 @@ int GLUTWindow::initGLUT(int _NRow, int _NCol, const char * title_string){
   return WindowID;
 }
 
-//void 
+//void
 void GLUTWindow::setRGB(SA<float> * r, SA<float> * g, SA<float> * b, unsigned int A, unsigned int B, unsigned int C){
   b1 = r;
   b2 = g;
@@ -37,20 +37,20 @@ void GLUTWindow::setRGB(SA<float> * r, SA<float> * g, SA<float> * b, unsigned in
   curband[2] = C;
 }
 
-// void 
+// void
 void GLUTWindow::setDisplayFunc(void (*f)()){
   focus();
   glutDisplayFunc(f);
 }
 
-// void 
+// void
 void GLUTWindow::setKeys(void (*f)(unsigned char, int, int), void (*g)(int, int, int)){
   focus();
   glutKeyboardFunc(f);
   glutSpecialFunc(g);
 }
 
-// void 
+// void
 void GLUTWindow::setPos(int x, int y){
   focus();
   glutPositionWindow(x, y);
@@ -58,19 +58,19 @@ void GLUTWindow::setPos(int x, int y){
   YPos = y;
 }
 
-//void 
+//void
 void GLUTWindow::setRightOf(GLUTWindow * other){
   focus();
   setPos(other->XPos + other->WindowX, other->YPos);
 }
 
-//void 
+//void
 void GLUTWindow::setBelow(GLUTWindow * other){
   focus();
   setPos(other->XPos, 40 + other->YPos + other->WindowY);
 }
 
-// int 
+// int
 int GLUTWindow::myID(){
   return WindowID;
 }
@@ -223,8 +223,8 @@ void GLUT2d::idlethreadfunc(){
       myglut2d->recalc_binary_quick(i);
       myglut2d->recalc_binary(i);
       myglut2d->quickdraw();
-// }
-    }
+    // }
+  }
   thread_exists = false;
 }
 
@@ -301,7 +301,7 @@ void GLUT2d::recalc_binary_quick(int mypick){
         datBinary.at(ind2++) = result;
         datBinary.at(ind2++) = result;
         datBinary.at(ind2 ) = result;
-      }     
+      }
 
       d = (float)result; // write outputs in type 4
       fwrite(&d, sizeof(float), 1, outfile1);
@@ -434,8 +434,8 @@ void GLUT2d::reclass_point(int i, int j){
 }
 
 int GLUT2d::recalc_classes(){
-	// how about try colour with mean instead of top?
-	// how about log-sized circles to indicate membership size?
+  // how about try colour with mean instead of top?
+  // how about log-sized circles to indicate membership size?
   printf("GLUT2d::recalc_classes()\n");
   if(!myclust) return false;
   srand(time(NULL));
@@ -454,9 +454,9 @@ int GLUT2d::recalc_classes(){
 
   for0(i, NRow){
     rs = NRow - i - 1;
-     
+
     if((i % comp) == 0) printf("Applying: %d/100\n", (int)(floor(100. * ((float)(i + 1) / (float)(NRow)))));
-   
+
     for0(j, NCol){
       x = b1->at(rs, j);
       y = b2->at(rs, j);

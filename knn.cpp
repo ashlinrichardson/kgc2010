@@ -70,7 +70,7 @@ int main(int argc, char *argv[]){
   // char *args[5] = {
   // "kgc.exe\0", "data/737x249x5.bin\0", "33333\0", "333\0", "2\0"}
   // ;
-  
+
   // THIS ONE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   char *args[5] = {
   "kgc.exe\0", "data/rgb.bin\0", "33333\0", "230\0", "2\0"}

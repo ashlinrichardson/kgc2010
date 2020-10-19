@@ -34,7 +34,7 @@ using namespace _SA;
     SA<float> nnD; //the listing of distances between each point and it's K-nearest neighbors.
     vector< vector<unsigned int> > classmembers;
 
-    SAS<float> ** D_j; 
+    SAS<float> ** D_j;
 
     SA<float> dE;
     SA<int> knn_indices;
@@ -48,7 +48,7 @@ using namespace _SA;
     void init(GLUT3d * _my3d,
     GLUT2d * _my2d,
     vector < SA<float> * > * _float_buffers,
-    int nskip);  //calculate nj from N and nskip.
+    int nskip); //calculate nj from N and nskip.
     // );
 
     void init(GLUT3d * _my3d,

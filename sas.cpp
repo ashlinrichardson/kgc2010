@@ -64,7 +64,7 @@ int test(int N){
   SAS<float> X(N);
 
   for(i = 0; i < N; i++) X[i].value = (float)rand() / (float)RAND_MAX;
-  
+
   cout << X <<endl;
   X.Sort();
   cout << X << endl;

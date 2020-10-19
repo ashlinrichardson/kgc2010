@@ -57,7 +57,7 @@ using namespace myglut;
 
   void recluster(){
     myclust_knn->knn_clustering();
-    
+
     myglut2d->reboot();
     myglut2d->unlock();
     myglut2d->recalc_classes();
@@ -75,11 +75,11 @@ using namespace myglut;
     vector < SA<float> * > * fb = &float_buffers;
 
     while(console_string[i]!='\0') i++;
-    
+
     int count = i + 1;
     SA<char> s(count);
     for0(i, count) s[i] = console_string[i];
-    
+
     int r, g, b, tk;
     i = grabint(&s[1]);
     int ndim = (float_buffers).size();
@@ -109,7 +109,7 @@ using namespace myglut;
       setrgb(r, i - 1, b);
       break;
 
-      // select blue 
+      // select blue
       case 'b': // printf("Select band in range 1-N\n");
       if(i < 1 || i > ndim) break;
       getrgb(r, g, b);
@@ -120,7 +120,7 @@ using namespace myglut;
       case 'k':
       if(i < 1 || i > KNN_MAX){
         printf("please select K in [1, %d]\n", KNN_MAX);
-	break;
+        break;
       }
       KNN_USE = i;
       printf("Running knn classification with %d nearest neighbors\n", i);

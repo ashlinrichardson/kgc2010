@@ -45,7 +45,6 @@ using namespace std;
 #define mtx_lock pthread_mutex_lock
 #define mtx_unlock pthread_mutex_unlock
 
-
 extern pthread_mutex_t print_mtx;
 void cprint(str s);
 extern pthread_attr_t pthread_attr; // specify threads joinable

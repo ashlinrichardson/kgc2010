@@ -9,16 +9,16 @@ clust_knn::clust_knn(int _NRow, int _NCol){
 
 void clust_knn::reinit(int _nskip){
   printf("%sclust_knn::reinit %snskip %s%d %sKNN_USE %s%d%s\n", KMAG, KGRN, KRED, _nskip, KGRN, KRED, KNN_USE, KNRM);
-   GLUT3d * _my3d = myglut3d;
- GLUT2d * _my2d = myglut2d;
- clust_knn::init(_my3d, _my2d, float_buffers, _nskip, true);
-  
+  GLUT3d * _my3d = myglut3d;
+  GLUT2d * _my2d = myglut2d;
+  clust_knn::init(_my3d, _my2d, float_buffers, _nskip, true);
+
   // clust_knn::init(myglut3d, myglut2d, float_buffers, _nskip, true);
 }
 
 float clust_knn::euclidean_distance(int i, int j){
   int m;
-	float d, tmp;
+  float d, tmp;
 
   d = 0.;
   for0(m, N){
@@ -35,8 +35,8 @@ float clust_knn::euclidean_distance(int i, int j){
 }
 
 float clust_knn::distance(int i, int j){
-  	// there were other distance functions in here.. put them back?
-	return euclidean_distance(i, j);
+  // there were other distance functions in here.. put them back?
+  return euclidean_distance(i, j);
 }
 
 void clust_knn::init(GLUT3d * _my3d, GLUT2d * _my2d, vector < SA<float> * > * _float_buffers, int nskip){
@@ -48,7 +48,7 @@ void clust_knn::init(GLUT3d * _my3d, GLUT2d * _my2d, vector < SA<float> * > * _f
   printf("\tre_init %d\n", (int)re_init);
 
   if(!re_init) D_j = NULL;
-  
+
   myglut3d = _my3d;
   myglut2d = _my2d;
   n_skip = nskip;
@@ -112,7 +112,7 @@ void clust_knn::init(GLUT3d * _my3d, GLUT2d * _my2d, vector < SA<float> * > * _f
 }
 
 void distance_calculation(){
-	// run distance calculation in parallel
+  // run distance calculation in parallel
   parfor(0, myclust_knn->nj, &distance_calculation);
 }
 
@@ -121,7 +121,7 @@ void distance_calculation(size_t j){
   float d, tmp, x, y, z, X, Y, Z;
   int ix, iy, iz, ind, i, k, m, nj;
   nj = myclust_knn->nj;
-  
+
   int dispfact = nj / 20;
   D = myclust_knn->D_j[j];
   D->reset();
@@ -203,7 +203,7 @@ void clust_knn::knn_clustering(){
   for0(j, nj) dE[j] = densityEstimate(j);
 
   if(false){
-	  // debug printout for density estimates
+    // debug printout for density estimates
     for0(j, nj) printf("%f ", dE[j]);
     printf("\n");
   }

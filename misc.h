@@ -131,7 +131,7 @@ static inline std::string trim_copy(std::string s){
 
 static inline void trim(std::string &s, char delim){
   str ret("");
-  int end = s.size() - 1; 
+  int end = s.size() - 1;
   int start = 0;
   while(s[start] == delim) start += 1;
   while(s[end] == delim) end -= 1;
@@ -185,12 +185,12 @@ float * falloc(size_t nf);
 // read binary file
 float * bread(str bfn, size_t nrow, size_t ncol, size_t nband);
 
-extern  pthread_mutex_t print_mutex;
+extern pthread_mutex_t print_mutex;
 void cprint(str s);
 /*
-  pthread_mutex_lock(&print_mutex);
-  cout << s << endl;
-  pthread_mutex_unlock(&print_mutex);
+pthread_mutex_lock(&print_mutex);
+cout << s << endl;
+pthread_mutex_unlock(&print_mutex);
 */
 
 int hsv_to_rgb(float *r, float *g, float *b, float h, float s, float v);
@@ -202,6 +202,5 @@ str hdr_fn(str fn, bool create);
 size_t size(FILE * f);
 size_t fsize(string fn);
 bool exists(str fn);
-
 
 #endif
