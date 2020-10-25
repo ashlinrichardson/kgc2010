@@ -110,7 +110,7 @@ int main(int argc, char *argv[]){
     scaleband(fbufs[kk]); // scale band to [0, 1]
   }
 
-  // substitute NAN in one band, or zero in all bands, with small random number..
+  // data conditioning: in absence of de-duplication: substitute NAN in one band, or zero in all bands, with small random number..
   for0(kk, n){
     bool all_zero = true;
     for0(i, N){
