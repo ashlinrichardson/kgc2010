@@ -1,1 +1,1 @@
-./kgc.exe  data/rgb.bin   11111 222 2
+./kgc.exe  data/rgb.bin   11111 50 2
