@@ -1,4 +1,5 @@
 #include "clust_knn.h"
+#include "misc.h"
 using namespace myglut;
 
 clust_knn::clust_knn(int _NRow, int _NCol){

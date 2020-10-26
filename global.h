@@ -32,7 +32,6 @@
 #include "sas.cpp"
 #include <pthread.h>
 #include "clust_knn.h"
-#include "ansi_color.h"
 
 using namespace _SA;
 using namespace std;

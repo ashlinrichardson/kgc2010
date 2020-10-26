@@ -8,7 +8,6 @@
 #include "pick.h"
 #include "global.h"
 #include "clust_knn.h"
-#include "ansi_color.h"
 
 using namespace myglut;
 
