@@ -6,7 +6,9 @@ An approach developed w David Goodenough, Hao Chen and team [1] at Advanced Fore
 To run the example:
 ```
   ./setup.sh
-  make 
+  
+  make
+  
   ./run.sh 
 ```
 Detailed instructions for GUI, to follow..
