@@ -12,6 +12,7 @@ To run the example:
   ./run.sh 
 ```
 Detailed instructions for GUI, to follow..
+.. also documentation of parameters!
 
 ## Firescar Delineation: 2002 Keg River Wildfire, Alberta, Canada
 <img src="output/out.gif " width="800">
