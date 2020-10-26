@@ -18,6 +18,10 @@ Detailed instructions for GUI, to follow..
 
 ## biblio
 
-[1] Unsupervised Nonparametric Classification of Polarimetric SAR Data Using The K-nearest Neighbor Graph, A. Richardson, D. G. Goodenough, H. Chen, G. Hobart, B. Moa, W. Myrvold, proc. IEEE IGARSS, Honolulu, Hawaii, July 2010.
+[1] **Unsupervised Nonparametric Classification of Polarimetric SAR Data Using The K-nearest Neighbor Graph**, A. Richardson, D. G. Goodenough, H. Chen, G. Hobart, B. Moa, W. Myrvold, proc. IEEE IGARSS, Honolulu, Hawaii, July 2010.
 
 [2] gltzpr by Nigel Stewart http://www.nigels.com/glt/gltzpr/zpr.h
+
+[3] **Hierarchical Unsupervised Nonparametric Classification of Polarimetric SAR Time Series Data,** A. Richardson, D. Goodenough, H. Chen, proc. IEEE IGARSS, Québec City, Canada, July 2014
+
+[4] **Mapping Fire Scars Using Radarsat-2 Polarimetric SAR Data,** D. Goodenough, H. Chen, A. Richardson, S. Cloude, W. Hong, Y. Li, Can. J. Remote Sensing, Vol. 37, No. 5, pp. 1-10, 2011
