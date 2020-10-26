@@ -240,7 +240,7 @@ void clust_knn::knn_clustering(){
   n_knn_centres = nkci;
   number_of_classes = n_knn_centres;
   printf("Number of classes: %d\n", nkci);
-
+  
   myglut3d->lock = true;
   int N = float_buffers->size();
   myglut3d->class_centres.clear();

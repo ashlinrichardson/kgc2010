@@ -1,6 +1,28 @@
 #include "glut.h"
+#include<string>
 using namespace myglut;
-//
+using namespace std;
+
+
+void hwrite(str hfn, size_t nrow, size_t ncol, size_t nband, size_t data_type){
+  cout << "+w " << hfn << " nrow " << nrow << " ncol " << ncol << " nband " << nband << endl;
+  ofstream hf(hfn);
+  if(!hf.is_open()){
+    printf("Error: failed to open header file for writing: %s\n", hfn.c_str());
+    exit(1);
+  }
+  hf << "ENVI" << endl;
+  hf << "samples = " << ncol << endl;
+  hf << "lines = " << nrow << endl;
+  hf << "bands = " << nband << endl;
+  hf << "header offset = 0" << endl;
+  hf << "file type = ENVI Standard" << endl;
+  hf << "data type = " << data_type << endl;
+  hf << "interleave = bsq" << endl;
+  hf << "byte order = 0" << endl;
+  hf.close();
+}
+
 GLUTWindow::GLUTWindow(){
   WindowID = Update = false;
   myclust = NULL;
@@ -510,6 +532,23 @@ int GLUT2d::recalc_classes(){
       indCentre.at(i, j) = cMIN;
     }
   }
+
+  // output classification results
+  FILE * f = fopen("output/class.bin", "wb");
+  if(!f){
+    printf("Error: failed to open output/class.bin\n");
+    exit(1);
+  }
+
+  for0(i, NRow){
+    rs = NRow - i - 1;
+    for0(j, NCol){
+      d = datResult.at((rs * NCol) + j);
+      fwrite(&d, sizeof(float), 1, f);
+    }
+  }
+  fclose(f);
+  hwrite(string("output/class.hdr"), NRow, NCol, 1, 4);
   return true;
 }
 
