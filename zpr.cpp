@@ -33,8 +33,29 @@ void zpr::zprInit(int WindowID){
 }
 
 static void zpr::zprReshape(int w,int h){
+/*
+      GLfloat ratio;  // http://faculty.ycp.edu/~dbabcock/cs370/labs/lab07.html
+      glViewport(0,0,w,h); // set new screen extents
+      glMatrixMode(GL_PROJECTION); // select projection matrix
+      glLoadIdentity();
+      if(w <= h){
+          ratio = ((GLfloat) h)/((GLfloat) w);
+          glOrtho(-1,1,-ratio,ratio,-1,1);
+		  _bottom = - ratio;
+          _top = ratio;
+      }
+      else if (h <= w){
+          ratio = (GLfloat) w/ (GLfloat) h;
+			    glOrtho(-ratio,ratio,-1,1,-1,1);
+			    _left = -ratio;
+                _right = ratio;
+      }
+      WINDOWX = glutGet( GLUT_WINDOW_WIDTH  );
+      WINDOWY = glutGet( GLUT_WINDOW_HEIGHT );
+	  glMatrixMode(GL_MODELVIEW);
+      return;	//http://graphics.stanford.edu/courses/cs248-01/OpenGLHelpSession/code_example.html
+*/
   glutSetWindow(windowid);
-
   glViewport(0,0,w,h);
   _top = 1.0;
   _bottom = -1.0;
@@ -48,6 +69,7 @@ static void zpr::zprReshape(int w,int h){
 
   WINDOWX = glutGet( GLUT_WINDOW_WIDTH);
   WINDOWY = glutGet( GLUT_WINDOW_HEIGHT );
+
 }
 
 static void zpr::zprMouse(int button, int state, int x, int y){

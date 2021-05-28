@@ -174,7 +174,7 @@ int main(int argc, char *argv[]){
   laststate = beforelaststate = -1;
 
   // init scatter plot
-  GLUT3d scatter(NCol * 2, NCol * 2, N);
+  GLUT3d scatter(NCol * 2, NCol * 2 + 1, N);
   scatter.setRGB(fbufs[0], fbufs[1], fbufs[2], 0, 1, 2);
   GLUT3d_windows.push_back(&scatter);
   scatter.setBelow(&img);
