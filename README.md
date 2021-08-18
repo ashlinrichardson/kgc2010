@@ -15,6 +15,7 @@ Detailed instructions for GUI, to follow..
 .. also documentation of parameters!
 
 ## Firescar Delineation: 2002 Keg River Wildfire, Alberta, Canada
+Thanks to JAXA for L-band fully-polarimetric SAR data
 <img src="output/out.gif " width="800">
 
 ## biblio
