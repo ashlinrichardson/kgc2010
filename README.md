@@ -28,7 +28,7 @@ Click on cluster centres (blue) to visualize cluster in image domain (class wind
 * after producing a binary classication, can press c (lower case) to switch back to multi-class view (in which pixels are coloured according to the mode to which they are assigned). In this representation the mode is the value of the "hilltop" determined
 
 ## Image plot
-Band selection:
+Band selection: [ add photo for switching bands] 
 * type: r1 (then press return) to set band 1 as red
 * type g2 (then press return) to set band 2 as green
 * type b3 (then press return) to set band 3 as blue
