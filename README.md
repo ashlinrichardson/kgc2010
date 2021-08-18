@@ -26,6 +26,7 @@ Thanks to JAXA for L-band fully-polarimetric SAR data
 Click on cluster centres (blue) to visualize cluster in image domain (class window)
 
 ## Image plot
+Band selection:
 * type: r1 (then press return) to set band 1 as red
 * type g2 (then press return) to set band 2 as green
 * type b3 (then press return) to set band 3 as blue
