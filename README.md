@@ -15,7 +15,7 @@ Detailed instructions for GUI, to follow..
 .. also documentation of parameters!
 
 ## Firescar Delineation: 2002 Keg River Wildfire, Alberta, Canada
-Thanks to JAXA for L-band fully-polarimetric SAR data
+Thanks to JAXA for L-band fully-polarimetric SAR data. Shown: cluster selection from 3-d cluster plot window. The 3-d coordinates are the same as those used in the RGB encoding in the Image window. The color encoding and the 3-d coordinates for plotting are tied together in this implementation but can be switched on the fly to explore higher-dimensional data. A "very large" number of bands is supported.
 <img src="output/out.gif " width="800">
 
 # Instructions
