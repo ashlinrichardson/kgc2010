@@ -23,7 +23,9 @@ Thanks to JAXA for L-band fully-polarimetric SAR data
 * Zoom: hold down both mouse buttons and drag
 * Pan: hold down right mouse button and drag
 * Rotate: hold down left mouse button and drag
-Click on cluster centres (blue) to visualize cluster in image domain (class window)
+
+Click on cluster centres (blue) to visualize cluster in image domain (class window). This produces a binary classification
+* after producing a binary classication, can press c (lower case) to switch back to multi-class view (in which pixels are coloured according to the mode to which they are assigned). In this representation the mode is the value of the "hilltop" determined
 
 ## Image plot
 Band selection:
