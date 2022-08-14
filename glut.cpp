@@ -455,41 +455,7 @@ void GLUT2d::reclass_point(int i, int j){
   indCentre.at(i, j) = cMIN;
 }
 
-/* 20220813 need to parallelize this */
-
-//void parfor(size_t start_j, size_t end_j, void(*eval)(size_t)){
-
-/*
- void distance_calculation(){
-  // run distance calculation in parallel
-  parfor(0, myclust_knn->nj, &distance_calculation);
-}
-
-void distance_calculation(size_t j){
-  SAS<float> * D; // distances w.r.t. a given point
-  float d, tmp, x, y, z, X, Y, Z;
-  int ix, iy, iz, ind, i, k, m, nj;
-  nj = myclust_knn->nj;
-
-  int dispfact = nj / 20;
-  D = myclust_knn->D_j[j];
-  D->reset();
-
-  if(j % dispfact == 0){
-    printf("%s\n(%s%d%s/%s%d%s)%s<==>%s(%s%d%s/%s100%s)%s", KGRN, KRED, (int)(j + 1), KMAG, KRED, nj, KGRN, KMAG, KGRN, KRED, (int)(100. * ((float)(j + 1)) / ((float)nj)), KMAG, KRED, KGRN, KNRM);
-  }
-
-  for0(i, nj){
-    d = myclust_knn->distance(i, j);
-    D->f(i) = d;
-    if(isnan(d) || isnan(-d) || isinf(d) || isinf(-d)){
-      printf("bad data\n");
-      exit(1);
-    }
-  }
-  D->Sort();
-}
-*/
+/* 20220813 parallelized by row */
 
 void recalc_classes_row(size_t i){
   long int NRow = myglut2d->NRow;
@@ -578,57 +544,7 @@ int GLUT2d::recalc_classes(){
   comp = NRow / 5;
 
   parfor(0, NRow, &recalc_classes_row); //distance_calculation);
-/*
-  for0(i, NRow){
-    rs = NRow - i - 1;
-    if((i % comp) == 0) printf("Applying: %d/100\n", (int)(floor(100. * ((float)(i + 1) / (float)(NRow)))));
 
-    for0(j, NCol){
-      x = b1->at(rs, j);
-      y = b2->at(rs, j);
-      z = b3->at(rs, j);
-      rjmin = indClosest.at(i, j);
-
-      if(rjmin >= 0){
-        cMIN = indCentre.at(i, j);
-        d = 0;
-
-        for0(K, N){
-          tmp = (fb->at(K)->at(i, j)) - (myclust->get_centre_coord(cMIN, rjmin, K));
-          d += tmp * tmp;
-        }
-        dMIN = d;
-      }
-      else{
-        dMIN = FLT_MAX;
-        cMIN = 0;
-      }
-
-      for0(J, nc){
-        n_elem = myclust->get_n_knn_elements(J); // for each centre
-        for0(I, rim){
-          (rj = rand() % n_elem), d = 0.; //for each iteration, select random element from clust
-          for0(K, N){
-            tmp = (fb->at(K)->at(i, j)) - (myclust->get_centre_coord(J, rj, K));
-            d += tmp * tmp;
-          }
-          if(d < dMIN){
-            (dMIN = d), (cMIN = J), (rjmin = rj); // found a closer element
-          }
-        }
-      }
-
-      //use repr. element from centre to assign color to clust
-      ind = 3 * ((rs * NCol) + j);
-      datClust.at(ind++) = myclust->get_centre_coord(cMIN, curband[0]);
-      datClust.at(ind++) = myclust->get_centre_coord(cMIN, curband[1]);
-      datClust.at(ind) = myclust->get_centre_coord(cMIN, curband[2]);
-      datResult.at((rs * NCol) + j) = cMIN;
-      indClosest.at(i, j) = rjmin;
-      indCentre.at(i, j) = cMIN;
-    }
-  }
-*/
   // output classification results
   FILE * f = fopen("output/class.bin", "wb");
   if(!f){
