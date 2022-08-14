@@ -455,6 +455,7 @@ void GLUT2d::reclass_point(int i, int j){
   indCentre.at(i, j) = cMIN;
 }
 
+/* 20220813 need to parallelize this */
 int GLUT2d::recalc_classes(){
   // how about try colour with mean instead of top?
   // how about log-sized circles to indicate membership size?
