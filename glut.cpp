@@ -201,7 +201,9 @@ void GLUT2d::refresh(){
   if(Update == true){
     rebuffer();
     int did_recalc = false;
+    if(false){
     if(!isClassification) did_recalc = recalc_classes();
+    }
     Update = false;
   }
   draw2d();
@@ -277,7 +279,7 @@ void GLUT2d::draw2d(){
         quickdraw();
         if(_lastmouseRight) return;
 
-        recalc_classes();
+        if(false) recalc_classes(); // 20220813
         quickdraw();
         recalc_binary(PickThis);
         source = (GLvoid *)(&((datBinary.elements)[0])); //binary classification

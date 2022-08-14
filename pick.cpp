@@ -32,7 +32,10 @@ void extern myglut::pick(GLint name){
 
   /*if(PickThis != laststate)*/
 
-  myglut2d->recalc_classes();
+  if(false){
+	  // only recalculate classes if we change K
+    myglut2d->recalc_classes();
+  }
   // myglut2d->recalc_binary_quick(PickThis);
   source = (GLvoid *)(&((myglut2d->datBinary.elements)[0]));
   myglut2d->quickdraw();
