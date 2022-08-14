@@ -456,6 +456,41 @@ void GLUT2d::reclass_point(int i, int j){
 }
 
 /* 20220813 need to parallelize this */
+
+//void parfor(size_t start_j, size_t end_j, void(*eval)(size_t)){
+
+/*
+ void distance_calculation(){
+  // run distance calculation in parallel
+  parfor(0, myclust_knn->nj, &distance_calculation);
+}
+
+void distance_calculation(size_t j){
+  SAS<float> * D; // distances w.r.t. a given point
+  float d, tmp, x, y, z, X, Y, Z;
+  int ix, iy, iz, ind, i, k, m, nj;
+  nj = myclust_knn->nj;
+
+  int dispfact = nj / 20;
+  D = myclust_knn->D_j[j];
+  D->reset();
+
+  if(j % dispfact == 0){
+    printf("%s\n(%s%d%s/%s%d%s)%s<==>%s(%s%d%s/%s100%s)%s", KGRN, KRED, (int)(j + 1), KMAG, KRED, nj, KGRN, KMAG, KGRN, KRED, (int)(100. * ((float)(j + 1)) / ((float)nj)), KMAG, KRED, KGRN, KNRM);
+  }
+
+  for0(i, nj){
+    d = myclust_knn->distance(i, j);
+    D->f(i) = d;
+    if(isnan(d) || isnan(-d) || isinf(d) || isinf(-d)){
+      printf("bad data\n");
+      exit(1);
+    }
+  }
+  D->Sort();
+}
+*/
+
 int GLUT2d::recalc_classes(){
   // how about try colour with mean instead of top?
   // how about log-sized circles to indicate membership size?
