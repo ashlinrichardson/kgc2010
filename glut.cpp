@@ -504,7 +504,6 @@ void recalc_classes_row(size_t i){
   
   nc = myglut2d->myclust->get_n_knn_centres();
   rim = myglut2d->myclust->get_Rand_Iter_Max();
-  
   N = fb->size();
   n = NRow * NCol * N;
   comp = NRow / 5;
@@ -512,10 +511,10 @@ void recalc_classes_row(size_t i){
   if((i % comp) == 0) printf("Applying: %d/100\n", (int)(floor(100. * ((float)(i + 1) / (float)(NRow)))));
 
     for0(j, NCol){
-	    /*
-      x = b1->at(rs, j);
-      y = b2->at(rs, j);
-      z = b3->at(rs, j);
+      /* 
+        x = b1->at(rs, j);
+        y = b2->at(rs, j);
+        z = b3->at(rs, j);
       */
       rjmin = myglut2d->indClosest.at(i, j);
 
@@ -578,6 +577,8 @@ int GLUT2d::recalc_classes(){
   n = NRow * NCol * N;
   comp = NRow / 5;
 
+  parfor(0, NRow, &recalc_classes_row); //distance_calculation);
+/*
   for0(i, NRow){
     rs = NRow - i - 1;
     if((i % comp) == 0) printf("Applying: %d/100\n", (int)(floor(100. * ((float)(i + 1) / (float)(NRow)))));
@@ -627,7 +628,7 @@ int GLUT2d::recalc_classes(){
       indCentre.at(i, j) = cMIN;
     }
   }
-
+*/
   // output classification results
   FILE * f = fopen("output/class.bin", "wb");
   if(!f){
