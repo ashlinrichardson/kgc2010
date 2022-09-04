@@ -336,6 +336,8 @@ void GLUT2d::recalc_binary_quick(int mypick){
   }
   fclose(outfile1);
   fclose(outfile2);
+
+  hwrite(string("output/out_binary.hdr"), NRow, NCol, 1, 4);
 }
 
 void GLUT2d::recalc_binary(int mypick){
