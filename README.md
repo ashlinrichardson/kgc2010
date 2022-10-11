@@ -1,6 +1,6 @@
 # kgc2010
 
-**KGC** is an **unsupervised classification algorithm** developed with David Goodenough, Hao Chen and other researchers within the Canadian Forest Service's **Advanced Forest Technologies (AFT) group.** This implementation was developed between April 1 -- August 19th, 2010 for presentation at IGARSS 2020 while the author was funded by the U.Vic Math & Stats department, and is occasionally still being improved. Graphics functions adapted from Nigel Stewart [2].
+**KGC** is an **unsupervised classification algorithm** developed with David Goodenough, Hao Chen and the Canadian Forest Service's **Advanced Forest Technologies (AFT) group** team. This implementation was developed between April 1 -- August 19th, 2010 for presentation at IGARSS 2020 while the author was funded by the U.Vic Math & Stats department, and is occasionally still being improved. Graphics functions adapted from Nigel Stewart [2].
 
 ## instructions (tested on Ubuntu 20)
 To run the example:
