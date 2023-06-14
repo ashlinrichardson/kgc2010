@@ -36,21 +36,8 @@
   size_t pthread_start_j, pthread_end_j; // start and end indices for job
   void (*pthread_eval)(size_t); // function pointer to execute in parallel, over range start_j:end_j inclusive
 
-  /*
-  void err(char * msg){
-    printf("Error: %s\n", msg);
-    exit(1);
-  }
-
-  void err(string msg) {
-    err(msg.c_str());
-  }
-  */
-
-
   void init_mtx(){
-    // mutex setup
-    pthread_mutex_init(&print_mtx, NULL);
+    pthread_mutex_init(&print_mtx, NULL);  // mutex setup
     pthread_mutex_init(&pthread_next_j_mtx, NULL);
   }
 
@@ -69,11 +56,10 @@
     //cprint(str("worker_fun(") + std::to_string(k) + str(")"));
 
     while(1){
-      // try to pick up a job
-      mtx_lock(&pthread_next_j_mtx);
+      mtx_lock(&pthread_next_j_mtx);  // try to pick up a job
       my_next_j = pthread_next_j ++; // index of data this thread should pick up if it can
       mtx_unlock(&pthread_next_j_mtx);
-
+      
       if(my_next_j >= pthread_end_j){
         //cprint(str("\texit thread ") + to_string(k));
         return(NULL);
