@@ -462,14 +462,15 @@ void GLUT2d::reclass_point(int i, int j){
 /* 20220813 parallelized by row */
 
 void recalc_classes_row(size_t i){
-  long int NRow = myglut2d->NRow;
-  long int NCol = myglut2d->NCol;
-  long int rs = NRow - i - 1;
+  int NRow = myglut2d->NRow;
+  int NCol = myglut2d->NCol;
+  int rs = NRow - i - 1;
+  printf("recalc_classes_row %zu of %zu rand_iter %d\n", i, NRow, (int)myglut2d->myclust->get_Rand_Iter_Max());
   
   SA<float> * dat = myglut2d->dat;
   vector< SA<float> * > * fb = myglut2d->myclust->float_buffers;
 
-  long int j, I, J, K, p, q, r, N, n, nc, comp, n_elem, rim, cMIN, ind, rj, rjmin;
+  int j, I, J, K, p, q, r, N, n, nc, comp, n_elem, rim, cMIN, ind, rj, rjmin;
   float x, y, z, d, dMIN,tmp;
   
   nc = myglut2d->myclust->get_n_knn_centres();
@@ -478,28 +479,40 @@ void recalc_classes_row(size_t i){
   n = NRow * NCol * N;
   comp = NRow / 5;
 
-  if((i % comp) == 0) printf("Applying: %d/100\n", (int)(floor(100. * ((float)(i + 1) / (float)(NRow)))));
+  float dd;  // coordinate for arbitrary data point
+  float cc; // coordinate for centre/hilltop point, associated with a given clustera
+  
+  clust_knn * my_clust = myglut2d->myclust;
 
+  if((i % comp) == 0) printf("Applying: %d/100\n", (int)(floor(100. * ((float)(i + 1) / (float)(NRow)))));
     for0(j, NCol){
       rjmin = myglut2d->indClosest.at(i, j);
 
-      if(rjmin >= 0){
         cMIN = myglut2d->indCentre.at(i, j);
-        d = 0;
-
-        for0(K, N){
-          tmp = (fb->at(K)->at(i, j)) - (myglut2d->myclust->get_centre_coord(cMIN, rjmin, K));
-          d += tmp * tmp;
-        }
-        dMIN = d;
-      }
-      else{
         dMIN = FLT_MAX;
-        cMIN = 0;
-      }
 
+        for0(J, nc){  // for each cluster "centre" / hilltop..
+
+          // get the index in the non-decimated / original data for the hilltop point. 
+          int orig_idx = my_clust->origIndex[my_clust->knn_J_indices[J]];
+          d = 0.;
+          for0(K, N){  // for each dimension
+            dd = (fb->at(K)->at(i, j)); // data value this row=i, col=j, band=K
+            cc = fb->at(K)->at(orig_idx);
+            tmp = dd - cc;
+            d += tmp * tmp;
+          }
+          if(d < dMIN){
+            dMIN = d;
+            cMIN = J;
+          }
+        }
+   
+   if(rim > 0){
       for0(J, nc){
         n_elem = myglut2d->myclust->get_n_knn_elements(J); // for each centre
+
+        // for each prescribed random iteration:
         for0(I, rim){
           (rj = rand() % n_elem), d = 0.; //for each iteration, select random element from clust
           for0(K, N){
@@ -511,12 +524,15 @@ void recalc_classes_row(size_t i){
           }
         }
       }
+    }
 
       //use repr. element from centre to assign color to clust
+      int orig_idx = my_clust->origIndex[my_clust->knn_J_indices[cMIN]];
+
       ind = 3 * ((rs * NCol) + j);
-      myglut2d->datClust.at(ind++) = myglut2d->myclust->get_centre_coord(cMIN, myglut3d->curband[0]);
-      myglut2d->datClust.at(ind++) = myglut2d->myclust->get_centre_coord(cMIN, myglut3d->curband[1]);
-      myglut2d->datClust.at(ind) = myglut2d->myclust->get_centre_coord(cMIN, myglut3d->curband[2]);
+      myglut2d->datClust.at(ind++) = fb->at(myglut3d->curband[0])->at(orig_idx); // myglut2d->myclust->get_centre_coord(cMIN, myglut3d->curband[0]);
+      myglut2d->datClust.at(ind++) = fb->at(myglut3d->curband[1])->at(orig_idx);//myglut2d->myclust->get_centre_coord(cMIN, myglut3d->curband[1]);
+      myglut2d->datClust.at(ind) = fb->at(myglut3d->curband[2])->at(orig_idx); //myglut2d->myclust->get_centre_coord(cMIN, myglut3d->curband[2]);
       myglut2d->datResult.at((rs * NCol) + j) = cMIN;
       myglut2d->indClosest.at(i, j) = rjmin;
       myglut2d->indCentre.at(i, j) = cMIN;
