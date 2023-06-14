@@ -64,7 +64,7 @@ void scaleband(SA<float> * buf){
 }
 
 int main(int argc, char *argv[]){
-  srand(37);
+  //srand(37);
   
   // default parameters
   const char *args[5] = {"kgc.exe\0", "data/rgb.bin\0", "33333\0", "230\0", "2\0"};
@@ -115,7 +115,7 @@ int main(int argc, char *argv[]){
     for0(i, N){
       float d = (* (fbufs[i]) )[kk];
       if(isnan(d) || isinf(d)){
-        float r = (rand() / RAND_MAX) / 111111.;
+        float r = (crappy_rand() / RAND_MAX) / 111111.;
         (* (fbufs[i]) )[kk] = r;
 
       }
@@ -126,7 +126,7 @@ int main(int argc, char *argv[]){
     }
     if(all_zero){
       for0(i, N){
-        float r = (rand() / RAND_MAX) / 111111.;
+        float r = (crappy_rand() / RAND_MAX) / 111111.;
         (* (fbufs[i]) )[kk] = r;
       }
     }

@@ -433,7 +433,7 @@ void GLUT2d::reclass_point(int i, int j){
 
     for0(I, rim){
       //for each iteration.
-      rj = rand() % n_elem; //select random element from cluster.
+      rj = crappy_rand() % n_elem; //select random element from cluster.
 
       d = 0.;
       for0(K, N){
@@ -514,7 +514,7 @@ void recalc_classes_row(size_t i){
 
         // for each prescribed random iteration:
         for0(I, rim){
-          (rj = rand() % n_elem), d = 0.; //for each iteration, select random element from clust
+          (rj = crappy_rand() % n_elem), d = 0.; //for each iteration, select random element from clust
           for0(K, N){
             tmp = (fb->at(K)->at(i, j)) - (myglut2d->myclust->get_centre_coord(J, rj, K));
             d += tmp * tmp;
@@ -544,7 +544,7 @@ int GLUT2d::recalc_classes(){
   // how about log-sized circles to indicate membership size?
   printf("GLUT2d::recalc_classes()\n");
   if(!myclust) return false;
-  srand(time(NULL));
+  // srand(time(NULL));
 
   long int i, j, I, J, K, p, q, r, N, n, nc, comp, n_elem, rim, cMIN, ind, rs, rj, rjmin;
   float x, y, z, d, dMIN,tmp;
