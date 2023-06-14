@@ -1,6 +1,6 @@
 # Mac OSX and Linux supported by this Makefile
 CC=g++
-CFLAGS= -g -O3 misc.cpp
+CFLAGS= -O3 misc.cpp  # -g
 
 UNAME_S := $(shell uname -s)
 
