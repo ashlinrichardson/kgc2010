@@ -32,6 +32,7 @@
 #include "sas.cpp"
 #include <pthread.h>
 #include "clust_knn.h"
+#include<sched.h>
 
 using namespace _SA;
 using namespace std;
@@ -107,5 +108,7 @@ void parfor(size_t start_j, size_t end_j, void(*eval)(size_t));
   // output file (binary format)
   extern FILE * outfile;
 // }
+
+void setThreadAffinity(pthread_t thread, int cpuIndex);
 
 #endif

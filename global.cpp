@@ -66,7 +66,7 @@
   void * worker_fun(void * arg){
     size_t k, my_next_j;
     k = (size_t)arg;
-    // cprint(str("worker_fun(") + std::to_string(k) + str(")"));
+    //cprint(str("worker_fun(") + std::to_string(k) + str(")"));
 
     while(1){
       // try to pick up a job
@@ -75,10 +75,10 @@
       mtx_unlock(&pthread_next_j_mtx);
 
       if(my_next_j >= pthread_end_j){
-        // cprint(str("\texit thread ") + to_string(k));
-
+        //cprint(str("\texit thread ") + to_string(k));
         return(NULL);
       }
+      //cprint(str("job ") + to_string(k));
       pthread_eval(my_next_j); // perform action segment
     }
   }
@@ -89,8 +89,8 @@
     pthread_end_j = end_j;
 
     pthread_next_j = start_j; // pthread_next_j_mtx is the lock on this variable
-    size_t n_cores = sysconf(_SC_NPROCESSORS_ONLN) + 2;
-    cout << "Number of cores: " << n_cores << endl;
+    size_t n_cores = sysconf(_SC_NPROCESSORS_ONLN);
+    cout << "Number of threads: " << n_cores << endl;
 
     // allocate threads, make threads joinable whatever that means
     pthread_attr_init(&pthread_attr);
@@ -99,13 +99,22 @@
     size_t j;
     for0(j, n_cores){
       pthread_create(&my_pthread[j], &pthread_attr, worker_fun, (void *)j);
+      setThreadAffinity(my_pthread[j], j % n_cores); // Set CPU affinity
     }
 
     // wait for threads to finish
     for0(j, n_cores){
       pthread_join(my_pthread[j], NULL);
     }
-    // delete my_pthread;
-    cprint(str("return parfor()"));
+
+    delete[] my_pthread;
+    pthread_attr_destroy(&pthread_attr);
+    //cprint(str("return parfor()"));
   }
-// }
+
+void setThreadAffinity(pthread_t thread, int cpuIndex) {
+    cpu_set_t cpuset;
+    CPU_ZERO(&cpuset);
+    CPU_SET(cpuIndex, &cpuset);
+    pthread_setaffinity_np(thread, sizeof(cpu_set_t), &cpuset);
+}
