@@ -465,7 +465,7 @@ void recalc_classes_row(size_t i){
   int NRow = myglut2d->NRow;
   int NCol = myglut2d->NCol;
   int rs = NRow - i - 1;
-  printf("recalc_classes_row %zu of %zu rand_iter %d\n", i, NRow, (int)myglut2d->myclust->get_Rand_Iter_Max());
+  printf("recalc_classes_row %zu of %d rand_iter %d\n", i, NRow, (int)myglut2d->myclust->get_Rand_Iter_Max());
   
   SA<float> * dat = myglut2d->dat;
   vector< SA<float> * > * fb = myglut2d->myclust->float_buffers;
