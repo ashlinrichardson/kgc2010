@@ -82,7 +82,7 @@ void clust_knn::init(GLUT3d * _my3d, GLUT2d * _my2d, vector < SA<float> * > * _f
         if(k >= (nj - 1)) break;
 
         if((h % nskip) == 0){
-          origIndex.at(k) = h;
+          origIndex.at(k) = h;  // for the decimated data point, store it's index wrt the original data so we could retrieve the values. 
           for0(m, N){
             dat.at(k, m) = float_buffers->at(m)->at(i, j);
             (*i_coord)[m] = i;
@@ -176,9 +176,10 @@ int clust_knn::classf( int j, SA<int> * highestdensityneighborindex, SA<float> *
   }
 
   if(highestdensityneighbordensity->at(j) <= dE.at(j)){
-    knn_J_indices.push_back(j);
-    knn_indices.at(j) = nkci;
-    if(debug) printf("\tat top: j %d nkci %d\n", j, nkci);
+    // new cluster / found density "top"
+    knn_J_indices.push_back(j);  // store the index of the hilltop, wrt to the decimated data.
+    knn_indices.at(j) = nkci;  // store the index of the new cluster, wrt to the decimated data point.
+    if(debug)printf("\tat top: j %d nkci %d\n", j, nkci);
     return(nkci++);
   }
   else{
