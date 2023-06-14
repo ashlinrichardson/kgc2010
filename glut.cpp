@@ -292,11 +292,11 @@ void GLUT2d::quickdraw(){
   printf("quickdraw(%d)\n", myID());
   focus();
   setView();
-  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);  // was missing this
   glPixelStoref(GL_UNPACK_ALIGNMENT, 1);
   glDrawPixels(NCol, NRow, GL_RGB, GL_FLOAT, source);
   glFlush();
-  // glutSwapBuffers();
+  glutSwapBuffers();
 }
 
 void GLUT2d::recalc_binary_quick(int mypick){
