@@ -391,6 +391,13 @@ void GLUT2d::recalc_binary(int mypick){
       }
     }
   }
+
+/* think this is:
+"Furthermore, a larger proportion of random checks were
+performed when labeling spatially non-homogeneous pixels,
+reducing the number of point mis-registrations introduced
+by the randomized algorithm" */
+
 }
 
 void GLUT2d::reclass_point(int i, int j){
