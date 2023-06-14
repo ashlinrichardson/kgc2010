@@ -3,7 +3,6 @@
 using namespace myglut;
 using namespace std;
 
-
 void hwrite(str hfn, size_t nrow, size_t ncol, size_t nband, size_t data_type){
   cout << "+w " << hfn << " nrow " << nrow << " ncol " << ncol << " nband " << nband << endl;
   ofstream hf(hfn);
