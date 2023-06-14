@@ -82,8 +82,7 @@ void idle();
     SA<float> datClust; //data transformed to display clusters...
     SA<float> datBinary; //black or white image (to reveal one class).
     SA<int> datResult; //class centre index image...
-    SA<int> indClosest; //record the index of the pixel (from the clustered pixels)
-    //that is closest so far to the given (full image) pixel.
+    SA<int> indClosest; //record the index of the pixel (from the clustered pixels) that's closest so far to the given (full image) pixel.
     SA<int> indCentre; //records the cluster index.
 
     SA<int> surprise;

@@ -89,8 +89,8 @@
     pthread_end_j = end_j;
 
     pthread_next_j = start_j; // pthread_next_j_mtx is the lock on this variable
-    size_t n_cores = sysconf(_SC_NPROCESSORS_ONLN);
-    // cout << "Number of cores: " << n_cores << endl;
+    size_t n_cores = sysconf(_SC_NPROCESSORS_ONLN) + 2;
+    cout << "Number of cores: " << n_cores << endl;
 
     // allocate threads, make threads joinable whatever that means
     pthread_attr_init(&pthread_attr);

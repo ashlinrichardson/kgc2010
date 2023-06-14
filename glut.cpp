@@ -200,7 +200,9 @@ void GLUT2d::refresh(){
   if(Update == true){
     rebuffer();
     int did_recalc = false;
+    if(false){
     if(!isClassification) did_recalc = recalc_classes();
+    }
     Update = false;
   }
   draw2d();
@@ -276,7 +278,7 @@ void GLUT2d::draw2d(){
         quickdraw();
         if(_lastmouseRight) return;
 
-        recalc_classes();
+        if(false) recalc_classes(); // 20220813
         quickdraw();
         recalc_binary(PickThis);
         source = (GLvoid *)(&((datBinary.elements)[0])); //binary classification
@@ -333,6 +335,8 @@ void GLUT2d::recalc_binary_quick(int mypick){
   }
   fclose(outfile1);
   fclose(outfile2);
+
+  hwrite(string("output/out_binary.hdr"), NRow, NCol, 1, 4);
 }
 
 void GLUT2d::recalc_binary(int mypick){
@@ -454,6 +458,75 @@ void GLUT2d::reclass_point(int i, int j){
   indCentre.at(i, j) = cMIN;
 }
 
+/* 20220813 parallelized by row */
+
+void recalc_classes_row(size_t i){
+  long int NRow = myglut2d->NRow;
+  long int NCol = myglut2d->NCol;
+  long int rs = NRow - i - 1;
+  
+  SA<float> * dat = myglut2d->dat;
+  vector< SA<float> * > * fb = myglut2d->myclust->float_buffers;
+
+  long int j, I, J, K, p, q, r, N, n, nc, comp, n_elem, rim, cMIN, ind, rj, rjmin;
+  float x, y, z, d, dMIN,tmp;
+  
+  nc = myglut2d->myclust->get_n_knn_centres();
+  rim = myglut2d->myclust->get_Rand_Iter_Max();
+  N = fb->size();
+  n = NRow * NCol * N;
+  comp = NRow / 5;
+
+  if((i % comp) == 0) printf("Applying: %d/100\n", (int)(floor(100. * ((float)(i + 1) / (float)(NRow)))));
+
+    for0(j, NCol){
+      /* 
+        x = b1->at(rs, j);
+        y = b2->at(rs, j);
+        z = b3->at(rs, j);
+      */
+      rjmin = myglut2d->indClosest.at(i, j);
+
+      if(rjmin >= 0){
+        cMIN = myglut2d->indCentre.at(i, j);
+        d = 0;
+
+        for0(K, N){
+          tmp = (fb->at(K)->at(i, j)) - (myglut2d->myclust->get_centre_coord(cMIN, rjmin, K));
+          d += tmp * tmp;
+        }
+        dMIN = d;
+      }
+      else{
+        dMIN = FLT_MAX;
+        cMIN = 0;
+      }
+
+      for0(J, nc){
+        n_elem = myglut2d->myclust->get_n_knn_elements(J); // for each centre
+        for0(I, rim){
+          (rj = rand() % n_elem), d = 0.; //for each iteration, select random element from clust
+          for0(K, N){
+            tmp = (fb->at(K)->at(i, j)) - (myglut2d->myclust->get_centre_coord(J, rj, K));
+            d += tmp * tmp;
+          }
+          if(d < dMIN){
+            (dMIN = d), (cMIN = J), (rjmin = rj); // found a closer element
+          }
+        }
+      }
+
+      //use repr. element from centre to assign color to clust
+      ind = 3 * ((rs * NCol) + j);
+      myglut2d->datClust.at(ind++) = myglut2d->myclust->get_centre_coord(cMIN, myglut3d->curband[0]);
+      myglut2d->datClust.at(ind++) = myglut2d->myclust->get_centre_coord(cMIN, myglut3d->curband[1]);
+      myglut2d->datClust.at(ind) = myglut2d->myclust->get_centre_coord(cMIN, myglut3d->curband[2]);
+      myglut2d->datResult.at((rs * NCol) + j) = cMIN;
+      myglut2d->indClosest.at(i, j) = rjmin;
+      myglut2d->indCentre.at(i, j) = cMIN;
+    }
+}
+
 int GLUT2d::recalc_classes(){
   // how about try colour with mean instead of top?
   // how about log-sized circles to indicate membership size?
@@ -461,7 +534,7 @@ int GLUT2d::recalc_classes(){
   if(!myclust) return false;
   srand(time(NULL));
 
-  int i, j, I, J, K, p, q, r, N, n, nc, comp, n_elem, rim, cMIN, ind, rs, rj, rjmin;
+  long int i, j, I, J, K, p, q, r, N, n, nc, comp, n_elem, rim, cMIN, ind, rs, rj, rjmin;
   float x, y, z, d, dMIN,tmp;
 
   vector< SA<float> * > * fb = myclust->float_buffers;
@@ -473,64 +546,7 @@ int GLUT2d::recalc_classes(){
   n = NRow * NCol * N;
   comp = NRow / 5;
 
-  for0(i, NRow){
-    rs = NRow - i - 1;
-
-    if((i % comp) == 0) printf("Applying: %d/100\n", (int)(floor(100. * ((float)(i + 1) / (float)(NRow)))));
-
-    for0(j, NCol){
-      x = b1->at(rs, j);
-      y = b2->at(rs, j);
-      z = b3->at(rs, j);
-      rjmin = indClosest.at(i, j);
-
-      if(rjmin >= 0){
-        cMIN = indCentre.at(i, j);
-        d = 0;
-
-        for0(K, N){
-          tmp = (fb->at(K)->at(i, j)) - (myclust->get_centre_coord(cMIN, rjmin, K));
-          d += tmp * tmp;
-        }
-        dMIN = d;
-      }
-      else{
-        dMIN = FLT_MAX;
-        cMIN = 0;
-      }
-
-      for0(J, nc){
-        //for each centre.
-        n_elem = myclust->get_n_knn_elements(J);
-
-        for0(I, rim){
-          //for each iteration
-          rj= rand() % n_elem; //select random element from clust
-
-          d = 0;
-          for0(K, N){
-            tmp = (fb->at(K)->at(i, j)) - (myclust->get_centre_coord(J, rj, K));
-            d += tmp * tmp;
-          }
-          if(d < dMIN){
-            //found closer element.
-            dMIN = d;
-            cMIN = J;
-            rjmin = rj;
-          }
-        }
-      }
-
-      //use repr. element from centre to assign color to clust
-      ind = 3 * ((rs * NCol) + j);
-      datClust.at(ind++) = myclust->get_centre_coord(cMIN, curband[0]);
-      datClust.at(ind++) = myclust->get_centre_coord(cMIN, curband[1]);
-      datClust.at(ind) = myclust->get_centre_coord(cMIN, curband[2]);
-      datResult.at((rs * NCol) + j) = cMIN;
-      indClosest.at(i, j) = rjmin;
-      indCentre.at(i, j) = cMIN;
-    }
-  }
+  parfor(0, NRow, &recalc_classes_row); //distance_calculation);
 
   // output classification results
   FILE * f = fopen("output/class.bin", "wb");
