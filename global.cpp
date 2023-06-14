@@ -118,3 +118,13 @@ void setThreadAffinity(pthread_t thread, int cpuIndex) {
     CPU_SET(cpuIndex, &cpuset);
     pthread_setaffinity_np(thread, sizeof(cpu_set_t), &cpuset);
 }
+
+unsigned int crappy_rand(){
+    // linear congruential generator (LCG)
+    static unsigned int seed = 0; // Initial seed value
+    unsigned int a = 1103515245; // Multiplier
+    unsigned int c = 12345; // Increment
+    unsigned int m = 2147483648; // Modulus (2^31)
+    seed = (a * seed + c) % m; // Update the seed
+    return seed;
+}
