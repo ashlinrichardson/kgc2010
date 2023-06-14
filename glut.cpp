@@ -464,6 +464,8 @@ void GLUT2d::reclass_point(int i, int j){
   datResult.at((rs * NCol) + j) = cMIN;
   indClosest.at(i, j) = rjmin;
   indCentre.at(i, j) = cMIN;
+
+  // should have this transformation into all of the bands at once, too!
 }
 
 /* 20220813 parallelized by row */
