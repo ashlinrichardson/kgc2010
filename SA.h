@@ -91,7 +91,7 @@ namespace _SA{
       }
       else{
         elements= new T[mySize];
-        for(register long int i=0; i<mySize; i++)
+        for(long int i=0; i<mySize; i++)
         elements[i]=(*other)[i];
       }
       sizei = other->sizei;
