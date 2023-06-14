@@ -146,7 +146,7 @@ namespace _SA{
         printf("SA.h: error: tried to equate arrays of different lengths.\n");
         exit(1);
       }
-      register long int i=0;
+      long int i=0;
       for(i=0; i<mySize; i++){
         elements[i] = a[i];
       }
@@ -179,7 +179,7 @@ namespace _SA{
 
     float max(){
       float m = FLT_MIN;
-      for(register long int i=0; i<mySize; i++){
+      for(long int i=0; i<mySize; i++){
         if(!((isnan(elements[i])||(isinf(elements[i])))))
         if(elements[i]>m){
           m = elements[i];
@@ -194,7 +194,7 @@ namespace _SA{
 
     float min(){
       float m = FLT_MAX;
-      for(register long int i=0; i<mySize; i++){
+      for(long int i=0; i<mySize; i++){
         if(!((isnan(elements[i])||isinf(elements[i]))))
         if(elements[i]<m){
           m=elements[i];
@@ -215,7 +215,7 @@ namespace _SA{
 
   template <class T>
   inline ostream &operator<<(ostream &output, SA<T> &out ){
-    register long int i=0;
+    long int i=0;
     for(i=0; i<(out.length()); i++){
       if(i!=(out.length()-1)){
         output << out[i]<<",";

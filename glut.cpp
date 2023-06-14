@@ -221,7 +221,7 @@ void GLUT2d::draw_classes(){
   glPixelStoref(GL_UNPACK_ALIGNMENT, 1);
   glDrawPixels(NCol, NRow, GL_RGB, GL_FLOAT, (GLvoid *) (datClust.elements));
   glFlush();
-  glutSwapBuffers();
+  //glutSwapBuffers();
 }
 
 void GLUT2d::idlethreadfunc(){
@@ -292,10 +292,11 @@ void GLUT2d::quickdraw(){
   printf("quickdraw(%d)\n", myID());
   focus();
   setView();
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   glPixelStoref(GL_UNPACK_ALIGNMENT, 1);
   glDrawPixels(NCol, NRow, GL_RGB, GL_FLOAT, source);
   glFlush();
-  glutSwapBuffers();
+  // glutSwapBuffers();
 }
 
 void GLUT2d::recalc_binary_quick(int mypick){

@@ -90,7 +90,7 @@ int main(int argc, char *argv[]){
   printf("KNN_MAX %d KNN_USE %d\n", KNN_MAX, KNN_USE);
   RAND_ITER_MAX = atoi(argv[4]);
 
-  register int i;
+  int i;
   int n = NRow * NCol;
   float * dd = bread(fn, NRow, NCol, N); // buffer data
 
