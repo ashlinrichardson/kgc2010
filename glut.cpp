@@ -341,6 +341,7 @@ void GLUT2d::recalc_binary_quick(int mypick){
 }
 
 void GLUT2d::recalc_binary(int mypick){
+  return;
   printf("recalc_binary(%d)\n", mypick);
   int i, j, k, rs;
   int ind, ind2;
