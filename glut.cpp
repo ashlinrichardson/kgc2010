@@ -692,12 +692,27 @@ void GLUT3d::draw3d(){
   multiple windows would be nice */
 
   focus();
-  int i;
+  int i, j;
   float x, y, z;
   int n = b1->size();
 
   glClearColor(0.0, 0.0, 0.0, 0.0);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+  
+  // axes
+  float X[3];
+  for(i = 0; i < 3; i++){
+    for(j = 0; j < 3; j++){
+      X[j] = (j==i)? 1.: 0.;
+    }
+    glColor3f(X[0], X[1], X[2]); 
+    glBegin(GL_LINES);
+    glVertex3f(0, 0, 0);
+    glVertex3f(X[0], X[1], X[2]);
+    glEnd(GL_LINES);
+  }
+
+  // points
   glColor3f(0., 1., 0.);
   glPointSize(1.);
 
