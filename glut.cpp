@@ -709,7 +709,7 @@ void GLUT3d::draw3d(){
     glBegin(GL_LINES);
     glVertex3f(0, 0, 0);
     glVertex3f(X[0], X[1], X[2]);
-    glEnd(GL_LINES);
+    glEnd();
   }
 
   // points
