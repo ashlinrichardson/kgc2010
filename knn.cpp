@@ -70,7 +70,7 @@ int main(int argc, char *argv[]){
   const char *args[5] = {"kgc.exe\0", "data/rgb.bin\0", "33333\0", "230\0", "2\0"};
 
   if(argc < 5){
-    str msg("kgc2010 [input binary file] [n_desired] [knn_use] [rand_iter_max]");
+    str msg("kgc2010 [input binary file] [n_desired] [knn_use] [rand_iter_max] # [optional arg: perform scaling to [0,1]]");
     cout << "Error: " << msg << endl;
     argv = (char **)(void **)args;
   }
@@ -89,6 +89,8 @@ int main(int argc, char *argv[]){
   KNN_MAX = KNN_USE = atoi(argv[3]);
   printf("KNN_MAX %d KNN_USE %d\n", KNN_MAX, KNN_USE);
   RAND_ITER_MAX = atoi(argv[4]);
+  bool use_scaling = argc > 5;
+
 
   int i;
   int n = NRow * NCol;
@@ -106,7 +108,7 @@ int main(int argc, char *argv[]){
   for0(kk, N){
     SA<float> * db = fbufs[kk];
     for0(i, n) (*db)[i] = dd[(kk * n) + i]; // buffer data band
-    scaleband(fbufs[kk]); // scale band to [0, 1]
+    if(use_scaling) scaleband(fbufs[kk]); // scale band to [0, 1]
   }
 
   // data conditioning: in absence of de-duplication: substitute NAN in one band, or zero in all bands, with small random number..
