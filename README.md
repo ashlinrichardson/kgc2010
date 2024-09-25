@@ -2,10 +2,6 @@
 
 **KGC** is an **unsupervised classification algorithm** authored by Ashlin Richardson and developed in partnership with David Goodenough, Hao Chen and the Canadian Forest Service's **Advanced Forest Technologies (AFT) group** team. This implementation was developed between April 1 -- August 19th, 2010 for presentation at IGARSS 2010 while the author was funded by the U.Vic Math & Stats department, and is occasionally still being improved. Graphics functions adapted from Nigel Stewart [2].
 
-## instructions (tested on Ubuntu 20)
-Detailed instructions for GUI, to follow..
-.. also documentation of parameters!
-
 ## Firescar Delineation: 2002 Keg River Wildfire, Alberta, Canada (Example 1)
 Thanks to JAXA for L-band fully-polarimetric SAR data. Shown: cluster selection from 3-d cluster plot window. The 3-d coordinates are the same as those used in the RGB encoding in the Image window. The color encoding and the 3-d coordinates for plotting are tied together in this implementation but can be switched on the fly to explore higher-dimensional data. A "very large" number of bands is supported.
 ### To run Example 1:
