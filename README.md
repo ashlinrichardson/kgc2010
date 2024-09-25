@@ -1,9 +1,9 @@
 # kgc2010
 
-**KGC** is an **unsupervised classification algorithm** developed with David Goodenough, Hao Chen and the Canadian Forest Service's **Advanced Forest Technologies (AFT) group** team. This implementation was developed between April 1 -- August 19th, 2010 for presentation at IGARSS 2020 while the author was funded by the U.Vic Math & Stats department, and is occasionally still being improved. Graphics functions adapted from Nigel Stewart [2].
+**KGC** is an **unsupervised classification algorithm** developed with David Goodenough, Hao Chen and the Canadian Forest Service's **Advanced Forest Technologies (AFT) group** team. This implementation was developed between April 1 -- August 19th, 2010 for presentation at IGARSS 2010 while the author was funded by the U.Vic Math & Stats department, and is occasionally still being improved. Graphics functions adapted from Nigel Stewart [2].
 
 ## instructions (tested on Ubuntu 20)
-To run the example:
+### To run the first example (fire mapping with parameters derived from JAXA ALOS-1 data):
 ```
   ./setup.sh
   
@@ -14,9 +14,15 @@ To run the example:
 Detailed instructions for GUI, to follow..
 .. also documentation of parameters!
 
-## Firescar Delineation: 2002 Keg River Wildfire, Alberta, Canada
+### Firescar Delineation: 2002 Keg River Wildfire, Alberta, Canada
 Thanks to JAXA for L-band fully-polarimetric SAR data. Shown: cluster selection from 3-d cluster plot window. The 3-d coordinates are the same as those used in the RGB encoding in the Image window. The color encoding and the 3-d coordinates for plotting are tied together in this implementation but can be switched on the fly to explore higher-dimensional data. A "very large" number of bands is supported.
 <img src="output/out.gif " width="800">
+
+### To run the second example: land cover with Sentinel-2 
+``` 
+  ./run2.sh 
+```
+<img src="output/sentinel2_example_water.png" width="800">
 
 # Instructions
 ## 3d cluster plot
