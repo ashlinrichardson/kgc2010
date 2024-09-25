@@ -46,3 +46,6 @@ Similarly, type r3 <return> g2 <return> b1 <return> for (red, green, blue) = (3,
 [3] **Hierarchical Unsupervised Nonparametric Classification of Polarimetric SAR Time Series Data,** A. Richardson, D. Goodenough, H. Chen, proc. IEEE IGARSS, Québec City, Canada, July 2014
 
 [4] **Mapping Fire Scars Using Radarsat-2 Polarimetric SAR Data,** D. Goodenough, H. Chen, A. Richardson, S. Cloude, W. Hong, Y. Li, Can. J. Remote Sensing, Vol. 37, No. 5, pp. 1-10, 2011
+
+### Various easy improvements that could be made
+Changing ball sizes, adding some of the earlier array of density estimation of formulas, cluster merging / hierarchical operation / dendrogram.
