@@ -14,6 +14,7 @@ Thanks to JAXA for L-band fully-polarimetric SAR data. Shown: cluster selection 
 <img src="output/out.gif " width="800">
 
 ## Land cover with Sentinel-2 (Example 2)
+Shown: result with water class selected.
 ### To run:
 ``` 
   ./run2.sh 
@@ -27,7 +28,7 @@ Thanks to JAXA for L-band fully-polarimetric SAR data. Shown: cluster selection 
 * Rotate: hold down left mouse button and drag
 
 Click on cluster centres (blue) to visualize cluster in image domain (class window). This produces a binary classification
-* after producing a binary classication, can press c (lower case) to switch back to multi-class view (in which pixels are coloured according to the mode to which they are assigned). In this representation the mode is the value of the "hilltop" determined
+* after producing a binary classication, can press c (lower case) to switch back to multi-class view (in which pixels are coloured according to the mode to which they are assigned). In this representation (same as before a particular cluster is selected) the mode is the value of the "hilltop" determined
 
 ## Image plot
 Band selection: [ add photo for switching bands] 
